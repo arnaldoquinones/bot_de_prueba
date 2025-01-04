@@ -1,27 +1,50 @@
 import reflex as rx
-
 from rxconfig import config
-
 
 class State(rx.State):
     pass
 
-
 def header():
     """Encabezado personalizado para el sitio web."""
     return rx.box(
-        rx.heading(
-            rx.image(
-                src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo.png?raw=true",
-                width="120px",
-                height="auto",
-                border_radius="50%",
-                alt="Foto de perfil",
+        # Caja contenedora general
+        rx.flex(
+            # Contenedor del icono alineado a la izquierda
+            rx.box(
+                rx.icon("menu", size=50, margin_top="0.8em", margin_left="2em"),  # Icono a la izquierda
+                align="start",  # Alinea el icono al inicio del contenedor
+                flex="none"  # No permite que el contenedor ocupe espacio extra
             ),
-            "My Personal Portfolio",  # Texto del encabezado
-            size="3",  # Tamaño del texto
-            color="white",  # Cambia el color del texto
+            # Contenedor centrado para el logo y el título
+            rx.flex(
+                # Imagen de perfil centrada
+                rx.image(
+                    src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo.png?raw=true",
+                    width="120px",
+                    height="auto",
+                    border_radius="50%",
+                    alt="Foto de perfil",
+                    margin_top="20px",
+                ),
+                # Título centrado
+                rx.heading(
+                    "My Personal Portfolio",  # Título del encabezado
+                    size="3",
+                    color="white",
+                ),
+                gap="2",  # Espaciado entre la imagen y el texto
+                align="center",  # Alinea el contenido verticalmente
+                justify="center",  # Centra horizontalmente
+                flex="1",  # Esto permite que este contenedor ocupe el espacio disponible y centre su contenido
+                direction="column",  # Coloca los elementos uno debajo del otro
+            ),
+            gap="2",  # Espaciado entre el icono y el encabezado
+            align_items="center",  # Centrado vertical de los elementos
+            width="100%",  # Ancho total
+            justify_content="flex-start",  # Mantiene los elementos al principio en el eje horizontal
+            flex_direction="row",  # Distribuye los elementos en una fila
         ),
+        # Caja con la cita
         rx.box(
             rx.text(
                 """ "...Scientia est potentia..." """,
@@ -29,26 +52,27 @@ def header():
                 font_style="italic",
                 text_align="right",
                 color="white",
-                margin_top="1em",
-                margin_right="3em",
+                margin_top="2em",
+                margin_right="2em",
             ),
             position="absolute",
             top="0",
             right="0",
         ),
         background_image="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/banner_header.jpg?raw=true')",
-        background_size="cover",
-        width="100%",  # Ocupa todo el ancho de la pantalla
-        height="120px",  # Altura del encabezado
-        display="flex",  # Usamos flex para centrar el texto
-        justify_content="center",  # Centrado horizontal
-        align_items="center",  # Centrado vertical
+        background_size="cover", 
+        width="100%",
+        height="120px",
+        display="flex",
+        justify_content="center",  # Centra horizontalmente
+        align_items="center",  # Centra verticalmente
     )
+
+
 
 intro_texto_castellano = """Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas."""
 
 intro_texto_ingles = """With more than 24 years of experience in the financial banking sector, I have held roles in both the administrative and commercial areas, specifically as an account and business officer. During my time in the administrative area, I acquired significant skills in the preparation of reports using DDB tools, thus contributing to operational efficiency and informed decision-making."""
-
 
 def index() -> rx.Component:
     """Componente principal que renderiza la vista principal de la app."""
@@ -106,6 +130,17 @@ def index() -> rx.Component:
                 padding="1em",
                 flex="1",
             ),
+            rx.flex(
+#     rx.input(
+#         rx.input.slot(
+#             rx.icon(tag="search"),
+#         ),
+#         placeholder="Search songs...",
+#     ),
+#     direction="column",
+#     spacing="3",
+#     style={"maxWidth": 500},
+# )
         ),
         min_height="100vh",
         width="100vw",
@@ -113,7 +148,5 @@ def index() -> rx.Component:
         overflow_y="auto",
     )
 
-
 app = rx.App()
 app.add_page(index)
-
