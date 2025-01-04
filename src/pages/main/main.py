@@ -19,7 +19,7 @@ def header():
             rx.flex(
                 # Imagen de perfil centrada
                 rx.image(
-                    src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo.png?raw=true",
+                    src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
                     width="120px",
                     height="auto",
                     border_radius="50%",
@@ -62,11 +62,13 @@ def header():
         background_image="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/banner_header.jpg?raw=true')",
         background_size="cover", 
         width="100%",
-        height="120px",
+        height="190px",
         display="flex",
         justify_content="center",  # Centra horizontalmente
         align_items="center",  # Centra verticalmente
+        box_shadow="0px 10px 20px rgba(0, 0, 0, 0.7), 0px 0px 10px transparent",  # Sombra más grande y oscura
     )
+    
 
 
 
@@ -130,7 +132,7 @@ def index() -> rx.Component:
                 padding="1em",
                 flex="1",
             ),
-            rx.flex(
+            # rx.flex(
 #     rx.input(
 #         rx.input.slot(
 #             rx.icon(tag="search"),
