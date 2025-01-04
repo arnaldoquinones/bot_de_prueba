@@ -10,25 +10,40 @@ class State(rx.State):
 def header():
     """Encabezado personalizado para el sitio web."""
     return rx.box(
-        rx.heading(rx.image(
-                        src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo.png?raw=true",
-                        width="120px",
-                        height="auto",
-                        border_radius="50%",
-                        alt="Foto de perfil",
-                    ),
+        rx.heading(
+            rx.image(
+                src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo.png?raw=true",
+                width="120px",
+                height="auto",
+                border_radius="50%",
+                alt="Foto de perfil",
+            ),
             "My Personal Portfolio",  # Texto del encabezado
             size="3",  # Tamaño del texto
             color="white",  # Cambia el color del texto
         ),
-        background_color="blue",  # Fondo del encabezado
+        rx.box(
+            rx.text(
+                """ "...Scientia est potentia..." """,
+                font_size="1.5em",
+                font_style="italic",
+                text_align="right",
+                color="white",
+                margin_top="1em",
+                margin_right="3em",
+            ),
+            position="absolute",
+            top="0",
+            right="0",
+        ),
+        background_image="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/banner_header.jpg?raw=true')",
+        background_size="cover",
         width="100%",  # Ocupa todo el ancho de la pantalla
         height="120px",  # Altura del encabezado
         display="flex",  # Usamos flex para centrar el texto
         justify_content="center",  # Centrado horizontal
         align_items="center",  # Centrado vertical
     )
-
 
 intro_texto_castellano = """Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas."""
 
@@ -48,20 +63,6 @@ def index() -> rx.Component:
                             rx.text("& Data analyst"),
                         ),
                         size="6"
-                    ),
-                    rx.box(
-                        rx.text(
-                            """ "...Scientia est potentia..." """,
-                            font_size="1.2em",
-                            font_style="italic",
-                            text_align="right",
-                            color="white",
-                            margin_top="1em",
-                            margin_right="3em",
-                        ),
-                        position="absolute",
-                        top="0",
-                        right="0",
                     ),
                     rx.flex(
                         rx.text(
