@@ -10,14 +10,20 @@ class State(rx.State):
 def header():
     """Encabezado personalizado para el sitio web."""
     return rx.box(
-        rx.heading(
+        rx.heading(rx.image(
+                        src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo.png?raw=true",
+                        width="120px",
+                        height="auto",
+                        border_radius="50%",
+                        alt="Foto de perfil",
+                    ),
             "My Personal Portfolio",  # Texto del encabezado
             size="3",  # Tamaño del texto
             color="white",  # Cambia el color del texto
         ),
         background_color="blue",  # Fondo del encabezado
         width="100%",  # Ocupa todo el ancho de la pantalla
-        height="100px",  # Altura del encabezado
+        height="120px",  # Altura del encabezado
         display="flex",  # Usamos flex para centrar el texto
         justify_content="center",  # Centrado horizontal
         align_items="center",  # Centrado vertical
@@ -66,7 +72,7 @@ def index() -> rx.Component:
                         top="4em",
                         justify="center",
                         align_items="center",
-                        height="200px",
+                        height="420px",
                         width="400px",
                         text_align="justify",
                         color="white"
@@ -91,7 +97,7 @@ def index() -> rx.Component:
                         spacing="4",
                         align_items="center",
                         position="absolute",
-                        top="16em",
+                        top="26em",
                     ),
                     spacing="5",
                     justify_content="center",
