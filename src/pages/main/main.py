@@ -6,6 +6,61 @@ class State(rx.State):
 import reflex as rx
 
 api_key = config["cc927a091110908fb4a1fe8ac93353b1"]
+import reflex as rx
+import requests
+
+class WeatherState(rx.State):
+    """The app state."""
+    location: str = ""
+    temperature: float = 0
+    weather_desc: str = ""
+    loading: bool = False
+
+    def get_weather(self):
+        """Get weather data for the location."""
+        if self.location == "":
+            return rx.window_alert("Please enter a location")
+        
+        self.loading = True
+        yield
+        
+        # Replace with your API key and actual API call
+        API_KEY = "your_api_key"
+        url = f"http://api.openweathermap.org/data/2.5/weather?q={self.location}&appid={API_KEY}&units=metric"
+        
+        try:
+            response = requests.get(url)
+            data = response.json()
+            self.temperature = data["main"]["temp"]
+            self.weather_desc = data["weather"][0]["description"]
+        except:
+            return rx.window_alert("Error fetching weather data")
+        finally:
+            self.loading = False
+
+def index():
+    return rx.vstack(
+        rx.heading("Weather App"),
+        rx.input(
+            placeholder="Enter location",
+            on_blur=WeatherState.set_location,
+        ),
+        rx.button(
+            "Get Weather",
+            on_click=WeatherState.get_weather,
+        ),
+        rx.cond(
+            WeatherState.loading,
+            rx.spinner(),
+            rx.vstack(
+                rx.heading(f"Temperature: {WeatherState.temperature}°C"),
+                rx.text(f"Weather: {WeatherState.weather_desc}"),
+            ),
+        ),
+    )
+
+app = rx.App()
+app.add_page(index)
 
 def header():
     """Encabezado personalizado para el sitio web."""
@@ -165,3 +220,25 @@ def index() -> rx.Component:
 
 app = rx.App()
 app.add_page(index)
+# ---------------------------
+# -- ENLACES A LAS PAGINAS --
+# ---------------------------
+def main_page() -> rx.Component:
+    return rx.box(
+        rx.link("About Me", href="./about_me"),
+        rx.link("Skills", href="./skills"),
+        rx.link("Projects", href="./proyects"),
+        # rx.text("Welcome to my Portfolio", size="3", font_weight="bold"),
+        # spacing="4",
+        # align="center",
+        # justify="center",
+        # height="100vh",
+        # bg="teal.100",
+    )
+
+# Add routes for the main page and subpages.
+app.add_page(main_page)
+app.add_page(about)
+app.add_page(skills)
+app.add_page(proyects)
+app.add_page(index)  # Agregar la página principal.
