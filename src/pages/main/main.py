@@ -52,7 +52,7 @@ def header():
                 font_style="italic",
                 text_align="right",
                 color="white",
-                margin_top="3em",
+                margin_top="2em",
                 margin_right="2em",
             ),
             position="absolute",
@@ -70,6 +70,22 @@ def header():
     )
     
 # Definimos los estilos CSS para la animación
+intro_text_style = {
+    "@keyframes typewriter": {
+        "from": {"width": "0"},
+        "to": {"width": "100%"}
+    },
+    "@keyframes blinkTextCursor": {
+        "from": {"border-right-color": "rgba(255,255,255,.75)"},
+        "to": {"border-right-color": "transparent"},
+    },
+    ".animated-text": {
+        "overflow": "hidden",
+        "white-space": "pre-wrap",
+        "animation": "typewriter 4s steps(40) 1s normal both",
+        "border-right": "2px solid rgba(255,255,255,.75)",
+    }
+}
 
 
 intro_texto_castellano = """Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas."""
@@ -94,6 +110,7 @@ def index() -> rx.Component:
                         rx.text(
                             intro_texto_castellano,
                             font_size="0.8em",
+                             class_name="animated-text"
                         ),
                         position="absolute",
                         top="8em",
