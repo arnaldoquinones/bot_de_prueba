@@ -1,6 +1,6 @@
 import reflex as rx
 from rxconfig import config
-# from .modulos import sidebar_bottom_profile, pop_up_message
+from .modulos import sidebar_bottom_profile, pop_up_message
 
 
 def about() -> rx.Component:

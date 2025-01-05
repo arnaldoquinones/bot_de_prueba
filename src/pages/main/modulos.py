@@ -1,9 +1,12 @@
 import reflex as rx
+import requests
 from rxconfig import config
 import re  # Para usar expresiones regulares en la validación del email
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
+
 
 # -------------------------
 # -- BARRA SIDEBAR  MENU --
@@ -210,6 +213,31 @@ def sidebar_bottom_profile() -> rx.Component:
             padding="1em",
         ),
     )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # -------------------------
 # -- POP UP WINDOW EMAIL --
@@ -431,14 +459,133 @@ def pop_up_message():
 
 
 
+# --------------------------
+# -- WEATHER LOCATION API --
+# --------------------------
 
 
 
 
 
 
+class WeatherState(rx.State):
+    """The app state."""
+    location: str = ""
+    temperature: float = 0
+    weather_desc: str = ""
+    loading: bool = False
 
 
+
+    def get_weather(self):
+        """Get weather data for the location."""
+        if self.location == "":
+            return rx.window_alert("Please enter a location")
+        
+        self.loading = True
+        yield
+        
+        # Replace with your API key and actual API call
+        API_KEY = "your_api_key"
+        url = f"http://api.openweathermap.org/data/2.5/weather?q={self.location}&appid={API_KEY}&units=metric"
+        
+        try:
+            response = requests.get(url)
+            data = response.json()
+            self.temperature = data["main"]["temp"]
+            self.weather_desc = data["weather"][0]["description"]
+        except:
+            return rx.window_alert("Error fetching weather data")
+        finally:
+            self.loading = False
+
+def index():
+    return rx.vstack(
+        rx.heading("Weather App"),
+        rx.input(
+            placeholder="Enter location",
+            on_blur=WeatherState.set_location,
+        ),
+        rx.button(
+            "Get Weather",
+            on_click=WeatherState.get_weather,
+        ),
+        rx.cond(
+            WeatherState.loading,
+            rx.spinner(),
+            rx.vstack(
+                rx.heading(f"Temperature: {WeatherState.temperature}°C"),
+                rx.text(f"Weather: {WeatherState.weather_desc}"),
+            ),
+        ),
+    )
+
+app = rx.App()
+app.add_page(index)
+
+
+
+
+
+def header():
+    """Encabezado personalizado para el sitio web."""
+    return rx.box(
+        # Caja contenedora general
+        rx.flex(
+            # Contenedor del icono alineado a la izquierda
+            rx.box(
+                rx.icon("menu", size=40, margin_top="0.8em", margin_left="2em"),  # Icono a la izquierda
+                align="start",  # Alinea el icono al inicio del contenedor
+                flex="none"  # No permite que el contenedor ocupe espacio extra
+            ),
+            # Contenedor centrado para el logo y el título
+            rx.flex(
+                # Título centrado
+                rx.heading(
+    "My Portfolio",
+    style={
+        "text_shadow": "8px 8px 16px rgba(0, 0, 0, 1)",
+        # Optional: adds some space between letters
+    },
+    size="9",
+    color="white"
+),  # Título del encabezado
+                gap="2",  # Espaciado entre la imagen y el texto
+                align="center",  # Alinea el contenido verticalmente
+                justify="center",  # Centra horizontalmente
+                flex="1",  # Esto permite que este contenedor ocupe el espacio disponible y centre su contenido
+                direction="column",  # Coloca los elementos uno debajo del otro
+            ),
+            gap="2",  # Espaciado entre el icono y el encabezado
+            align_items="center",  # Centrado vertical de los elementos
+            width="100%",  # Ancho total
+            justify_content="flex-start",  # Mantiene los elementos al principio en el eje horizontal
+            flex_direction="row",  # Distribuye los elementos en una fila
+        ),
+        # Caja con la cita
+        rx.box(
+            rx.text(
+                """ "...Scientia est potentia..." """,
+                font_size="1.5em",
+                font_style="italic",
+                text_align="right",
+                color="white",
+                margin_top="3em",
+                margin_right="2em",
+            ),
+            position="absolute",
+            top="0",
+            right="0",
+        ),
+        background_image="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/banner_header.jpg?raw=true')",
+        background_size="cover",
+        width="100%",
+        height="190px",
+        display="flex",
+        justify_content="center",  # Centra horizontalmente
+        align_items="center",  # Centra verticalmente
+        box_shadow="0px 10px 20px rgba(0, 0, 0, 0.7), 0px 0px 10px transparent",  # Sombra más grande y oscura
+    )
 
 
 # -- CODIGO DE MODULOS -- 
