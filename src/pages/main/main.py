@@ -102,11 +102,11 @@ def index() -> rx.Component:
                      margin_left="-12em",
                 ),
                         # rx.image(
-                        #     src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/imagen_main.png?raw=true",  # Cambia esta URL por la de tu imagen
+                        #     src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/imagen_perfil_profesional.png?raw=true",  # Cambia esta URL por la de tu imagen
                         #     alt="Descripción de la imagen",
                         #     width="340px",
                         #     height="360px",
-                        #     margin_top="-6em",
+                        #     margin_top="-9em",
                         #     margin_left="36em",
                         # ),
                     ),
