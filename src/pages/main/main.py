@@ -11,7 +11,7 @@ def header():
         rx.flex(
             # Contenedor del icono alineado a la izquierda
             rx.box(
-                rx.icon("menu", size=50, margin_top="0.8em", margin_left="2em"),  # Icono a la izquierda
+                rx.icon("menu", size=40, margin_top="0.8em", margin_left="2em"),  # Icono a la izquierda
                 align="start",  # Alinea el icono al inicio del contenedor
                 flex="none"  # No permite que el contenedor ocupe espacio extra
             ),
@@ -28,8 +28,8 @@ def header():
                 ),
                 # Título centrado
                 rx.heading(
-                    "My Personal Portfolio",  # Título del encabezado
-                    size="3",
+                    "My Profesional Portfolio",  # Título del encabezado
+                    size="4",
                     color="white",
                 ),
                 gap="2",  # Espaciado entre la imagen y el texto
@@ -69,7 +69,12 @@ def header():
         box_shadow="0px 10px 20px rgba(0, 0, 0, 0.7), 0px 0px 10px transparent",  # Sombra más grande y oscura
     )
     
-
+rx.text(
+    "Gradient Text",
+    background_image="linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%)",
+    background_clip="text",
+    color="transparent",
+)
 
 
 intro_texto_castellano = """Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas."""
@@ -96,13 +101,20 @@ def index() -> rx.Component:
                             font_size="0.8em"
                         ),
                         position="absolute",
-                        top="4em",
+                        top="8em",
                         justify="center",
                         align_items="center",
                         height="420px",
                         width="400px",
                         text_align="justify",
                         color="white"
+                    ),
+                    rx.text(
+    "Gradient Text",
+    background_image="linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%)",
+    background_clip="text",
+    color="transparent",
+     margin_top="8em",
                     ),
                     rx.hstack(
                         rx.link(
@@ -124,7 +136,7 @@ def index() -> rx.Component:
                         spacing="4",
                         align_items="center",
                         position="absolute",
-                        top="26em",
+                        top="30em",
                     ),
                     spacing="5",
                     justify_content="center",
