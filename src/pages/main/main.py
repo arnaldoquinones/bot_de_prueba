@@ -1,5 +1,9 @@
 import reflex as rx
 from rxconfig import config
+from .modulos import sidebar_bottom_profile, pop_up_message
+from .about_me import about
+from .skills import skills
+from .proyects import proyects
 
 class State(rx.State):
     pass
