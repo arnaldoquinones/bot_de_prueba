@@ -17,19 +17,10 @@ def header():
             ),
             # Contenedor centrado para el logo y el título
             rx.flex(
-                # Imagen de perfil centrada
-                rx.image(
-                    src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
-                    width="120px",
-                    height="auto",
-                    border_radius="50%",
-                    alt="Foto de perfil",
-                    margin_top="20px",
-                ),
                 # Título centrado
                 rx.heading(
-                    "My Profesional Portfolio",  # Título del encabezado
-                    size="4",
+                    "My Portfolio",  # Título del encabezado
+                    size="9",
                     color="white",
                 ),
                 gap="2",  # Espaciado entre la imagen y el texto
@@ -52,7 +43,7 @@ def header():
                 font_style="italic",
                 text_align="right",
                 color="white",
-                margin_top="2em",
+                margin_top="3em",
                 margin_right="2em",
             ),
             position="absolute",
@@ -60,7 +51,7 @@ def header():
             right="0",
         ),
         background_image="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/banner_header.jpg?raw=true')",
-        background_size="cover", 
+        background_size="cover",
         width="100%",
         height="190px",
         display="flex",
@@ -68,25 +59,6 @@ def header():
         align_items="center",  # Centra verticalmente
         box_shadow="0px 10px 20px rgba(0, 0, 0, 0.7), 0px 0px 10px transparent",  # Sombra más grande y oscura
     )
-    
-# Definimos los estilos CSS para la animación
-intro_text_style = {
-    "@keyframes typewriter": {
-        "from": {"width": "0"},
-        "to": {"width": "100%"}
-    },
-    "@keyframes blinkTextCursor": {
-        "from": {"border-right-color": "rgba(255,255,255,.75)"},
-        "to": {"border-right-color": "transparent"},
-    },
-    ".animated-text": {
-        "overflow": "hidden",
-        "white-space": "pre-wrap",
-        "animation": "typewriter 4s steps(40) 1s normal both",
-        "border-right": "2px solid rgba(255,255,255,.75)",
-    }
-}
-
 
 intro_texto_castellano = """Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas."""
 
@@ -110,10 +82,9 @@ def index() -> rx.Component:
                         rx.text(
                             intro_texto_castellano,
                             font_size="0.8em",
-                             class_name="animated-text"
                         ),
                         position="absolute",
-                        top="8em",
+                        top="10em",
                         justify="center",
                         align_items="center",
                         height="420px",
@@ -121,11 +92,23 @@ def index() -> rx.Component:
                         text_align="justify",
                         color="white"
                     ),
-                    rx.text(
-    "Gradient Text",
-    animation="fadeIn 2s",
-    _hover={"color": "red"},
-     margin_top="8em",
+                    rx.image(
+                    src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
+                    width="120px",
+                    height="auto",
+                    border_radius="50%",
+                    alt="Foto de perfil",
+                    margin_top="-68px",
+                     margin_left="-12em",
+                ),
+                        # rx.image(
+                        #     src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/imagen_main.png?raw=true",  # Cambia esta URL por la de tu imagen
+                        #     alt="Descripción de la imagen",
+                        #     width="340px",
+                        #     height="360px",
+                        #     margin_top="-6em",
+                        #     margin_left="36em",
+                        # ),
                     ),
                     rx.hstack(
                         rx.link(
@@ -155,18 +138,7 @@ def index() -> rx.Component:
                 padding="1em",
                 flex="1",
             ),
-            # rx.flex(
-#     rx.input(
-#         rx.input.slot(
-#             rx.icon(tag="search"),
-#         ),
-#         placeholder="Search songs...",
-#     ),
-#     direction="column",
-#     spacing="3",
-#     style={"maxWidth": 500},
-# )
-        ),
+        
         min_height="100vh",
         width="100vw",
         background="linear-gradient(to bottom, #000066, #000000)",
