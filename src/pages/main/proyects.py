@@ -1,12 +1,13 @@
 import reflex as rx
 from rxconfig import config
-from .modulos import sidebar_bottom_profile, pop_up_message
+from .modulos import header,sidebar_bottom_profile, pop_up_message
 
 
 def proyects() -> rx.Component:
     """Página Proyects."""
     return rx.box(
         rx.hstack(
+            header(),
             sidebar_bottom_profile(),  # Barra lateral
             rx.container(
                 rx.vstack(
