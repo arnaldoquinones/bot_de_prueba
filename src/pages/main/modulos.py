@@ -88,7 +88,7 @@ def sidebar_bottom_profile() -> rx.Component:
                 rx.hstack(
                     rx.text("Made by", size="3", weight="bold"),
                     rx.link(
-                        "Arnaldo Quiñones",
+                        "A. Quiñones",
                         href="https://github.com/arnaldoquinones",
                         size="2",
                         weight="medium",
@@ -101,17 +101,23 @@ def sidebar_bottom_profile() -> rx.Component:
                     width="100%",
                 ),
                 spacing="0",  # Eliminar espaciado entre elementos inferiores
-                margin_top="auto",  # Empuja este contenido al fondo
+                margin_top="auto",  # Empuja el contenido al fondo
                 padding_x="1em",
-                padding_y="1em",  # Reducir padding
+                padding_y="0",  # Eliminar padding
                 bg=rx.color("accent", 3),
                 align="start",
                 height="calc(100vh - 60px)",  # Restar la altura del header (60px en este ejemplo)
                 overflow="auto",  # Permitir desplazamiento si el contenido desborda
-                width="12em",
+                width="14em",  # Asegurarse de que el sidebar tiene el tamaño correcto
+                position="fixed",  # Fijar el sidebar a la izquierda
+                left="0",  # Asegurar que el sidebar esté alineado a la izquierda
+                top="0",  # Asegurar que el sidebar esté alineado a la parte superior
             ),
         ),
     )
+
+
+
 
 
 
