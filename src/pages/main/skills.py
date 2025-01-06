@@ -1,6 +1,6 @@
 import reflex as rx
 from rxconfig import config
-from .modulos import sidebar_bottom_profile, pop_up_message
+from .modulos import header, sidebar_bottom_profile, pop_up_message
 # from .chatbot import chat  # Importa el componente del chatbot
 
 
@@ -8,6 +8,7 @@ def skills() -> rx.Component:
     """Página Skills."""
     return rx.box(
         rx.hstack(
+            header(),
             sidebar_bottom_profile(),  # Barra lateral
             rx.container(
                 rx.vstack(

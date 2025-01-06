@@ -1,11 +1,12 @@
 import reflex as rx
-import requests
 from rxconfig import config
 import re  # Para usar expresiones regulares en la validación del email
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
+from dotenv import load_dotenv
+import os
+import requests
 
 
 # -------------------------
@@ -25,7 +26,6 @@ class MessageFormState(rx.State):
     def toggle_popover(self):
         """Toggle the popover visibility."""
         self.is_popover_open = not self.is_popover_open
-
 
 
 def sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandler = None) -> rx.Component:
@@ -54,202 +54,71 @@ def sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandl
         width="100%",
     )
 
-
 def sidebar_items() -> rx.Component:
     return rx.vstack(
+        # Agregar el Search Bar como un nuevo item en el sidebar
+        rx.flex(
+            rx.input(
+                rx.input.slot(
+                    rx.icon(tag="search"),
+                ),
+                placeholder="Ingrese consulta",
+            ),
+            direction="column",
+            spacing="3",
+            style={"maxWidth": 500},
+        ),
         sidebar_item("About me", "user", href="./about"),
         sidebar_item("Projects", "square-library", href="./proyects"),
         sidebar_item("Skills", "bar-chart-4", href="./skills"),
-        sidebar_item("Languages", "languages", href="./skills"),
         sidebar_item("Chatbot", "bot-message-square", href="./skills"),
         sidebar_item("Messages", "mail", on_click=MessageFormStateV2.toggle_popover),  # Alterna el pop-up
-        spacing="3",
+        
+        spacing="1",  # Reducir el espaciado entre elementos
         width="12em",
     )
 
 
 def sidebar_bottom_profile() -> rx.Component:
-    """Crea el perfil inferior de la barra lateral."""
     return rx.box(
         rx.desktop_only(
             rx.vstack(
+                sidebar_items(),
+                rx.divider(margin_y="0"),  # Reducir margen del divider a 0
                 rx.hstack(
+                    rx.text("Made by", size="3", weight="bold"),
                     rx.link(
-                        rx.image(
-                            src="/logo.png",
-                            width="2.25em",
-                            height="auto",
-                            border_radius="25%",
-                        ),
-                        href="./",  # Ruta a la página principal (main)
+                        "Arnaldo Quiñones",
+                        href="https://github.com/arnaldoquinones",
+                        size="2",
+                        weight="medium",
+                        color="blue.500",
+                        is_external=True,
                     ),
-                    rx.link(
-                        rx.heading(
-                            "My portfolio.", size="5", weight="bold"
-                        ),
-                        href="./",  # Ruta a la página principal (main)
-                        style={
-                            "color": "white",  # Mantiene el color del texto en blanco
-                            "text-decoration": "none",  # Elimina subrayados
-                            "_hover": {
-                                "color": "white",  # Mantiene blanco al pasar el mouse
-                            },
-                        },
-                    ),
+                    padding_x="0.5rem",
                     align="center",
                     justify="start",
-                    padding_x="0.5rem",
                     width="100%",
                 ),
-                sidebar_items(),
-                # Aquí mueve el divider dentro del contenedor flexible
-                rx.vstack(
-                    rx.divider(margin_y="2"),  # Divider ahora está dentro del vstack
-                    rx.hstack(
-                        rx.vstack(
-                            rx.box(
-                                rx.text(
-                                    "Made by",
-                                    size="3",
-                                    weight="bold",
-                                ),
-                                rx.link(
-                                    "Arnaldo Quiñones",
-                                    href="https://github.com/arnaldoquinones",
-                                    size="2",
-                                    weight="medium",
-                                    color="blue.500",
-                                    is_external=True,
-                                ),
-                                width="100%",
-                            ),
-                            align="start",
-                            justify="start",
-                            width="100%",
-                        ),
-                        padding_x="0.5rem",
-                        align="center",
-                        justify="start",
-                        width="100%",
-                    ),
-                    width="100%",
-                    spacing="2",  # Espaciado entre elementos inferiores
-                    margin_top="auto",  # Empuja este contenido al fondo
-                ),
-                spacing="3",  # Espaciado general ajustado
+                spacing="0",  # Eliminar espaciado entre elementos inferiores
+                margin_top="auto",  # Empuja este contenido al fondo
                 padding_x="1em",
-                padding_y="1.5em",
+                padding_y="1em",  # Reducir padding
                 bg=rx.color("accent", 3),
                 align="start",
-                height="100vh",  # Ajusta la altura para que ocupe todo el alto de la página
-                width="12em",  # Mantén el ancho fijo si lo deseas
+                height="calc(100vh - 60px)",  # Restar la altura del header (60px en este ejemplo)
+                overflow="auto",  # Permitir desplazamiento si el contenido desborda
+                width="12em",
             ),
-        ),
-        rx.mobile_and_tablet(
-            rx.drawer.root(
-                rx.drawer.trigger(
-                    rx.icon("align-justify", size=30)
-                ),
-                rx.drawer.overlay(z_index="5"),
-                rx.drawer.portal(
-                    rx.drawer.content(
-                        rx.vstack(
-                            rx.box(
-                                rx.drawer.close(
-                                    rx.icon("x", size=30)
-                                ),
-                                width="100%",
-                            ),
-                            sidebar_items(),
-                            rx.vstack(
-                                rx.divider(margin_y="2"),  # Divider en la versión móvil también
-                                rx.hstack(
-                                    rx.icon_button(
-                                        rx.icon("user"),
-                                        size="3",
-                                        radius="full",
-                                    ),
-                                    rx.vstack(
-                                        rx.box(
-                                            rx.text(
-                                                "Made by",
-                                                size="3",
-                                                weight="bold",
-                                            ),
-                                            rx.link(
-                                                "Arnaldo Quiñones",
-                                                href="https://github.com/arnaldoquinones",
-                                                size="2",
-                                                weight="medium",
-                                                color="blue.500",
-                                                is_external=True,
-                                            ),
-                                            width="100%",
-                                        ),
-                                        justify="start",
-                                        width="100%",
-                                    ),
-                                    padding_x="0.5rem",
-                                    align="center",
-                                    justify="start",
-                                    width="100%",
-                                ),
-                                spacing="2",  # Espaciado entre los elementos inferiores
-                                width="100%",
-                            ),
-                            width="100%",
-                        ),
-                        top="auto",
-                        right="auto",
-                        height="100%",  # Ajusta el contenido a la altura completa de la pantalla
-                        width="20em",
-                        padding="1.5em",
-                        bg=rx.color("accent", 2),
-                    ),
-                    width="100%",
-                ),
-                direction="left",
-            ),
-            padding="1em",
         ),
     )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 # -------------------------
 # -- POP UP WINDOW EMAIL --
 # -------------------------
-import reflex as rx
-from rxconfig import config
-import re  # Para usar expresiones regulares en la validación del email
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from dotenv import load_dotenv
-import os
+
 
 load_dotenv()
 
@@ -455,27 +324,15 @@ def pop_up_message():
 
 
 
-
-
-
-
 # --------------------------
 # -- WEATHER LOCATION API --
 # --------------------------
-
-
-
-
-
-
 class WeatherState(rx.State):
     """The app state."""
     location: str = ""
     temperature: float = 0
     weather_desc: str = ""
     loading: bool = False
-
-
 
     def get_weather(self):
         """Get weather data for the location."""
@@ -527,6 +384,10 @@ app.add_page(index)
 
 
 
+# --------------
+# --- HEADER ---
+# --------------
+
 def header():
     """Encabezado personalizado para el sitio web."""
     return rx.box(
@@ -540,16 +401,20 @@ def header():
             ),
             # Contenedor centrado para el logo y el título
             rx.flex(
-                # Título centrado
-                rx.heading(
-    "My Portfolio",
-    style={
-        "text_shadow": "8px 8px 16px rgba(0, 0, 0, 1)",
-        # Optional: adds some space between letters
-    },
-    size="9",
-    color="white"
-),  # Título del encabezado
+                # Título centrado y envolvimiento en un link
+                rx.link(
+                    rx.heading(
+                        "My Portfolio",
+                        style={
+                            "text_shadow": "8px 8px 16px rgba(0, 0, 0, 1)",
+                            # Optional: adds some space between letters
+                        },
+                        size="9",
+                        color="white"
+                    ),
+                    href="/",  # Cambiado a la URL raíz ("/"), que es la página principal
+                    is_external=False,  # No es un enlace externo
+                ),
                 gap="2",  # Espaciado entre la imagen y el texto
                 align="center",  # Alinea el contenido verticalmente
                 justify="center",  # Centra horizontalmente
@@ -586,6 +451,8 @@ def header():
         align_items="center",  # Centra verticalmente
         box_shadow="0px 10px 20px rgba(0, 0, 0, 0.7), 0px 0px 10px transparent",  # Sombra más grande y oscura
     )
+
+
 
 
 # -- CODIGO DE MODULOS -- 

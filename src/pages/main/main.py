@@ -8,18 +8,16 @@ from .proyects import proyects
 class State(rx.State):
     pass
 
-
-
 intro_texto_castellano = """Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas."""
 
 intro_texto_ingles = """With more than 24 years of experience in the financial banking sector, I have held roles in both the administrative and commercial areas, specifically as an account and business officer. During my time in the administrative area, I acquired significant skills in the preparation of reports using DDB tools, thus contributing to operational efficiency and informed decision-making."""
+
 
 def index() -> rx.Component:
     """Componente principal que renderiza la vista principal de la app."""
     return rx.box(
         header(),  # Llamamos a la función del encabezado aquí
-        sidebar_bottom_profile(),
-        rx.hstack(
+                rx.hstack(
             rx.container(
                 rx.vstack(
                     rx.heading(
@@ -87,7 +85,9 @@ def index() -> rx.Component:
                 justify_content="center",
                 padding="1em",
                 flex="1",
+           
             ),
+             sidebar_bottom_profile(),
             # codigo para el search bar
             # rx.flex(                          
             #     rx.input(
