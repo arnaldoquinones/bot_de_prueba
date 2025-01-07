@@ -7,35 +7,25 @@ from .modulos import header, sidebar_bottom_profile, pop_up_message
 def skills() -> rx.Component:
     """Página Skills."""
     return rx.box(
+        header(),  # Llamamos a la función del encabezado aquí
         rx.hstack(
-            header(),
-            sidebar_bottom_profile(),  # Barra lateral
             rx.container(
                 rx.vstack(
-                    rx.heading("Skills Page", size="3", color="white"),
-                    rx.text(
-                        "Let me show you my skills.",
-                        size="5",
-                        color="gray.200",
-                        text_align="center",
+                    rx.heading(
+                        rx.fragment(
+                            rx.text("Skills"),
+                        ),
+                        size="6"
                     ),
-                    rx.container(
-                        # chat(),  # Aquí integras el chatbot
-                        # padding="1em",
-                        # border_radius="10px",
-                        # background="white",
-                        # box_shadow="0 4px 6px rgba(0, 0, 0, 0.1)",
-                        # margin_top="2em",
-                        # width="80%",  # Ajusta el ancho según prefieras
-                        # align_self="center",  # Centra horizontalmente dentro del vstack
-                    ),
-                    spacing="5",  # Espaciado entre elementos del vstack
-                    justify="center",  # Centra el contenido verticalmente
+                    spacing="4",  # Usa un valor numérico entre 0 y 9
                 ),
-                padding="1em",  # Margen interno
-                flex="1",  # Permite que el contenedor ocupe el espacio disponible
+                width="80%",  # Ajusta el ancho del contenedor
+                padding="2rem",  # Ajusta el padding interno
             ),
-            pop_up_message(),  # Mueve el pop-up fuera del contenedor principal
+            sidebar_bottom_profile(),
+            pop_up_message(),  # login_multiple_thirdparty() puede reemplazar esto si es necesario
+            spacing="4",  # Ajusta el espaciado entre el contenido
+            align="start",  # Alinea el contenido al inicio
         ),
         min_height="100vh",
         width="100vw",

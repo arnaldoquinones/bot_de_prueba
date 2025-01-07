@@ -451,7 +451,7 @@ def header():
         background_image="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/banner_header.jpg?raw=true')",
         background_size="cover",
         width="100%",
-        height="190px",
+        height="160px",
         display="flex",
         justify_content="center",  # Centra horizontalmente
         align_items="center",  # Centra verticalmente

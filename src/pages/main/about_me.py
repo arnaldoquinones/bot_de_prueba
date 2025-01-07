@@ -6,32 +6,28 @@ from .modulos import header, sidebar_bottom_profile, pop_up_message
 def about() -> rx.Component:
     """Página About me."""
     return rx.box(
-        rx.hstack(
-            header(),
-            sidebar_bottom_profile(),  # Barra lateral
+        header(),  # Llamamos a la función del encabezado aquí
+                rx.hstack(
             rx.container(
                 rx.vstack(
-                    rx.heading("About me.", size="3", color="white"),
-                    rx.text(
-                        "Hello! I am Arnaldo, a professional in data analysis, system design, and development.",
-                        size="5",
-                        color="gray.200",
-                        text_align="center",
+                    rx.heading(
+                        rx.fragment(
+                            rx.text("About me"),
+                        ),
+                        size="6")
                     ),
-                    spacing="5",
-                    justify="center",
-                ),
-                rx.image(
-                        src="https://github.com/arnaldoquinones/portfolio/blob/master/assets/foto_perfil.png?raw=true",
-                        width="150px",
-                        height="auto",
-                        border_radius="50%",
-                        alt="Foto de perfil",
-                    ),
+                # rx.image(
+                #         src="https://github.com/arnaldoquinones/portfolio/blob/master/assets/foto_perfil.png?raw=true",
+                #         width="150px",
+                #         height="auto",
+                #         border_radius="50%",
+                #         alt="Foto de perfil",
+                #     ),
                 pop_up_message(),
                 padding="1em",
                 flex="1",
             ),
+            sidebar_bottom_profile(),
         ),
         min_height="100vh",
         width="100vw",

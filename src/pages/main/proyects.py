@@ -6,28 +6,29 @@ from .modulos import header,sidebar_bottom_profile, pop_up_message
 def proyects() -> rx.Component:
     """Página Proyects."""
     return rx.box(
+        header(),  # Llamamos a la función del encabezado aquí
         rx.hstack(
-            header(),
-            sidebar_bottom_profile(),  # Barra lateral
             rx.container(
                 rx.vstack(
-                    rx.heading("Proyects Page", size="3", color="white"),
-                    rx.text(
-                        "Those are my works.",
-                        size="5",
-                        color="gray.200",
-                        text_align="center",
+                    rx.heading(
+                        rx.fragment(
+                            rx.text("My proyects"),
+                        ),
+                        size="6"
                     ),
-                    spacing="5",
-                    justify="center",
+                    spacing="4",  # Usa un valor numérico entre 0 y 9
                 ),
-                padding="1em",
-                flex="1",
+                width="80%",  # Ajusta el ancho del contenedor
+                padding="2rem",  # Ajusta el padding interno
             ),
-            pop_up_message(),# login_multiple_thirdparty(),
+            sidebar_bottom_profile(),
+            pop_up_message(),  # login_multiple_thirdparty() puede reemplazar esto si es necesario
+            spacing="4",  # Ajusta el espaciado entre el contenido
+            align="start",  # Alinea el contenido al inicio
         ),
         min_height="100vh",
         width="100vw",
         background="linear-gradient(to bottom, #002266, #001122)",
         overflow_y="auto",
     )
+
