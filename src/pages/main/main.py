@@ -5,6 +5,7 @@ from .about_me import about
 from .skills import skills
 from .proyects import proyects
 
+
 class State(rx.State):
     pass
 
@@ -16,7 +17,7 @@ intro_texto_ingles = """With more than 24 years of experience in the financial b
 def index() -> rx.Component:
     """Componente principal que renderiza la vista principal de la app."""
     return rx.box(
-        header(),  # Llamamos a la función del encabezado aquí
+            header(),  # Llamamos a la función del encabezado aquí
                 rx.hstack(
             rx.container(
                 rx.vstack(
@@ -88,6 +89,7 @@ def index() -> rx.Component:
            
             ),
              sidebar_bottom_profile(),
+             pop_up_message(),
             # codigo para el search bar
             # rx.flex(                          
             #     rx.input(

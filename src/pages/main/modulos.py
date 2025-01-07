@@ -121,6 +121,91 @@ def sidebar_bottom_profile() -> rx.Component:
 
 
 
+
+
+
+
+
+
+
+# Define styles similar to the chat app tutorial
+style = {
+    "animate": {
+        "opacity": "0",
+        "animation": "fadeIn 4s ease-in-out forwards",
+        "@keyframes fadeIn": {
+            "from": {"opacity": "0"},
+            "to": {"opacity": "1"}
+        }
+    }
+}
+
+# --------------
+# --- HEADER ---
+# --------------
+
+def header():
+    """Encabezado personalizado para el sitio web."""
+    return rx.box(
+        # Caja contenedora general
+        rx.flex(
+            rx.box(
+                rx.icon("menu", size=40, margin_top="0.8em", margin_left="2em"),
+                align="start",
+                flex="none",
+            ),
+            rx.flex(
+                rx.link(
+                    rx.heading(
+                        "My Portfolio",
+                        style={
+                            "text_shadow": "8px 8px 16px rgba(0, 0, 0, 1)",
+                        },
+                        size="9",
+                        color="white",
+                    ),
+                    href="/",
+                    is_external=False,
+                ),
+                gap="2",
+                align="center",
+                justify="center",
+                flex="1",
+                direction="column",
+            ),
+            gap="2",
+            align_items="center",
+            width="100%",
+            justify_content="flex-start",
+            flex_direction="row",
+        ),
+        rx.box(
+            rx.text(
+            """ "...Scientia est potentia..." """,
+            font_size="1.5em",
+            font_style="italic", 
+            text_align="right",
+            color="white",
+            margin_top="3em",
+            margin_right="2em",
+            style=style["animate"]  # Apply style directly
+        ),
+            position="absolute",
+            top="0",
+            right="0",
+        ),
+        background_image="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/banner_header.jpg?raw=true')",
+        background_size="cover",
+        width="100%",
+        height="160px",
+        display="flex",
+        justify_content="center",
+        align_items="center",
+        box_shadow="0px 10px 20px rgba(0, 0, 0, 0.7), 0px 0px 10px transparent",
+    )
+
+
+
 # -------------------------
 # -- POP UP WINDOW EMAIL --
 # -------------------------
@@ -385,79 +470,6 @@ def index():
 
 app = rx.App()
 app.add_page(index)
-
-
-
-
-
-# --------------
-# --- HEADER ---
-# --------------
-
-def header():
-    """Encabezado personalizado para el sitio web."""
-    return rx.box(
-        # Caja contenedora general
-        rx.flex(
-            # Contenedor del icono alineado a la izquierda
-            rx.box(
-                rx.icon("menu", size=40, margin_top="0.8em", margin_left="2em"),  # Icono a la izquierda
-                align="start",  # Alinea el icono al inicio del contenedor
-                flex="none"  # No permite que el contenedor ocupe espacio extra
-            ),
-            # Contenedor centrado para el logo y el título
-            rx.flex(
-                # Título centrado y envolvimiento en un link
-                rx.link(
-                    rx.heading(
-                        "My Portfolio",
-                        style={
-                            "text_shadow": "8px 8px 16px rgba(0, 0, 0, 1)",
-                            # Optional: adds some space between letters
-                        },
-                        size="9",
-                        color="white"
-                    ),
-                    href="/",  # Cambiado a la URL raíz ("/"), que es la página principal
-                    is_external=False,  # No es un enlace externo
-                ),
-                gap="2",  # Espaciado entre la imagen y el texto
-                align="center",  # Alinea el contenido verticalmente
-                justify="center",  # Centra horizontalmente
-                flex="1",  # Esto permite que este contenedor ocupe el espacio disponible y centre su contenido
-                direction="column",  # Coloca los elementos uno debajo del otro
-            ),
-            gap="2",  # Espaciado entre el icono y el encabezado
-            align_items="center",  # Centrado vertical de los elementos
-            width="100%",  # Ancho total
-            justify_content="flex-start",  # Mantiene los elementos al principio en el eje horizontal
-            flex_direction="row",  # Distribuye los elementos en una fila
-        ),
-        # Caja con la cita
-        rx.box(
-            rx.text(
-                """ "...Scientia est potentia..." """,
-                font_size="1.5em",
-                font_style="italic",
-                text_align="right",
-                color="white",
-                margin_top="3em",
-                margin_right="2em",
-            ),
-            position="absolute",
-            top="0",
-            right="0",
-        ),
-        background_image="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/banner_header.jpg?raw=true')",
-        background_size="cover",
-        width="100%",
-        height="160px",
-        display="flex",
-        justify_content="center",  # Centra horizontalmente
-        align_items="center",  # Centra verticalmente
-        box_shadow="0px 10px 20px rgba(0, 0, 0, 0.7), 0px 0px 10px transparent",  # Sombra más grande y oscura
-    )
-
 
 
 
