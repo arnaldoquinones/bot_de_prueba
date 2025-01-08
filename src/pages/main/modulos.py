@@ -75,7 +75,7 @@ def sidebar_items() -> rx.Component:
         sidebar_item("Chatbot", "bot-message-square", href="./skills"),
         sidebar_item("Messages", "mail", on_click=MessageFormStateV2.toggle_popover),  # Alterna el pop-up
         
-        spacing="1",  # Reducir el espaciado entre elementos
+        spacing="2",  # Reducir el espaciado entre elementos
         width="12em",
     )
 
@@ -105,7 +105,7 @@ def sidebar_bottom_profile() -> rx.Component:
                 spacing="2",  # Eliminar espaciado entre elementos inferiores
                 margin_top="auto",  # Empuja el contenido al fondo
                 padding_x="1em",
-                padding_y="0",  # Eliminar padding
+                padding_y="0.5cm",  # Eliminar padding
                 bg=rx.color("accent", 3),
                 align="start",
                 height="calc(100vh - 60px)",  # Restar la altura del header (60px en este ejemplo)
@@ -113,7 +113,7 @@ def sidebar_bottom_profile() -> rx.Component:
                 width="14em",  # Asegurarse de que el sidebar tiene el tamaño correcto
                 position="fixed",  # Fijar el sidebar a la izquierda
                 left="0",  # Asegurar que el sidebar esté alineado a la izquierda
-                top="0",  # Asegurar que el sidebar esté alineado a la parte superior
+                top="160px",  # Asegurar que el sidebar esté alineado a la parte superior
             ),
         ),
     )
