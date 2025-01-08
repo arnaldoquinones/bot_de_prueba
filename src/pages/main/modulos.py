@@ -12,32 +12,23 @@ import requests
 # -------------------------
 # -- BARRA SIDEBAR  MENU --
 # -------------------------
+
+
+
 class SidebarState(rx.State):
-    is_open: bool = False  # Aseguramos que esté cerrado por defecto
+    is_open: bool = False
 
-    @rx.event
-    def toggle_sidebar(self):
-        self.is_open = not self.is_open  # Alternar el estado
-
-
-    @rx.event
-    def close_sidebar(self):
-        """Cierra el sidebar explícitamente"""
+    def on_mount(self):
+        """Initialize sidebar as closed when component mounts"""
         self.is_open = False
 
     @rx.event
-    def open_sidebar(self):
-        """Abre el sidebar explícitamente"""
-        self.is_open = True
-
-    @rx.event
-    def handle_navigation(self):
-        """Cierra el sidebar al cambiar de página"""
-        self.is_open = False  # Esto cerrará el sidebar al navegar
+    def toggle_sidebar(self):
+        self.is_open = not self.is_open  # Alterna entre abierto y cerrado
 
 
-def sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandler = None) -> rx.Component:
-    """Crea un elemento del menú lateral."""
+def create_sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandler = None) -> rx.Component:
+    """Crea un único elemento del menú lateral."""
     link_props = {"href": href} if href else {"on_click": on_click}
 
     return rx.link(
@@ -52,7 +43,7 @@ def sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandl
                 "_hover": {
                     "bg": rx.color("accent", 4),
                     "color": rx.color("accent", 11),
-                    "box-shadow": "0px 10px 20px rgba(0, 0, 0, 0.8)"  # Ajusta estos valores
+                    "box-shadow": "0px 10px 20px rgba(0, 0, 0, 0.8)",
                 },
                 "border-radius": "0.5em",
             },
@@ -64,7 +55,8 @@ def sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandl
     )
 
 
-def sidebar_items() -> rx.Component:
+def sidebar_item() -> rx.Component:
+    """Crea la lista completa de elementos del menú lateral."""
     return rx.vstack(
         rx.flex(
             rx.input(
@@ -77,58 +69,81 @@ def sidebar_items() -> rx.Component:
             spacing="3",
             style={"maxWidth": 500},
         ),
-        sidebar_item("About me", "user", href="./about"),
-        sidebar_item("Projects", "square-library", href="./proyects"),
-        sidebar_item("Skills", "bar-chart-4", href="./skills"),
-        sidebar_item("Chatbot", "bot-message-square", href="./skills"),
-        sidebar_item("Messages", "mail", on_click=MessageFormStateV2.toggle_popover),
-        spacing="2",  # Reducir el espaciado entre elementos
+        create_sidebar_item("About me", "user", href="./about"),
+        create_sidebar_item("Projects", "square-library", href="./proyects"),
+        create_sidebar_item("Skills", "bar-chart-4", href="./skills"),
+        create_sidebar_item("Chatbot", "bot-message-square", href="./skills"),
+        create_sidebar_item("Messages", "mail", on_click=None),  # Asegúrate de definir la función de click si la necesitas
+        spacing="2",
         width="12em",
     )
 
 
 def sidebar_bottom_profile() -> rx.Component:
-    return rx.drawer.root(
-        # Contenido del sidebar
-        rx.drawer.portal(
-            rx.drawer.content(
-                rx.vstack(
-                    sidebar_items(),
-                    rx.divider(margin_y="2em"),  # Reducir margen del divider a 0
-                    rx.hstack(
-                        rx.text("Made by", size="3", weight="bold"),
-                        rx.link(
-                            "A. Quiñones",
-                            href="https://github.com/arnaldoquinones",
-                            size="3",
-                            weight="medium",
-                            color="blue.500",
-                            is_external=True,
-                        ),
-                        padding_x="0.5rem",
-                        align="center",
-                        justify="start",
-                        width="100%",
-                        margin_top="-0.7cm",
-                    ),
-                    spacing="2",  # Eliminar espaciado entre elementos inferiores
-                    margin_top="auto",  # Empuja el contenido al fondo
-                    padding_x="1em",
-                    padding_y="0.5cm",  # Eliminar padding
-                    bg=rx.color("accent", 3),
-                    align="start",
-                    height="calc(100vh - 60px)",
-                    overflow="auto",
-                    width="14em",
-                    position="fixed",
-                    left="0",
-                    top="160px",
+    """Define el perfil inferior del sidebar."""
+    return rx.box(
+        rx.vstack(
+            sidebar_item(),
+            rx.divider(margin_y="2em"),
+            rx.hstack(
+                rx.text("Made by", size="3", weight="bold"),
+                rx.link(
+                    "A. Quiñones",
+                    href="https://github.com/arnaldoquinones",
+                    size="3",
+                    weight="medium",
+                    color="blue.500",
+                    is_external=True,
                 ),
+                padding_x="0.5rem",
+                align="center",
+                justify="start",
+                width="100%",
+                margin_top="-0.7cm",
             ),
+            spacing="2",
+            margin_top="auto",
+            padding_x="1em",
+            padding_y="0.5cm",
+            bg=rx.color("accent", 3),
+            align="start",
+            height="calc(100vh - 60px)",
+            overflow="auto",
+            width="14em",
+            position="fixed",
+            left="0",
+            top="160px",
+            transform=rx.cond(SidebarState.is_open, "translateX(0)", "translateX(-100%)"),
+            transition="transform 0.3s ease-in-out",
+            visibility=rx.cond(SidebarState.is_open, "visible", "hidden"),
         ),
-        open=SidebarState.is_open,  # Controla visibilidad del sidebar
-        direction="left",
+        bg=rx.color("accent", 2),
+        shadow="md",
     )
+
+
+def sidebar_with_toggle() -> rx.Component:
+    """Permite alternar la visibilidad del sidebar."""
+    return rx.box(
+        rx.icon(
+            "menu",
+            on_click=SidebarState.toggle_sidebar,
+            position="absolute",
+            left="7%",
+            top="13%",
+            transform="translate(-50%, -50%)",
+            color_scheme="teal",
+            background="transparent",
+            size=36,
+            cursor="pointer",
+        ),
+        sidebar_bottom_profile(),
+    )
+
+# ------ FIN DE LA BARRA SIDEBAR MENU ------
+
+
+
 
 
 
@@ -159,11 +174,12 @@ def header():
     return rx.box(
         # Caja contenedora general
         rx.flex(
-            rx.box(
-                rx.icon("menu", size=40, margin_top="0.8em", margin_left="2em", on_click=SidebarState.toggle_sidebar),  # Llamar al toggle
-                align="start",
-                flex="none",
-            ),
+            sidebar_with_toggle(),
+            # rx.box(
+            #     rx.icon("menu", size=40, margin_top="0.8em", margin_left="2em", on_click=SidebarState.toggle_sidebar),  # Llamar al toggle
+            #     align="start",
+            #     flex="none",
+            # ),
             rx.flex(
                 rx.link(
                     rx.heading(
@@ -533,48 +549,3 @@ app.add_page(index)
             #             bottom="2%",  # Alineado al borde inferior
             #             right="60%",  # Alineado al borde izquierdo
             #         ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
