@@ -13,12 +13,27 @@ import requests
 # -- BARRA SIDEBAR  MENU --
 # -------------------------
 class SidebarState(rx.State):
-    is_open: bool = False
+    is_open: bool = False  # Aseguramos que esté cerrado por defecto
 
     @rx.event
     def toggle_sidebar(self):
-        self.is_open = not self.is_open
+        self.is_open = not self.is_open  # Alternar el estado
 
+
+    @rx.event
+    def close_sidebar(self):
+        """Cierra el sidebar explícitamente"""
+        self.is_open = False
+
+    @rx.event
+    def open_sidebar(self):
+        """Abre el sidebar explícitamente"""
+        self.is_open = True
+
+    @rx.event
+    def handle_navigation(self):
+        """Cierra el sidebar al cambiar de página"""
+        self.is_open = False  # Esto cerrará el sidebar al navegar
 
 
 def sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandler = None) -> rx.Component:
@@ -48,9 +63,9 @@ def sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandl
         width="100%",
     )
 
+
 def sidebar_items() -> rx.Component:
     return rx.vstack(
-        # Agregar el Search Bar como un nuevo item en el sidebar
         rx.flex(
             rx.input(
                 rx.input.slot(
@@ -66,8 +81,7 @@ def sidebar_items() -> rx.Component:
         sidebar_item("Projects", "square-library", href="./proyects"),
         sidebar_item("Skills", "bar-chart-4", href="./skills"),
         sidebar_item("Chatbot", "bot-message-square", href="./skills"),
-        sidebar_item("Messages", "mail", on_click=MessageFormStateV2.toggle_popover),  # Alterna el pop-up
-        
+        sidebar_item("Messages", "mail", on_click=MessageFormStateV2.toggle_popover),
         spacing="2",  # Reducir el espaciado entre elementos
         width="12em",
     )
@@ -103,23 +117,26 @@ def sidebar_bottom_profile() -> rx.Component:
                     padding_y="0.5cm",  # Eliminar padding
                     bg=rx.color("accent", 3),
                     align="start",
-                    height="calc(100vh - 60px)",  # Restar la altura del header (60px en este ejemplo)
-                    overflow="auto",  # Permitir desplazamiento si el contenido desborda
-                    width="14em",  # Asegurarse de que el sidebar tiene el tamaño correcto
-                    position="fixed",  # Fijar el sidebar a la izquierda
-                    left="0",  # Asegurar que el sidebar esté alineado a la izquierda
-                    top="160px",  # Asegurar que el sidebar esté alineado a la parte superior
+                    height="calc(100vh - 60px)",
+                    overflow="auto",
+                    width="14em",
+                    position="fixed",
+                    left="0",
+                    top="160px",
                 ),
             ),
         ),
         open=SidebarState.is_open,  # Controla visibilidad del sidebar
-        direction="left",  # Alineación del sidebar a la izquierda
+        direction="left",
     )
 
 
 
 
 
+# --------------
+# --- HEADER ---
+# --------------
 
 
 
@@ -135,9 +152,7 @@ style = {
     }
 }
 
-# --------------
-# --- HEADER ---
-# --------------
+
 
 def header():
     """Encabezado personalizado para el sitio web."""
@@ -145,7 +160,7 @@ def header():
         # Caja contenedora general
         rx.flex(
             rx.box(
-                rx.icon("menu", size=40, margin_top="0.8em", margin_left="2em"),
+                rx.icon("menu", size=40, margin_top="0.8em", margin_left="2em", on_click=SidebarState.toggle_sidebar),  # Llamar al toggle
                 align="start",
                 flex="none",
             ),
