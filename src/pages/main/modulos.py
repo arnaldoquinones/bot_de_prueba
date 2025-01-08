@@ -12,6 +12,12 @@ import requests
 # -------------------------
 # -- BARRA SIDEBAR  MENU --
 # -------------------------
+class SidebarState(rx.State):
+    is_open: bool = False
+
+    @rx.event
+    def toggle_sidebar(self):
+        self.is_open = not self.is_open
 
 
 
@@ -68,52 +74,56 @@ def sidebar_items() -> rx.Component:
 
 
 def sidebar_bottom_profile() -> rx.Component:
-    return rx.box(
-        rx.desktop_only(
-            rx.vstack(
-                sidebar_items(),
-                rx.divider(margin_y="2em"),  # Reducir margen del divider a 0
-                rx.hstack(
-                    rx.text("Made by", size="3", weight="bold"),
-                    rx.link(
-                        "A. Quiñones",
-                        href="https://github.com/arnaldoquinones",
-                        size="3",
-                        weight="medium",
-                        color="blue.500",
-                        is_external=True,
-                        
+    return rx.drawer.root(
+        # Contenido del sidebar
+        rx.drawer.portal(
+            rx.drawer.content(
+                rx.vstack(
+                    sidebar_items(),
+                    rx.divider(margin_y="2em"),  # Reducir margen del divider a 0
+                    rx.hstack(
+                        rx.text("Made by", size="3", weight="bold"),
+                        rx.link(
+                            "A. Quiñones",
+                            href="https://github.com/arnaldoquinones",
+                            size="3",
+                            weight="medium",
+                            color="blue.500",
+                            is_external=True,
+                        ),
+                        padding_x="0.5rem",
+                        align="center",
+                        justify="start",
+                        width="100%",
+                        margin_top="-0.7cm",
                     ),
-                    padding_x="0.5rem",
-                    align="center",
-                    justify="start",
-                    width="100%",
-                    margin_top="-0.7cm",
+                    spacing="2",  # Eliminar espaciado entre elementos inferiores
+                    margin_top="auto",  # Empuja el contenido al fondo
+                    padding_x="1em",
+                    padding_y="0.5cm",  # Eliminar padding
+                    bg=rx.color("accent", 3),
+                    align="start",
+                    height="calc(100vh - 60px)",  # Restar la altura del header (60px en este ejemplo)
+                    overflow="auto",  # Permitir desplazamiento si el contenido desborda
+                    width="14em",  # Asegurarse de que el sidebar tiene el tamaño correcto
+                    position="fixed",  # Fijar el sidebar a la izquierda
+                    left="0",  # Asegurar que el sidebar esté alineado a la izquierda
+                    top="160px",  # Asegurar que el sidebar esté alineado a la parte superior
                 ),
-                spacing="2",  # Eliminar espaciado entre elementos inferiores
-                margin_top="auto",  # Empuja el contenido al fondo
-                padding_x="1em",
-                padding_y="0.5cm",  # Eliminar padding
-                bg=rx.color("accent", 3),
-                align="start",
-                height="calc(100vh - 60px)",  # Restar la altura del header (60px en este ejemplo)
-                overflow="auto",  # Permitir desplazamiento si el contenido desborda
-                width="14em",  # Asegurarse de que el sidebar tiene el tamaño correcto
-                position="fixed",  # Fijar el sidebar a la izquierda
-                left="0",  # Asegurar que el sidebar esté alineado a la izquierda
-                top="160px",  # Asegurar que el sidebar esté alineado a la parte superior
             ),
         ),
+        open=SidebarState.is_open,  # Controla visibilidad del sidebar
+        direction="left",  # Alineación del sidebar a la izquierda
     )
 
 
 
-# --------------
-# --- HEADER ---
-# --------------
 
 
-# Define styles similar to the chat app tutorial
+
+
+
+
 style = {
     "animate": {
         "opacity": "0",
@@ -124,6 +134,10 @@ style = {
         }
     }
 }
+
+# --------------
+# --- HEADER ---
+# --------------
 
 def header():
     """Encabezado personalizado para el sitio web."""
@@ -184,6 +198,8 @@ def header():
         align_items="center",
         box_shadow="0px 10px 20px rgba(0, 0, 0, 0.7), 0px 0px 10px transparent",
     )
+
+
 
 
 
@@ -406,6 +422,27 @@ def pop_up_message():
         ),
         open=MessageFormStateV2.is_popover_open,
     )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
