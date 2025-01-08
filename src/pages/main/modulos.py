@@ -85,13 +85,13 @@ def sidebar_bottom_profile() -> rx.Component:
         rx.desktop_only(
             rx.vstack(
                 sidebar_items(),
-                rx.divider(margin_y="0"),  # Reducir margen del divider a 0
+                rx.divider(margin_y="2em"),  # Reducir margen del divider a 0
                 rx.hstack(
                     rx.text("Made by", size="3", weight="bold"),
                     rx.link(
                         "A. Quiñones",
                         href="https://github.com/arnaldoquinones",
-                        size="2",
+                        size="3",
                         weight="medium",
                         color="blue.500",
                         is_external=True,
@@ -101,6 +101,7 @@ def sidebar_bottom_profile() -> rx.Component:
                     align="center",
                     justify="start",
                     width="100%",
+                    margin_top="-0.7cm",
                 ),
                 spacing="2",  # Eliminar espaciado entre elementos inferiores
                 margin_top="auto",  # Empuja el contenido al fondo
