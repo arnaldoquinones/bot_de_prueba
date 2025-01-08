@@ -12,20 +12,7 @@ import requests
 # -------------------------
 # -- BARRA SIDEBAR  MENU --
 # -------------------------
-class MessageFormState(rx.State):
-    form_data: dict = {}
-    is_popover_open: bool = False  # Estado para controlar la visibilidad del pop-up
 
-    @rx.event
-    def handle_submit(self, form_data: dict):
-        """Handle the form submit."""
-        self.form_data = form_data
-        self.is_popover_open = False  # Cierra el pop-up después de enviar el formulario
-
-    @rx.event
-    def toggle_popover(self):
-        """Toggle the popover visibility."""
-        self.is_popover_open = not self.is_popover_open
 
 
 def sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandler = None) -> rx.Component:
@@ -121,14 +108,9 @@ def sidebar_bottom_profile() -> rx.Component:
 
 
 
-
-
-
-
-
-
-
-
+# --------------
+# --- HEADER ---
+# --------------
 
 
 # Define styles similar to the chat app tutorial
@@ -142,10 +124,6 @@ style = {
         }
     }
 }
-
-# --------------
-# --- HEADER ---
-# --------------
 
 def header():
     """Encabezado personalizado para el sitio web."""
@@ -212,7 +190,20 @@ def header():
 # -------------------------
 # -- POP UP WINDOW EMAIL --
 # -------------------------
+class MessageFormState(rx.State):
+    form_data: dict = {}
+    is_popover_open: bool = False  # Estado para controlar la visibilidad del pop-up
 
+    @rx.event
+    def handle_submit(self, form_data: dict):
+        """Handle the form submit."""
+        self.form_data = form_data
+        self.is_popover_open = False  # Cierra el pop-up después de enviar el formulario
+
+    @rx.event
+    def toggle_popover(self):
+        """Toggle the popover visibility."""
+        self.is_popover_open = not self.is_popover_open
 
 load_dotenv()
 
