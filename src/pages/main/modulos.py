@@ -72,7 +72,7 @@ def sidebar_item() -> rx.Component:
         create_sidebar_item("About me", "user", href="./about"),
         create_sidebar_item("Projects", "square-library", href="./proyects"),
         create_sidebar_item("Skills", "bar-chart-4", href="./skills"),
-        create_sidebar_item("Chatbot", "bot-message-square", href="./skills"),
+        create_sidebar_item("Chatbot", "bot-message-square"),
         create_sidebar_item("Messages", "mail", on_click=None),  # Asegúrate de definir la función de click si la necesitas
         spacing="2",
         width="12em",

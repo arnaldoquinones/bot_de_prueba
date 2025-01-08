@@ -7,40 +7,51 @@ from .modulos import header, sidebar_bottom_profile, pop_up_message
 def skills() -> rx.Component:
     """Skills page."""
     return rx.box(
-        header(),
-        rx.flex(
-            # Sidebar or left content
-            rx.vstack(
-                rx.text("Light Text", weight="light"),
-                rx.text("Regular Text", weight="regular"),
-                rx.text("Bold Text", weight="bold"),
-                spacing="3"
+        header(),  # Encabezado principal
+        # Contenedor principal con diseño de columnas
+        rx.hstack(
+            # Imagen del perfil
+            rx.image(
+                src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
+                width="120px",
+                height="auto",
+                border_radius="50%",
+                alt="Foto de perfil",
+                margin="1em",  # Margen para separación
+                align_self="center",  # Asegura que esté centrada
             ),
-            # Main content
+            # Contenido principal
             rx.container(
                 rx.vstack(
-                    rx.heading("Skills", size="6"),
+                    rx.heading("Skills", size="6", color="white"),
+                    rx.text(
+                        "Here you can list your main skills and strengths.",
+                        size="9",
+                        color="gray.300",
+                    ),
                     spacing="4",
                 ),
-                width="80%",
+                width="70%",
                 padding="2rem",
             ),
-            # Right content
-            rx.vstack(
-                sidebar_bottom_profile(),
-                pop_up_message(),
-                spacing="4",
-                align="start",
+            # Sidebar y mensajes emergentes
+            rx.box(
+                sidebar_bottom_profile(),  # Sidebar
+                pop_up_message(),  # Mensaje emergente
+                width="20%",  # Ajusta el tamaño del contenedor
+                padding="1rem",
             ),
-            justify="between",  # Corrected value
-            width="100%",
+            spacing="4",  # Espaciado entre columnas
+            justify="between",
+            align="start",
         ),
         min_height="100vh",
         width="100vw",
         background="linear-gradient(to bottom, #002266, #001122)",
         overflow_y="auto",
     )
-import reflex as rx
+
+
 
 # Define the style with animations
 # style = {

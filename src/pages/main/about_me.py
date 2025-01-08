@@ -16,13 +16,15 @@ def about() -> rx.Component:
                         ),
                         size="6")
                     ),
-                # rx.image(
-                #         src="https://github.com/arnaldoquinones/portfolio/blob/master/assets/foto_perfil.png?raw=true",
-                #         width="150px",
-                #         height="auto",
-                #         border_radius="50%",
-                #         alt="Foto de perfil",
-                #     ),
+                        rx.image(
+                                src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
+                                width="120px",
+                                height="auto",
+                                border_radius="50%",
+                                alt="Foto de perfil",
+                                margin_top="-68px",
+                                margin_left="-12em",
+                            ),
                 pop_up_message(),
                 padding="1em",
                 flex="1",
