@@ -36,7 +36,7 @@ def sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandl
         rx.hstack(
             rx.icon(icon),
             rx.text(text, size="4"),
-            width="90%",
+            width="100%",
             padding_x="0.5rem",
             padding_y="0.75rem",
             align="center",
@@ -44,6 +44,7 @@ def sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandl
                 "_hover": {
                     "bg": rx.color("accent", 4),
                     "color": rx.color("accent", 11),
+                    "box-shadow": "0px 10px 20px rgba(0, 0, 0, 0.8)"  # Ajusta estos valores
                 },
                 "border-radius": "0.5em",
             },
@@ -94,13 +95,14 @@ def sidebar_bottom_profile() -> rx.Component:
                         weight="medium",
                         color="blue.500",
                         is_external=True,
+                        
                     ),
                     padding_x="0.5rem",
                     align="center",
                     justify="start",
                     width="100%",
                 ),
-                spacing="0",  # Eliminar espaciado entre elementos inferiores
+                spacing="2",  # Eliminar espaciado entre elementos inferiores
                 margin_top="auto",  # Empuja el contenido al fondo
                 padding_x="1em",
                 padding_y="0",  # Eliminar padding
