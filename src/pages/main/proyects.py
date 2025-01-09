@@ -22,8 +22,8 @@ def proyects() -> rx.Component:
                         height="auto",
                         border_radius="50%",
                         alt="Foto de perfil",
-                        margin_top="-68px",
-                        margin_left="-12em",
+                        margin_top="-58px",
+                        margin_left="-11.9em",
                     ),
                     spacing="4",  # Usa un valor numérico entre 0 y 9
                 ),

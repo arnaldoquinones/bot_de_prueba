@@ -134,7 +134,7 @@ def sidebar_with_toggle() -> rx.Component:
             transform="translate(-50%, -50%)",
             color_scheme="teal",
             background="transparent",
-            size=36,
+            size=48,
             cursor="pointer",
         ),
         sidebar_bottom_profile(),
