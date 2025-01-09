@@ -458,6 +458,8 @@ def pop_up_message():
 # --------------------------
 # -- WEATHER LOCATION API --
 # --------------------------
+
+load_dotenv()
 class WeatherState(rx.State):
     """The app state."""
     location: str = ""
@@ -474,7 +476,7 @@ class WeatherState(rx.State):
         yield
         
         # Replace with your API key and actual API call
-        API_KEY = "your_api_key"
+        API_KEY =os.getenv("api_wether_key")
         url = f"http://api.openweathermap.org/data/2.5/weather?q={self.location}&appid={API_KEY}&units=metric"
         
         try:
