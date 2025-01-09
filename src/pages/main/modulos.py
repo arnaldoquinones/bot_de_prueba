@@ -117,7 +117,7 @@ def sidebar_bottom_profile() -> rx.Component:
             transition="transform 0.3s ease-in-out",  # Control de deslizamiento
         ),
         bg=rx.color("accent", 2),
-        shadow="md",
+        shadow="xl",
     )
 
 
@@ -450,25 +450,6 @@ def pop_up_message():
         ),
         open=MessageFormStateV2.is_popover_open,
     )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
