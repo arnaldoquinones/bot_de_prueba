@@ -13,7 +13,7 @@ class TypewriterState(rx.State):
     async def type_text(self):
         for i in range(1, len(self.full_text) + 1):
             self.text = self.full_text[:i]
-            await asyncio.sleep(0.05)  # Velocidad de la animación
+            await asyncio.sleep(0.0157)  # Velocidad de la animación
             yield
 
 
