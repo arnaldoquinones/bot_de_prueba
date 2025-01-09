@@ -12,23 +12,18 @@ def skills() -> rx.Component:
         rx.hstack(
             # Imagen del perfil
             rx.image(
-                src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
-                width="120px",
-                height="auto",
-                border_radius="50%",
-                alt="Foto de perfil",
-                margin="1em",  # Margen para separación
-                align_self="center",  # Asegura que esté centrada
-            ),
+                                src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
+                                width="120px",
+                                height="auto",
+                                border_radius="50%",
+                                alt="Foto de perfil",
+                                margin_top="-58px",
+                                margin_left="-11.9em",
+                            ),
             # Contenido principal
             rx.container(
                 rx.vstack(
                     rx.heading("Skills", size="6", color="white"),
-                    rx.text(
-                        "Here you can list your main skills and strengths.",
-                        size="9",
-                        color="gray.300",
-                    ),
                     spacing="4",
                 ),
                 width="70%",

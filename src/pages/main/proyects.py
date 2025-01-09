@@ -17,14 +17,14 @@ def proyects() -> rx.Component:
                         size="6"
                     ),
                     rx.image(
-                        src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
-                        width="120px",
-                        height="auto",
-                        border_radius="50%",
-                        alt="Foto de perfil",
-                        margin_top="-58px",
-                        margin_left="-11.9em",
-                    ),
+                                src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
+                                width="120px",
+                                height="auto",
+                                border_radius="50%",
+                                alt="Foto de perfil",
+                                margin_top="-58px",
+                                margin_left="-11.9em",
+                            ),
                     spacing="4",  # Usa un valor numérico entre 0 y 9
                 ),
                 width="80%",  # Ajusta el ancho del contenedor
