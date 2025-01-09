@@ -1,19 +1,33 @@
 import reflex as rx
 from rxconfig import config
+import asyncio
 from .modulos import header, sidebar_bottom_profile, pop_up_message, MessageFormStateV2
 from .about_me import about
 from .skills import skills
 from .proyects import proyects
 
 
-class State(rx.State):
-    pass
 
-intro_texto_castellano = """Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas."""
+# class State(rx.State):
+#     pass
 
-intro_texto_ingles = """With more than 24 years of experience in the financial banking sector, I have held roles in both the administrative and commercial areas, specifically as an account and business officer. During my time in the administrative area, I acquired significant skills in the preparation of reports using DDB tools, thus contributing to operational efficiency and informed decision-making."""
+class TypewriterState(rx.State):
+    text: str = ""
+    full_text: str = (
+        "Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas.")
+
+    async def type_text(self):
+        for i in range(1, len(self.full_text) + 1):
+            self.text = self.full_text[:i]
+            await asyncio.sleep(0.01565)  # Velocidad de la animación
+            yield
 
 
+# intro_texto_castellano = """Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas."""
+
+# intro_texto_ingles = """With more than 24 years of experience in the financial banking sector, I have held roles in both the administrative and commercial areas, specifically as an account and business officer. During my time in the administrative area, I acquired significant skills in the preparation of reports using DDB tools, thus contributing to operational efficiency and informed decision-making."""
+
+@rx.page(on_load=TypewriterState.type_text)  # Aquí se ejecuta la animación cuando se carga la página
 def index() -> rx.Component:
     """Componente principal que renderiza la vista principal de la app."""
     return rx.box(
@@ -29,10 +43,7 @@ def index() -> rx.Component:
                         size="6"
                     ),
                     rx.flex(
-                        rx.text(
-                            intro_texto_castellano,
-                            font_size="0.8em",
-                        ),
+                        rx.text(TypewriterState.text),
                         position="absolute",
                         top="10em",
                         justify="center",
@@ -62,12 +73,12 @@ def index() -> rx.Component:
                 ),
                 rx.hstack(
                     rx.link(
-                        rx.button(rx.icon(tag="github", size=18), "GitHub", border_radius="20px", width="120px"),
+                        rx.button(rx.icon(tag="github", size=18), "GitHub", border_radius="20px", width="120px", background_color="#003D73", color="white"),
                         href="https://github.com/arnaldoquinones",
                         is_external=True,
                     ),
                     rx.link(
-                        rx.button(rx.icon(tag="linkedin", size=18), "Linkedin", border_radius="20px", width="120px"),
+                        rx.button(rx.icon(tag="linkedin", size=18), "Linkedin", border_radius="20px", width="120px", background_color="#003D73", color="white"),
                         href="https://www.linkedin.com/in/apquinones/",
                         is_external=True,
                     ),
@@ -76,12 +87,13 @@ def index() -> rx.Component:
                         "Messages",
                         border_radius="20px",
                         width="120px",
+                        background_color="#003D73", color="white",
                         on_click=MessageFormStateV2.toggle_popover  # Asegúrate de que este evento sea el adecuado
                     ),
                     spacing="4",
                     align_items="center",
                     position="absolute",
-                    top="30em",
+                    top="31em",
                 ),
                 spacing="5",
                 justify_content="center",
@@ -91,18 +103,6 @@ def index() -> rx.Component:
             ),
              sidebar_bottom_profile(),
              pop_up_message(),
-            # codigo para el search bar
-            # rx.flex(                          
-            #     rx.input(
-            #         rx.input.slot(
-            #             rx.icon(tag="search"),
-            #         ),
-            #         placeholder="Search songs...",
-            #     ),
-            #     direction="column",
-            #     spacing="3",
-            #     style={"maxWidth": 500},
-            # ),
         ),
         min_height="100vh",
         width="100vw",
