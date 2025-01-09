@@ -2,10 +2,23 @@ import asyncio
 import reflex as rx
 from rxconfig import config
 from .modulos import header, sidebar_bottom_profile, pop_up_message
-# from .chatbot import chat  # Importa el componente del chatbot
+
+
+class TypewriterState(rx.State):
+    text: str = ""
+    full_text: str = (
+        "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum"
+    )
+
+    async def type_text(self):
+        for i in range(1, len(self.full_text) + 1):
+            self.text = self.full_text[:i]
+            await asyncio.sleep(0.05)  # Velocidad de la animación
+            yield
 
 
 # Definir la función de "Skills" (Páginas)
+@rx.page(on_load=TypewriterState.type_text)  # Aquí se ejecuta la animación cuando se carga la página
 def skills() -> rx.Component:
     """Página Projects."""
     return rx.box(
@@ -28,6 +41,17 @@ def skills() -> rx.Component:
                         margin_top="-58px",
                         margin_left="-11.9em",
                     ),
+                    # Aquí se aplica el efecto de la animación tipo escritura sin el cursor
+                    rx.box(
+                        rx.text(TypewriterState.text),  # Texto animado
+                        position="absolute",  # Evita que el texto afecte la posición de los demás
+                        top="350px",  # Ajusta la posición del texto
+                        left="240px",  # Ajusta la distancia desde la izquierda
+                        width="80%",  # Ajusta el ancho del contenedor de texto
+                        padding="1rem",
+                        text_align="justify",
+                        z_index=10,  # Asegura que el texto esté por encima de otros elementos si es necesario
+                    ),
                     spacing="4",  # Usa un valor numérico entre 0 y 9
                 ),
                 width="80%",  # Ajusta el ancho del contenedor
@@ -42,33 +66,4 @@ def skills() -> rx.Component:
         width="100vw",
         background="linear-gradient(to bottom, #002266, #001122)",
         overflow_y="auto",
-    )
-
-
-# Definir el estado para la animación de texto
-class State(rx.State):
-    text: str = ""  # Inicializar el estado con texto vacío
-    
-    # Función para simular el efecto de máquina de escribir
-    async def type_text(self):
-        full_text = """Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas."""
-        
-        self.text = ""  # Inicia el texto vacío
-        yield
-        
-        # Agregar el texto caracter por caracter
-        for i in range(len(full_text)):
-            await asyncio.sleep(0.1)  # Controla la velocidad de la escritura
-            self.text = full_text[:i + 1]
-            yield
-
-
-# Función para mostrar el efecto de máquina de escribir en la página de inicio
-def index():
-    # Crear una instancia del estado para ejecutar type_text automáticamente
-    state = State()
-    
-    return rx.box(
-        rx.text(state.text),  # Mostrar el texto que se va actualizando
-        state.type_text()  # Iniciar el efecto de escritura automáticamente
     )
