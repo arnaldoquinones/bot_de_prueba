@@ -43,7 +43,8 @@ def index() -> rx.Component:
                         size="6"
                     ),
                     rx.flex(
-                        rx.text(TypewriterState.text),
+                        rx.text(TypewriterState.text,
+                                font_size="0.8em",),
                         position="absolute",
                         top="10em",
                         justify="center",
