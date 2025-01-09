@@ -22,7 +22,7 @@ def about() -> rx.Component:
                                 height="auto",
                                 border_radius="50%",
                                 alt="Foto de perfil",
-                                margin_top="-68px",
+                                margin_top="-26px",
                                 margin_left="-12em",
                             ),
                 pop_up_message(),
