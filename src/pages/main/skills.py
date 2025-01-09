@@ -5,13 +5,19 @@ from .modulos import header, sidebar_bottom_profile, pop_up_message
 
 
 def skills() -> rx.Component:
-    """Skills page."""
+    """Página Proyects."""
     return rx.box(
-        header(),  # Encabezado principal
-        # Contenedor principal con diseño de columnas
+        header(),  # Llamamos a la función del encabezado aquí
         rx.hstack(
-            # Imagen del perfil
-            rx.image(
+            rx.container(
+                rx.vstack(
+                    rx.heading(
+                        rx.fragment(
+                            rx.text("Skills"),
+                        ),
+                        size="6"
+                    ),
+                    rx.image(
                                 src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
                                 width="120px",
                                 height="auto",
@@ -20,33 +26,21 @@ def skills() -> rx.Component:
                                 margin_top="-58px",
                                 margin_left="-11.9em",
                             ),
-            # Contenido principal
-            rx.container(
-                rx.vstack(
-                    rx.heading("Skills", size="6", color="white"),
-                    spacing="4",
+                    spacing="4",  # Usa un valor numérico entre 0 y 9
                 ),
-                width="70%",
-                padding="2rem",
+                width="80%",  # Ajusta el ancho del contenedor
+                padding="2rem",  # Ajusta el padding interno
             ),
-            # Sidebar y mensajes emergentes
-            rx.box(
-                sidebar_bottom_profile(),  # Sidebar
-                pop_up_message(),  # Mensaje emergente
-                width="20%",  # Ajusta el tamaño del contenedor
-                padding="1rem",
-            ),
-            spacing="4",  # Espaciado entre columnas
-            justify="between",
-            align="start",
+            sidebar_bottom_profile(),
+            pop_up_message(),  # login_multiple_thirdparty() puede reemplazar esto si es necesario
+            spacing="4",  # Ajusta el espaciado entre el contenido
+            align="start",  # Alinea el contenido al inicio
         ),
         min_height="100vh",
         width="100vw",
         background="linear-gradient(to bottom, #002266, #001122)",
         overflow_y="auto",
     )
-
-
 
 # Define the style with animations
 # style = {
