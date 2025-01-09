@@ -80,7 +80,7 @@ def sidebar_item() -> rx.Component:
 
 
 def sidebar_bottom_profile() -> rx.Component:
-    """Define el perfil inferior del sidebar."""
+    """Define el perfil inferior del sidebar con transición fluida."""
     return rx.box(
         rx.vstack(
             sidebar_item(),
@@ -114,12 +114,12 @@ def sidebar_bottom_profile() -> rx.Component:
             left="0",
             top="160px",
             transform=rx.cond(SidebarState.is_open, "translateX(0)", "translateX(-100%)"),
-            transition="transform 0.3s ease-in-out",
-            visibility=rx.cond(SidebarState.is_open, "visible", "hidden"),
+            transition="transform 0.3s ease-in-out",  # Control de deslizamiento
         ),
         bg=rx.color("accent", 2),
         shadow="md",
     )
+
 
 
 def sidebar_with_toggle() -> rx.Component:
