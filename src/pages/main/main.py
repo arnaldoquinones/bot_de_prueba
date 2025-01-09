@@ -1,6 +1,6 @@
 import reflex as rx
 from rxconfig import config
-from .modulos import header, sidebar_bottom_profile, pop_up_message
+from .modulos import header, sidebar_bottom_profile, pop_up_message, MessageFormStateV2
 from .about_me import about
 from .skills import skills
 from .proyects import proyects
@@ -76,6 +76,7 @@ def index() -> rx.Component:
                         "Messages",
                         border_radius="20px",
                         width="120px",
+                        on_click=MessageFormStateV2.toggle_popover  # Asegúrate de que este evento sea el adecuado
                     ),
                     spacing="4",
                     align_items="center",
