@@ -417,7 +417,7 @@ def pop_up_message():
                             rx.cond(
                                 MessageFormStateV2.submit_status == "success",
                                 rx.text(
-                                    "Message sent successfully!",
+                                    "😎 Message sent successfully!",
                                     color="green",
                                     font_size="sm",
                                 ),
@@ -425,7 +425,7 @@ def pop_up_message():
                             rx.cond(
                                 MessageFormStateV2.submit_status == "error",
                                 rx.text(
-                                    "Something went wrong, try later.",
+                                    "🤦Something went wrong, try later.",
                                     color="red",
                                     font_size="13px",
                                 ),
