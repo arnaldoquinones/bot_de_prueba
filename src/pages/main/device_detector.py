@@ -25,3 +25,47 @@ def detect_device():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
+
+
+
+
+
+from user_agents import parse
+
+# Ejemplo de User-Agent (puedes reemplazarlo con el real)
+user_agent = "Mozilla/5.0 (Linux; Android 10; SM-A505FN) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.101 Mobile Safari/537.36"
+
+# Analiza el User-Agent
+parsed_user_agent = parse(user_agent)
+
+if parsed_user_agent.is_mobile:
+    # Código adaptado para dispositivos móviles
+    print("Estás navegando desde un dispositivo móvil.")
+    # Por ejemplo, mostrar un diseño más compacto
+    mobile_ui()
+
+elif parsed_user_agent.is_tablet:
+    # Código adaptado para tablets
+    print("Estás navegando desde una tablet.")
+    # Por ejemplo, un diseño optimizado para pantallas intermedias
+    tablet_ui()
+
+else:
+    # Código adaptado para PC o Desktop
+    print("Estás navegando desde una PC o Desktop.")
+    # Por ejemplo, un diseño con más espacio y funcionalidad avanzada
+    desktop_ui()
+
+# Funciones de ejemplo
+def mobile_ui():
+    print("Cargando diseño compacto para móviles.")
+
+def tablet_ui():
+    print("Cargando diseño adaptado para tablets.")
+
+def desktop_ui():
+    print("Cargando diseño completo para desktops.")

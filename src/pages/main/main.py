@@ -11,6 +11,9 @@ from .proyects import proyects
 # class State(rx.State):
 #     pass
 
+
+
+
 class TypewriterState(rx.State):
     text: str = ""
     full_text: str = (
