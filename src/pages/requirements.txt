@@ -1,1 +1,12 @@
 reflex==0.6.7
+Python 3.9.13
+asyncio
+requests
+re
+smtplib
+email.mime.text
+email.mime.multipart
+dotenv
+os
+user_agents
+flask
