@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 import os
 import requests
 import time
-
+import asyncio
+import datetime as dt
 
 # -------------------------
 # -- BARRA SIDEBAR  MENU --
@@ -182,8 +183,6 @@ style = {
         }
     }
 }
-
-
 
 def header():
     """Encabezado personalizado para el sitio web."""
@@ -436,7 +435,6 @@ def pop_up_message():
                                 "Submit",
                                 type="submit",
                                 is_loading=MessageFormStateV2.is_submitting,
-                                background_image="#1e88e5",
                                 border="none",
                                 border_radius="10px",
                                 color="white",
@@ -453,7 +451,7 @@ def pop_up_message():
                                 # Active/Click state
                                 _active={
                                     "transform": "scale(0.95) translateY(4px)",
-                                    "box_shadow": "0 0 15px #1e88e5, 0 0 10px #1e88e5 inset, 0 4px 0 #1565c0",
+                                    "box_shadow": "0 0 15px #0E1CFF, 0 0 10px #0E1CFF inset, 0 4px 0 #1565c0",
                                 },
                             ),
                             rx.cond(
@@ -511,65 +509,12 @@ load_dotenv()
 API_KEY = os.getenv("api_weather_key")
 
 
-class WeatherState(rx.State):
-    """Estado de la aplicación para el clima."""
-    location: str = "Buenos Aires"  # Ubicación inicial
-    weather: str = "N/A"
-    temperature: str = "N/A"
-    error: str = ""
-
-    async def get_weather(self):
-        """Obtener datos del clima."""
-        if not self.location:
-            self.error = "Please enter a valid city name"
-            return
-
-        try:
-            url = f"https://api.openweathermap.org/data/2.5/weather?q={self.location}&units=imperial&APPID={API_KEY}"
-            response = requests.get(url)
-            response.raise_for_status()
-            data = response.json()
-
-            # Validar si se encontró la ciudad
-            if data.get("cod") == "404":
-                self.error = "No City Found"
-                return
-
-            self.weather = data["weather"][0]["main"]
-            self.temperature = f"{round(data['main']['temp'])}ºF"
-            self.error = ""  # Limpiar errores si todo salió bien
-        except requests.exceptions.RequestException as e:
-            self.error = f"Error fetching weather data: {e}"
-
 
 def index():
-    """Página principal."""
-    return rx.center(
-        rx.vstack(
-            rx.heading("Weather App", size="lg"),
-            rx.input(
-                placeholder="Enter city",
-                on_blur=WeatherState.set_location,
-            ),
-            rx.button("Get Weather", on_click=WeatherState.get_weather),
-            rx.cond(
-                WeatherState.error,
-                rx.text(WeatherState.error, color="red"),
-                rx.vstack(
-                    rx.text(f"Weather: {WeatherState.weather}"),
-                    rx.text(f"Temperature: {WeatherState.temperature}"),
-                ),
-            ),
-        )
-    )
+    pass
 
-
-# Configurar la aplicación
-
-
-
-app = rx.App()
-app.add_page(index)
+    app = rx.App()
+    app.add_page(index)
 
 
 
