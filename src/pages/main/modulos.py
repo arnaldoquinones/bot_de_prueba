@@ -355,12 +355,12 @@ def pop_up_message():
                 rx.form(
                     rx.vstack(
                         rx.input(
-                            placeholder="First Name", 
+                            placeholder="First Name",
                             name="first_name",
                             required=True,
                             style={
                                 "text-align": "left",
-                                "min_width": "270px"
+                                "min_width": "270px",
                             },
                         ),
                         rx.input(
@@ -369,24 +369,28 @@ def pop_up_message():
                             required=True,
                             style={
                                 "text-align": "left",
-                                "min_width": "270px"
+                                "min_width": "270px",
                             },
                         ),
                         rx.cond(
-                            MessageFormStateV2.email_error,  # Si hay error
+                            MessageFormStateV2.email_error,
                             rx.input(
                                 placeholder=MessageFormStateV2.email_error,
                                 name="email",
                                 required=True,
-                                style={"border": "1px solid red",
-                                       "min_width": "270px"},
+                                style={
+                                    "border": "1px solid red",
+                                    "min_width": "270px",
+                                },
                             ),
                             rx.input(
                                 placeholder="Email",
                                 name="email",
                                 required=True,
-                                style={"border": "1px solid gray",
-                                       "min_width": "270px"},
+                                style={
+                                    "border": "1px solid gray",
+                                    "min_width": "270px",
+                                },
                             ),
                         ),
                         rx.text_area(
@@ -406,10 +410,28 @@ def pop_up_message():
                         ),
                         rx.hstack(
                             rx.button(
-                                "Submit", 
+                                "Submit",
                                 type="submit",
                                 is_loading=MessageFormStateV2.is_submitting,
-                                background_color="#003D73",
+                                background_image="#1e88e5",
+                                border="none",
+                                border_radius="10px",
+                                color="white",
+                                # box_shadow="0 0 25px #1e88e5, 0 0 15px #1e88e5 inset, 0 8px 0 #1565c0",
+                                transform="perspective(1px) translateZ(0)",
+                                transition="all .3s ease",
+                                # Text shadow for extra depth
+                                # text_shadow="2px 2px 4px rgba(0,0,0,0.3)",
+                                # Hover state
+                                # _hover={
+                                #     "transform": "scale(1.05) translateY(-2px)",
+                                #     "box_shadow": "0 0 35px #1e88e5, 0 0 20px #1e88e5 inset, 0 10px 0 #1565c0",
+                                # },
+                                # Active/Click state
+                                _active={
+                                    "transform": "scale(0.95) translateY(4px)",
+                                    "box_shadow": "0 0 15px #1e88e5, 0 0 10px #1e88e5 inset, 0 4px 0 #1565c0",
+                                },
                             ),
                             rx.cond(
                                 MessageFormStateV2.submit_status == "success",
@@ -439,7 +461,6 @@ def pop_up_message():
                 "max-width": "300px",
                 "width": "auto",
                 "min-height": "250px",
-                # "max-height": "350px"
                 "padding": "1rem",
                 "position": "relative",
                 "background": rx.color("accent", 3),
