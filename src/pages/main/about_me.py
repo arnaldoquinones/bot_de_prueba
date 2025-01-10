@@ -33,8 +33,13 @@ def about() -> rx.Component:
         ),
         min_height="100vh",
         width="100vw",
-        background="linear-gradient(to bottom, #002266, #001122)",
+        background="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/circuito_fondo.png?raw=true')",
+        background_size="cover",  # Ajusta el tamaño de la imagen para cubrir todo el fondo
+        background_repeat="no-repeat",  # Evita que la imagen se repita
+        background_position="center",  # Centra la imagen en el fondo
         overflow_y="auto",
+        # background="linear-gradient(to bottom, #002266, #001122)",
+        # overflow_y="auto",
     )
 
 

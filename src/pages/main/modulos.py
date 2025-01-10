@@ -145,9 +145,9 @@ def sidebar_with_toggle() -> rx.Component:
 
 
 
-# ------------------------
-# --- HEADER INTEGRADO ---
-# ------------------------
+# --------------
+# --- HEADER ---
+# --------------
 
 style = {
     "animate": {
@@ -160,12 +160,19 @@ style = {
     }
 }
 
+
+
 def header():
-    """Encabezado personalizado para el sitio web con información del clima."""
+    """Encabezado personalizado para el sitio web."""
     return rx.box(
-        # Contenedor principal del header
+        # Caja contenedora general
         rx.flex(
             sidebar_with_toggle(),
+            # rx.box(
+            #     rx.icon("menu", size=40, margin_top="0.8em", margin_left="2em", on_click=SidebarState.toggle_sidebar),  # Llamar al toggle
+            #     align="start",
+            #     flex="none",
+            # ),
             rx.flex(
                 rx.link(
                     rx.heading(
@@ -193,49 +200,18 @@ def header():
         ),
         rx.box(
             rx.text(
-                """ "...Scientia est potentia..." """,
-                font_size="1.5em",
-                font_style="italic", 
-                text_align="right",
-                color="white",
-                margin_top="3em",
-                margin_right="2em",
-                style=style["animate"]  # Aplicar estilo animado
-            ),
+            """ "...Scientia est potentia..." """,
+            font_size="1.5em",
+            font_style="italic", 
+            text_align="right",
+            color="white",
+            margin_top="3em",
+            margin_right="2em",
+            style=style["animate"]  # Apply style directly
+        ),
             position="absolute",
             top="0",
             right="0",
-        ),
-        # Información del clima
-        rx.box(
-            rx.vstack(
-                rx.input(
-                    placeholder="Enter location",
-                    on_blur=WeatherState.set_location,
-                    margin_bottom="0.5em",
-                ),
-                rx.button(
-                    "Get Weather",
-                    on_click=WeatherState.get_weather,
-                    margin_bottom="0.5em",
-                ),
-                rx.cond(
-                    WeatherState.loading,
-                    rx.spinner(),
-                    rx.vstack(
-                        rx.text(f"Location: {WeatherState.location}", color="white"),
-                        rx.text(f"Temperature: {WeatherState.temperature}°C", color="white"),
-                        rx.text(f"Weather: {WeatherState.weather_desc}", color="white"),
-                    ),
-                ),
-            ),
-            position="absolute",
-            top="10px",
-            right="20px",
-            background="rgba(0, 0, 0, 0.5)",
-            padding="1em",
-            border_radius="8px",
-            box_shadow="0px 4px 8px rgba(0, 0, 0, 0.3)",
         ),
         background_image="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/banner_header.jpg?raw=true')",
         background_size="cover",
@@ -480,64 +456,72 @@ def pop_up_message():
 # --------------------------
 
 import os
+import reflex as rx  # Reflex es el framework
 import requests
 from dotenv import load_dotenv
-import reflex as rx  # Asegúrate de que esta librería esté correctamente instalada
 
 load_dotenv()
 
+# Clave de la API
+API_KEY = os.getenv("api_weather_key")
+
+
 class WeatherState(rx.State):
     """Estado de la aplicación para el clima."""
-    location: str = "Buenos Aires"  # Ubicación inicial predeterminada
-    temperature: float = 0
-    weather_desc: str = "N/A"
-    loading: bool = False
+    location: str = "Buenos Aires"  # Ubicación inicial
+    weather: str = "N/A"
+    temperature: str = "N/A"
+    error: str = ""
 
     async def get_weather(self):
-        """Obtener datos del clima para la ubicación."""
+        """Obtener datos del clima."""
         if not self.location:
-            rx.window_alert("Please enter a location")
-            return  # Salir del método sin errores
-        
-        self.loading = True
-        yield  # Indicar que el estado cambió
-        
-        # Reemplaza con tu clave de API real
-        API_KEY = os.getenv("api_weather_key")
-        url = f"http://api.openweathermap.org/data/2.5/weather?q={self.location}&appid={API_KEY}&units=metric"
-        
+            self.error = "Please enter a valid city name"
+            return
+
         try:
+            url = f"https://api.openweathermap.org/data/2.5/weather?q={self.location}&units=imperial&APPID={API_KEY}"
             response = requests.get(url)
             response.raise_for_status()
             data = response.json()
-            self.temperature = data["main"]["temp"]
-            self.weather_desc = data["weather"][0]["description"]
+
+            # Validar si se encontró la ciudad
+            if data.get("cod") == "404":
+                self.error = "No City Found"
+                return
+
+            self.weather = data["weather"][0]["main"]
+            self.temperature = f"{round(data['main']['temp'])}ºF"
+            self.error = ""  # Limpiar errores si todo salió bien
         except requests.exceptions.RequestException as e:
-            rx.window_alert(f"Error fetching weather data: {str(e)}")
-        finally:
-            self.loading = False
-            yield  # Actualizar el estado al finalizar la operación
+            self.error = f"Error fetching weather data: {e}"
+
 
 def index():
-    return rx.vstack(
-        rx.heading("Weather App"),
-        rx.input(
-            placeholder="Enter location",
-            on_blur=WeatherState.set_location,
-        ),
-        rx.button(
-            "Get Weather",
-            on_click=WeatherState.get_weather,
-        ),
-        rx.cond(
-            WeatherState.loading,
-            rx.spinner(),
-            rx.vstack(
-                rx.heading(f"Temperature: {WeatherState.temperature}°C"),
-                rx.text(f"Weather: {WeatherState.weather_desc}"),
+    """Página principal."""
+    return rx.center(
+        rx.vstack(
+            rx.heading("Weather App", size="lg"),
+            rx.input(
+                placeholder="Enter city",
+                on_blur=WeatherState.set_location,
             ),
-        ),
+            rx.button("Get Weather", on_click=WeatherState.get_weather),
+            rx.cond(
+                WeatherState.error,
+                rx.text(WeatherState.error, color="red"),
+                rx.vstack(
+                    rx.text(f"Weather: {WeatherState.weather}"),
+                    rx.text(f"Temperature: {WeatherState.temperature}"),
+                ),
+            ),
+        )
     )
+
+
+# Configurar la aplicación
+
+
 
 app = rx.App()
 app.add_page(index)

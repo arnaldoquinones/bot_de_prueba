@@ -91,10 +91,10 @@ def index() -> rx.Component:
                         background_color="#003D73", color="white",
                         on_click=MessageFormStateV2.toggle_popover  # Asegúrate de que este evento sea el adecuado
                     ),
-                    spacing="4",
+                    spacing="5",
                     align_items="center",
                     position="absolute",
-                    top="31em",
+                    top="29em",
                 ),
                 spacing="5",
                 justify_content="center",
