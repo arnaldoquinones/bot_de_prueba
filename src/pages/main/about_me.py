@@ -1,6 +1,7 @@
 import reflex as rx
 from rxconfig import config
 from .modulos import header, sidebar_bottom_profile, pop_up_message
+import asyncio
 
 
 def about() -> rx.Component:
@@ -29,6 +30,7 @@ def about() -> rx.Component:
                 padding="1em",
                 flex="1",
             ),
+            sound_effect_demo(),
             sidebar_bottom_profile(),
         ),
         min_height="100vh",
@@ -42,6 +44,29 @@ def about() -> rx.Component:
         # overflow_y="auto",
     )
 
+class SoundEffectState(rx.State):
+    @rx.event(background=True)
+    async def delayed_play(self):
+        await asyncio.sleep(1)
+        return rx.call_script("playFromStart(button_sfx)")
 
+def sound_effect_demo():
+    return rx.hstack(
+        rx.script(
+            """
+            var button_sfx = new Audio("D:\Users\Arnaldo\Desktop\SISTEMAS\proyectos\bot_de_prueba\src\pages\assets\mouse-click-sound-trimmed.mp3"")
+            function playFromStart (sfx) {sfx.load(); sfx.play()}"""
+        ),
+        rx.button(
+            "Play Immediately",
+            on_click=rx.call_script(
+                "playFromStart(button_sfx)"
+            ),
+        ),
+        rx.button(
+            "Play Later",
+            on_click=SoundEffectState.delayed_play,
+        ),
+    )
 
 # END

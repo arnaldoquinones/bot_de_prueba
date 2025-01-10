@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 import os
 import requests
 import time
-import asyncio
 import datetime as dt
+import locale
 
 # -------------------------
 # -- BARRA SIDEBAR  MENU --
@@ -190,21 +190,28 @@ import locale
 def get_date_and_location():
     """Obtiene la fecha actual y la ubicación según la IP."""
     try:
-        # Configurar el locale a español (Argentina) para que los nombres de los días y meses estén en castellano
+        # Configurar el locale a español (Argentina)
         locale.setlocale(locale.LC_TIME, 'es_AR.UTF-8')
 
-        # Obtener la fecha actual con el día de la semana y mes en castellano (sin año)
-        current_date = datetime.now().strftime("%A, %d %B")  # Solo día y mes
+        # Obtener la fecha sin la coma
+        current_date = datetime.now().strftime("%A %d %B")
 
-        # Capitalizar la primera letra del día y del mes
-        current_date = current_date.capitalize()
+        # Separar los componentes
+        day_of_week, day, month = current_date.split()
+        
+        # Capitalizar el día de la semana y el mes
+        day_of_week = day_of_week.capitalize()
+        month = month.capitalize()
+        
+        # Reconstruir la fecha con "de"
+        current_date = f"{day_of_week} {day} de {month}"
 
         # Obtener la ubicación basada en la IP
         location_response = requests.get("https://ipinfo.io?token=413cc4ca42c4bd")
         if location_response.status_code == 200:
             location_data = location_response.json()
             city = location_data.get("city", "Unknown City")
-            location = city  # Solo la ciudad
+            location = city
         else:
             location = "Location unavailable"
     except Exception as e:
@@ -254,8 +261,8 @@ def header():
                 f"{current_date} - {location}",
                 font_size="1em",
                 color="white",
-                margin_top="2em",
-                margin_right="2em",
+                margin_top="5em",
+                margin_right="58em",
                 text_align="right",
                 style=style["animate"],
             ),
