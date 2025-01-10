@@ -183,18 +183,46 @@ style = {
         }
     }
 }
+import requests
+from datetime import datetime
+import locale
+
+def get_date_and_location():
+    """Obtiene la fecha actual y la ubicación según la IP."""
+    try:
+        # Configurar el locale a español (Argentina) para que los nombres de los días y meses estén en castellano
+        locale.setlocale(locale.LC_TIME, 'es_AR.UTF-8')
+
+        # Obtener la fecha actual con el día de la semana y mes en castellano (sin año)
+        current_date = datetime.now().strftime("%A, %d %B")  # Solo día y mes
+
+        # Capitalizar la primera letra del día y del mes
+        current_date = current_date.capitalize()
+
+        # Obtener la ubicación basada en la IP
+        location_response = requests.get("https://ipinfo.io?token=413cc4ca42c4bd")
+        if location_response.status_code == 200:
+            location_data = location_response.json()
+            city = location_data.get("city", "Unknown City")
+            location = city  # Solo la ciudad
+        else:
+            location = "Location unavailable"
+    except Exception as e:
+        current_date = "Date unavailable"
+        location = f"Error: {e}"
+    
+    return current_date, location
+
 
 def header():
     """Encabezado personalizado para el sitio web."""
+    # Obtener la fecha y ubicación
+    current_date, location = get_date_and_location()
+    
     return rx.box(
         # Caja contenedora general
         rx.flex(
             sidebar_with_toggle(),
-            # rx.box(
-            #     rx.icon("menu", size=40, margin_top="0.8em", margin_left="2em", on_click=SidebarState.toggle_sidebar),  # Llamar al toggle
-            #     align="start",
-            #     flex="none",
-            # ),
             rx.flex(
                 rx.link(
                     rx.heading(
@@ -220,17 +248,33 @@ def header():
             justify_content="flex-start",
             flex_direction="row",
         ),
+        # Caja para fecha y ubicación
         rx.box(
             rx.text(
-            """ "...Scientia est potentia..." """,
-            font_size="1.5em",
-            font_style="italic", 
-            text_align="right",
-            color="white",
-            margin_top="3em",
-            margin_right="2em",
-            style=style["animate"]  # Apply style directly
+                f"{current_date} - {location}",
+                font_size="1em",
+                color="white",
+                margin_top="2em",
+                margin_right="2em",
+                text_align="right",
+                style=style["animate"],
+            ),
+            position="absolute",
+            top="0",
+            right="0",
         ),
+        # Caja para la cita
+        rx.box(
+            rx.text(
+                """ "...Scientia est potentia..." """,
+                font_size="1.5em",
+                font_style="italic", 
+                text_align="right",
+                color="white",
+                margin_top="3em",
+                margin_right="2em",
+                style=style["animate"]
+            ),
             position="absolute",
             top="0",
             right="0",
@@ -244,6 +288,7 @@ def header():
         align_items="center",
         box_shadow="0px 10px 20px rgba(0, 0, 0, 0.7), 0px 0px 10px transparent",
     )
+
 
 
 # ------ FIN DE HEADER ------
