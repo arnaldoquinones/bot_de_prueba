@@ -409,6 +409,7 @@ def pop_up_message():
                                 "Submit", 
                                 type="submit",
                                 is_loading=MessageFormStateV2.is_submitting,
+                                background_color="#003D73",
                             ),
                             rx.cond(
                                 MessageFormStateV2.submit_status == "success",
