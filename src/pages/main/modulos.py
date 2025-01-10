@@ -7,6 +7,7 @@ from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 import os
 import requests
+import time
 
 
 # -------------------------
@@ -17,14 +18,36 @@ import requests
 
 class SidebarState(rx.State):
     is_open: bool = False
+    last_activity: float = time.time()  # Tiempo de la última actividad
 
     def on_mount(self):
-        """Initialize sidebar as closed when component mounts"""
+        """Inicializar el sidebar como cerrado cuando el componente se monta"""
         self.is_open = False
+        self.last_activity = time.time()  # Establecer la última actividad al momento de montar
+
+    def on_update(self):
+        """Comprobar inactividad cada vez que se actualiza el estado"""
+        current_time = time.time()
+        print(f"Última actividad: {self.last_activity}, Tiempo actual: {current_time}")
+        if self.is_open and current_time - self.last_activity > 5:  # 5 segundos de inactividad
+            self.is_open = False  # Cierra el sidebar
+            print("Sidebar cerrado por inactividad.")  # Para fines de depuración
+        else:
+            self.last_activity = current_time  # Actualizar el tiempo de actividad
+
 
     @rx.event
     def toggle_sidebar(self):
-        self.is_open = not self.is_open  # Alterna entre abierto y cerrado
+        """Alterna entre abrir y cerrar el sidebar"""
+        self.is_open = not self.is_open
+        self.last_activity = time.time()  # Resetea el temporizador al interactuar
+        print("Sidebar alternado. Está abierto:", self.is_open)  # Para fines de depuración
+
+    @rx.event
+    def reset_last_activity(self):
+        """Actualizar el tiempo de la última actividad al interactuar"""
+        self.last_activity = time.time()
+        print("Actividad detectada. Última actividad actualizada.")  # Para fines de depuración
 
 
 def create_sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandler = None) -> rx.Component:
@@ -224,7 +247,7 @@ def header():
     )
 
 
-
+# ------ FIN DE HEADER ------
 
 
 # -------------------------
@@ -469,7 +492,7 @@ def pop_up_message():
         open=MessageFormStateV2.is_popover_open,
     )
 
-
+# ------ FIN DE POP UP WINDOW MAIL ------
 
 
 
