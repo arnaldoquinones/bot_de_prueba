@@ -112,11 +112,13 @@ def index() -> rx.Component:
                                     is_external=True,
                     ),
                     rx.button(
-                        rx.icon(tag="mail", size=18),
-                        "Messages",
-                        border_radius="20px",
-                        width="120px",
-                        background_color="#003D73", color="white",_hover={
+                    rx.icon(tag="mail", size=18),
+                    "Messages",
+                    border_radius="20px",
+                    width="120px",
+                    background_color="#003D73",
+                    color="white",
+                    _hover={
                         "background_color": rx.color_mode_cond(
                             light="blue.400",
                             dark="blue.500"
@@ -127,9 +129,12 @@ def index() -> rx.Component:
                         ),
                         "transform": "scale(1.05)"
                     },
-        transition="all 0.2s ease-in-out",
-                        on_click=MessageFormStateV2.toggle_popover  # Asegúrate de que este evento sea el adecuado
-                    ),
+                    transition="all 0.2s ease-in-out",
+                    on_click=[
+                        MessageFormStateV2.toggle_popover,  # Mantiene el evento actual
+                        rx.call_script("playFromStart(button_sfx)")  # Agrega el sonido
+                    ]
+                ),
                     spacing="4",
                     align_items="center",
                     position="absolute",
