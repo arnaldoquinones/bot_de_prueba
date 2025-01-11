@@ -16,7 +16,7 @@ from .proyects import proyects
 class TypewriterState(rx.State):
     text: str = ""
     full_text: str = (
-        "Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área de analisis como en el comercial, específicamente como anaLista de riesgos y oficial de cuentas y negocios. Durante mi tiempo en el área de riske management adquirí habilidades significativas en la confeccion de informes haciendo uso de  herramientas BDD, Business Inteligence y ML contribuyendo así a la eficiencia operativa y la toma de decisiones informadas.")
+        "Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas.")
 
     async def type_text(self):
         for i in range(1, len(self.full_text) + 1):
@@ -39,8 +39,8 @@ def index() -> rx.Component:
                 rx.vstack(
                     rx.heading(
                         rx.fragment(
-                            rx.text("Lic. Arnaldo Quinones", font_weight="bold"),
-                            rx.text("Data Scientist & Data analyst"),
+                            rx.text("Data scientist"),
+                            rx.text("& Data analyst"),
                         ),
                         size="6"
                     ),
@@ -48,7 +48,7 @@ def index() -> rx.Component:
                         rx.text(TypewriterState.text,
                                 font_size="0.8em",),
                         position="absolute",
-                        top="8em",
+                        top="10em",
                         justify="center",
                         align_items="center",
                         height="420px",
@@ -65,15 +65,14 @@ def index() -> rx.Component:
                         margin_top="-68px",
                         margin_left="-12em",
                     ),
-                    rx.image(
-                    src="https://raw.githubusercontent.com/arnaldoquinones/bot_de_prueba/5c00598fa13b63002d30e5437c27aeb386bad68a/src/pages/assets/perfil_en_ovalo.png",  # URL de tu imagen
-                    alt="Descripción de la imagen",
-                    width="150px",  # Ajusta el ancho deseado
-                    margin_top="1em",
-                    margin_left="-12.5em",
-                    object_fit="contain",  # Asegura que la imagen se ajuste dentro de su contenedor
-                )
-
+                    # rx.image(
+                    #     src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/imagen_perfil_profesional.png?raw=true",  # Cambia esta URL por la de tu imagen
+                    #     alt="Descripción de la imagen",
+                    #     width="340px",
+                    #     height="360px",
+                    #     margin_top="-9em",
+                    #     margin_left="36em",
+                    # ),
                 ),
                 rx.hstack(
                     rx.link(
@@ -139,7 +138,7 @@ def index() -> rx.Component:
                     spacing="4",
                     align_items="center",
                     position="absolute",
-                    top="29em",
+                    top="31em",
                 ),
                 spacing="5",
                 justify_content="center",
