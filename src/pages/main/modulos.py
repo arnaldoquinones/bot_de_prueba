@@ -154,22 +154,22 @@ def sidebar_with_toggle() -> rx.Component:
     """Permite alternar la visibilidad del sidebar con efecto de sonido."""
     return rx.box(
         sound_effect_script(),  # Agregar el script de sonido
-        rx.icon(
-            "menu",
-            # Combinar el efecto de sonido y el cambio de estado
-            on_click=[
-                rx.call_script("playFromStart(button_sfx)"),
-                SidebarState.toggle_sidebar,  # Acción de alternar el sidebar
-            ],
-            position="absolute",
-            left="7%",
-            top="13%",
-            transform="translate(-50%, -50%)",
-            color_scheme="teal",
-            background="transparent",
-            size=48,
-            cursor="pointer",
-        ),
+            rx.icon(
+                "menu",
+                # Combinar el efecto de sonido y el cambio de estado
+                on_click=[
+                    rx.call_script("playFromStart(button_sfx)"),
+                    SidebarState.toggle_sidebar,  # Acción de alternar el sidebar
+                ],
+                position="absolute",
+                left="7%",
+                top="13%",
+                transform="translate(-50%, -50%)",
+                color_scheme="teal",
+                background="transparent",
+                size=48,
+                cursor="pointer",
+            ),
         sidebar_bottom_profile(),
     )
 
@@ -232,7 +232,7 @@ def get_date_and_location():
 
 
 def header():
-    """Encabezado personalizado para el sitio web."""
+    """Encabezado personalizado para el sitio web, incluyendo clima."""
     # Obtener la fecha y ubicación
     current_date, location = get_date_and_location()
     
@@ -279,6 +279,22 @@ def header():
             position="absolute",
             top="0",
             right="0",
+        ),
+        # Caja para el clima
+        rx.box(
+            rx.flex(
+            rx.heading(f"{temperature}°C  ", size="3", color="white"),
+            rx.text(f"{description}", size="3", color="white"),
+            align="center",
+            direction="row",  # Cambiado de 'column' a 'row'
+            gap="1rem",
+            padding="1rem",
+        ),
+            position="absolute",
+            top="-2px",
+            left="130px",
+            margin_top="3em",
+            margin_left="2em",
         ),
         # Caja para la cita
         rx.box(
@@ -572,27 +588,29 @@ from dotenv import load_dotenv
 
 # # Clave de la API
 # API_KEY = os.getenv("api_weather_key")
+import reflex as rx
+import requests
 
+# Configuración de la API
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
-API_KEY = "cc927a091110908fb4a1fe8ac93353b1"  # Asigna directamente el API Key
-CITY = "Buenos Aires"
+API_KEY = "cc927a091110908fb4a1fe8ac93353b1"  # Coloca tu API Key aquí
+CITY = "Buenos Aires"  # No lo mostramos, pero lo usamos para la API
 
+# Función para convertir Kelvin a Celsius
 def kelvin_to_celsius(kelvin):
-   celsius = kelvin - 273.15
-   return celsius
+    return kelvin - 273.15
 
-url = f"{BASE_URL}?q={CITY}&appid={API_KEY}"
+# Obtener los datos del clima
+def fetch_weather():
+    url = f"{BASE_URL}?q={CITY}&appid={API_KEY}"
+    response = requests.get(url).json()
+    temp_kelvin = response["main"]["temp"]
+    temp_celsius = kelvin_to_celsius(temp_kelvin)
+    description = response["weather"][0]["description"]
+    return round(temp_celsius, 2), description.capitalize()
 
-# Realizar la solicitud
-response = requests.get(url).json()
-
-
-temp_kelvin = response["main"]["temp"]  
-temp_celsius = kelvin_to_celsius(temp_kelvin)
-description = response["weather"][0]["description"]
-
-print(f"Temperatura en {CITY}: {temp_celsius:.2f}°C")
-print(f"Clima general en {CITY}: {description}")
+# Obtener datos directamente
+temperature, description = fetch_weather()
 
 
 def index():
