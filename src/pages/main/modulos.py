@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import os
 import requests
 import time
+
 import datetime as dt
 import locale
 
@@ -26,23 +27,13 @@ class SidebarState(rx.State):
         self.is_open = False
         self.last_activity = time.time()  # Establecer la última actividad al momento de montar
 
-    def on_update(self):
-        """Comprobar inactividad cada vez que se actualiza el estado"""
-        current_time = time.time()
-        print(f"Última actividad: {self.last_activity}, Tiempo actual: {current_time}")
-        if self.is_open and current_time - self.last_activity > 5:  # 5 segundos de inactividad
-            self.is_open = False  # Cierra el sidebar
-            print("Sidebar cerrado por inactividad.")  # Para fines de depuración
-        else:
-            self.last_activity = current_time  # Actualizar el tiempo de actividad
-
 
     @rx.event
     def toggle_sidebar(self):
         """Alterna entre abrir y cerrar el sidebar"""
         self.is_open = not self.is_open
         self.last_activity = time.time()  # Resetea el temporizador al interactuar
-        print("Sidebar alternado. Está abierto:", self.is_open)  # Para fines de depuración
+
 
     @rx.event
     def reset_last_activity(self):

@@ -54,7 +54,7 @@ def sound_effect_demo():
     return rx.hstack(
         rx.script(
             """
-            var button_sfx = new Audio("D:\Users\Arnaldo\Desktop\SISTEMAS\proyectos\bot_de_prueba\src\pages\assets\mouse-click-sound-trimmed.mp3"")
+            var button_sfx = new Audio("https://github.com/arnaldoquinones/bot_de_prueba/raw/refs/heads/master/src/pages/assets/mouse-click-sound-trimmed.mp3")
             function playFromStart (sfx) {sfx.load(); sfx.play()}"""
         ),
         rx.button(
