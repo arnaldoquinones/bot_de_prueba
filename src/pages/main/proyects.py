@@ -1,6 +1,7 @@
 import reflex as rx
 from rxconfig import config
 from .modulos import header,sidebar_bottom_profile, pop_up_message
+from .bot_interface import stackbot
 
 
 
@@ -31,7 +32,7 @@ def proyects() -> rx.Component:
                 width="80%",  # Ajusta el ancho del contenedor
                 padding="2rem",  # Ajusta el padding interno
             ),
-
+            stackbot(),
             sidebar_bottom_profile(),
             pop_up_message(),  # login_multiple_thirdparty() puede reemplazar esto si es necesario
             spacing="4",  # Ajusta el espaciado entre el contenido
