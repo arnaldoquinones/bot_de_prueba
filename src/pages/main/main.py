@@ -16,7 +16,7 @@ from .proyects import proyects
 class TypewriterState(rx.State):
     text: str = ""
     full_text: str = (
-        "Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas.")
+        "Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área de analisis como en el comercial, específicamente como anaLista de riesgos y oficial de cuentas y negocios. Durante mi tiempo en el área de riske management adquirí habilidades significativas en la confeccion de informes haciendo uso de  herramientas BDD, Business Inteligence y ML contribuyendo así a la eficiencia operativa y la toma de decisiones informadas.")
 
     async def type_text(self):
         for i in range(1, len(self.full_text) + 1):
@@ -48,7 +48,7 @@ def index() -> rx.Component:
                         rx.text(TypewriterState.text,
                                 font_size="0.8em",),
                         position="absolute",
-                        top="10em",
+                        top="8em",
                         justify="center",
                         align_items="center",
                         height="420px",
