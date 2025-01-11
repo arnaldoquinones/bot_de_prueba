@@ -4,9 +4,10 @@ import reflex as rx
 def stackbot() -> rx.Component:
     """Crea un componente personalizado con un contenedor dentro de un stack."""
     return rx.stack(
+        rx.text("Chatbot", size="2xl", color="white"),
         rx.container(
             width="200px",
-            height="45vh",
+            height="75vh",
             center_content=True,
             bg=rx.color("accent", 3),
             border_radius="15px",
@@ -14,5 +15,5 @@ def stackbot() -> rx.Component:
         ),
         position="absolute",  # Posicionamiento absoluto
         bottom="2%",  # Alineado al borde inferior
-        right="60%",  # Alineado al borde izquierdo
+        right="10%",  # Alineado al borde izquierdo
     )
