@@ -39,8 +39,8 @@ def index() -> rx.Component:
                 rx.vstack(
                     rx.heading(
                         rx.fragment(
-                            rx.text("Data scientist"),
-                            rx.text("& Data analyst"),
+                            rx.text("Lic. Arnaldo Quinones", font_weight="bold"),
+                            rx.text("Data Scientist & Data analyst"),
                         ),
                         size="6"
                     ),
@@ -65,14 +65,15 @@ def index() -> rx.Component:
                         margin_top="-68px",
                         margin_left="-12em",
                     ),
-                    # rx.image(
-                    #     src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/imagen_perfil_profesional.png?raw=true",  # Cambia esta URL por la de tu imagen
-                    #     alt="Descripción de la imagen",
-                    #     width="340px",
-                    #     height="360px",
-                    #     margin_top="-9em",
-                    #     margin_left="36em",
-                    # ),
+                    rx.image(
+                    src="https://raw.githubusercontent.com/arnaldoquinones/bot_de_prueba/5c00598fa13b63002d30e5437c27aeb386bad68a/src/pages/assets/perfil_en_ovalo.png",  # URL de tu imagen
+                    alt="Descripción de la imagen",
+                    width="150px",  # Ajusta el ancho deseado
+                    margin_top="1em",
+                    margin_left="-12.5em",
+                    object_fit="contain",  # Asegura que la imagen se ajuste dentro de su contenedor
+                )
+
                 ),
                 rx.hstack(
                     rx.link(
@@ -138,7 +139,7 @@ def index() -> rx.Component:
                     spacing="4",
                     align_items="center",
                     position="absolute",
-                    top="31em",
+                    top="29em",
                 ),
                 spacing="5",
                 justify_content="center",
