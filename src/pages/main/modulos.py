@@ -491,7 +491,7 @@ def pop_up_message():
                                 "word-wrap": "break-word",
                             },
                         ),
-                        rx.hstack(
+                        rx.hstack(sound_effect_script(),
                             rx.button(
                                 "Submit",
                                 type="submit",
@@ -514,6 +514,9 @@ def pop_up_message():
                                     "transform": "scale(0.95) translateY(4px)",
                                     "box_shadow": "0 0 15px #0E1CFF, 0 0 10px #0E1CFF inset, 0 4px 0 #1565c0",
                                 },
+                                on_click=[
+                                rx.call_script("playFromStart(button_sfx)"),  # Agrega el efecto de sonido
+                            ]
                             ),
                             rx.cond(
                                 MessageFormStateV2.submit_status == "success",
