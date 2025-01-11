@@ -252,6 +252,7 @@ def header():
                     ),
                     href="/",
                     is_external=False,
+                    on_click=rx.call_script("playFromStart(button_sfx)"),  # Agrega el sonido al clic
                 ),
                 gap="2",
                 align="center",
