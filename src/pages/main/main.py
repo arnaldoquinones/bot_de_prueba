@@ -86,8 +86,10 @@ def index() -> rx.Component:
                             dark="0 0 10px rgba(66, 153, 225, 0.6)"
                         ),
                         "transform": "scale(1.05)"
-                    },
-        transition="all 0.2s ease-in-out"),
+                        },
+                        transition="all 0.2s ease-in-out",
+                        on_click=rx.call_script("playFromStart(button_sfx)")
+                        ),
                         href="https://github.com/arnaldoquinones",
                         is_external=True,
                     ),
@@ -103,7 +105,9 @@ def index() -> rx.Component:
                         ),
                         "transform": "scale(1.05)"
                     },
-                    transition="all 0.2s ease-in-out"),
+                    transition="all 0.2s ease-in-out",
+                    on_click=rx.call_script("playFromStart(button_sfx)")
+                        ),
                                     href="https://www.linkedin.com/in/apquinones/",
                                     is_external=True,
                     ),
