@@ -30,6 +30,7 @@ def proyects() -> rx.Component:
                 width="80%",  # Ajusta el ancho del contenedor
                 padding="2rem",  # Ajusta el padding interno
             ),
+            adaptive_glowing_button(),
             sidebar_bottom_profile(),
             pop_up_message(),  # login_multiple_thirdparty() puede reemplazar esto si es necesario
             spacing="4",  # Ajusta el espaciado entre el contenido
@@ -46,3 +47,23 @@ def proyects() -> rx.Component:
         # overflow_y="auto",
     )
 
+def adaptive_glowing_button():
+    return rx.button(
+        "Adaptive Glow",
+        background_color=rx.color_mode_cond(
+            light="blue.500",
+            dark="blue.600"
+        ),
+        _hover={
+            "background_color": rx.color_mode_cond(
+                light="blue.400",
+                dark="blue.500"
+            ),
+            "box_shadow": rx.color_mode_cond(
+                light="0 0 15px blue",
+                dark="0 0 15px rgba(66, 153, 225, 0.6)"
+            ),
+            "transform": "scale(1.05)"
+        },
+        transition="all 0.2s ease-in-out"
+    )

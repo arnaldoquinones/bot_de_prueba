@@ -1,11 +1,10 @@
 import reflex as rx
 from rxconfig import config
 import asyncio
-from .modulos import header, sidebar_bottom_profile, pop_up_message, MessageFormStateV2
+from .modulos import header, sidebar_bottom_profile, pop_up_message, MessageFormStateV2, sound_effect_script
 from .about_me import about
 from .skills import skills
 from .proyects import proyects
-
 
 
 # class State(rx.State):
@@ -77,21 +76,54 @@ def index() -> rx.Component:
                 ),
                 rx.hstack(
                     rx.link(
-                        rx.button(rx.icon(tag="github", size=18), "GitHub", border_radius="20px", width="120px", background_color="#003D73", color="white"),
+                        rx.button(rx.icon(tag="github", size=18), "GitHub", border_radius="20px", width="120px", background_color="#003D73", color="white",_hover={
+                        "background_color": rx.color_mode_cond(
+                            light="blue.400",
+                            dark="blue.500"
+                        ),
+                        "box_shadow": rx.color_mode_cond(
+                            light="0 0 10px blue",
+                            dark="0 0 10px rgba(66, 153, 225, 0.6)"
+                        ),
+                        "transform": "scale(1.05)"
+                    },
+        transition="all 0.2s ease-in-out"),
                         href="https://github.com/arnaldoquinones",
                         is_external=True,
                     ),
                     rx.link(
-                        rx.button(rx.icon(tag="linkedin", size=18), "Linkedin", border_radius="20px", width="120px", background_color="#003D73", color="white"),
-                        href="https://www.linkedin.com/in/apquinones/",
-                        is_external=True,
+                        rx.button(rx.icon(tag="linkedin", size=18), "Linkedin", border_radius="20px", width="120px", background_color="#003D73", color="white",_hover={
+                        "background_color": rx.color_mode_cond(
+                            light="blue.400",
+                            dark="blue.500"
+                        ),
+                        "box_shadow": rx.color_mode_cond(
+                            light="0 0 10px blue",
+                            dark="0 0 10px rgba(66, 153, 225, 0.6)"
+                        ),
+                        "transform": "scale(1.05)"
+                    },
+                    transition="all 0.2s ease-in-out"),
+                                    href="https://www.linkedin.com/in/apquinones/",
+                                    is_external=True,
                     ),
                     rx.button(
                         rx.icon(tag="mail", size=18),
                         "Messages",
                         border_radius="20px",
                         width="120px",
-                        background_color="#003D73", color="white",
+                        background_color="#003D73", color="white",_hover={
+                        "background_color": rx.color_mode_cond(
+                            light="blue.400",
+                            dark="blue.500"
+                        ),
+                        "box_shadow": rx.color_mode_cond(
+                            light="0 0 10px blue",
+                            dark="0 0 10px rgba(66, 153, 225, 0.6)"
+                        ),
+                        "transform": "scale(1.05)"
+                    },
+        transition="all 0.2s ease-in-out",
                         on_click=MessageFormStateV2.toggle_popover  # Asegúrate de que este evento sea el adecuado
                     ),
                     spacing="4",

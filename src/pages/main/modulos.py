@@ -8,15 +8,13 @@ from dotenv import load_dotenv
 import os
 import requests
 import time
-
+import asyncio
 import datetime as dt
 import locale
 
 # -------------------------
 # -- BARRA SIDEBAR  MENU --
 # -------------------------
-
-
 
 class SidebarState(rx.State):
     is_open: bool = False
@@ -135,14 +133,34 @@ def sidebar_bottom_profile() -> rx.Component:
         shadow="xl",
     )
 
+class SoundEffectState(rx.State):
+    @rx.event(background=True)
+    async def delayed_play(self):
+        await asyncio.sleep(1)
+        return rx.call_script("playFromStart(button_sfx)")
+
+
+def sound_effect_script():
+    """Script para inicializar el efecto de sonido."""
+    return rx.script(
+        """
+        var button_sfx = new Audio("https://github.com/arnaldoquinones/bot_de_prueba/raw/refs/heads/master/src/pages/assets/mouse-click-sound-trimmed.mp3");
+        function playFromStart(sfx) {sfx.load(); sfx.play();}
+        """
+    )
 
 
 def sidebar_with_toggle() -> rx.Component:
-    """Permite alternar la visibilidad del sidebar."""
+    """Permite alternar la visibilidad del sidebar con efecto de sonido."""
     return rx.box(
+        sound_effect_script(),  # Agregar el script de sonido
         rx.icon(
             "menu",
-            on_click=SidebarState.toggle_sidebar,
+            # Combinar el efecto de sonido y el cambio de estado
+            on_click=[
+                rx.call_script("playFromStart(button_sfx)"),
+                SidebarState.toggle_sidebar,  # Acción de alternar el sidebar
+            ],
             position="absolute",
             left="7%",
             top="13%",
@@ -156,6 +174,7 @@ def sidebar_with_toggle() -> rx.Component:
     )
 
 # ------ FIN DE LA BARRA SIDEBAR MENU ------
+
 
 
 
@@ -255,7 +274,6 @@ def header():
                 margin_top="5em",
                 margin_right="58em",
                 text_align="right",
-                style=style["animate"],
             ),
             position="absolute",
             top="0",
@@ -546,11 +564,31 @@ import reflex as rx  # Reflex es el framework
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
-# Clave de la API
-API_KEY = os.getenv("api_weather_key")
+# # Clave de la API
+# API_KEY = os.getenv("api_weather_key")
 
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+API_KEY = "cc927a091110908fb4a1fe8ac93353b1"  # Asigna directamente el API Key
+CITY = "Buenos Aires"
+
+def kelvin_to_celsius(kelvin):
+   celsius = kelvin - 273.15
+   return celsius
+
+url = f"{BASE_URL}?q={CITY}&appid={API_KEY}"
+
+# Realizar la solicitud
+response = requests.get(url).json()
+
+
+temp_kelvin = response["main"]["temp"]  
+temp_celsius = kelvin_to_celsius(temp_kelvin)
+description = response["weather"][0]["description"]
+
+print(f"Temperatura en {CITY}: {temp_celsius:.2f}°C")
+print(f"Clima general en {CITY}: {description}")
 
 
 def index():
