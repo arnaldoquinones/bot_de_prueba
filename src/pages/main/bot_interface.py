@@ -66,12 +66,21 @@ def action_bar() -> rx.Component:
             placeholder="Ingrese su consulta...",
             on_change=State.set_question,
             border_radius="40px",
+<<<<<<< HEAD
             width="170%",
         ),
         rx.icon(
                 tag="send-horizontal",
                 margin_right="-375px",
                 margin_top="-35px",
+=======
+            width="140%",
+        ),
+        rx.icon(
+                tag="send-horizontal",
+                margin_right="-270px",
+                margin_top="-37px",
+>>>>>>> d5f27ab8bee0887908f5b41bf208c37273fc79a2
                 align_self="center",
                 size=19  # Use integers for size instead of font_size
         ),
