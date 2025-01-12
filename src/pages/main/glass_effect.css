@@ -1,0 +1,19 @@
+body {
+    background:url('./img/fondo.jpg') no-repeat center center fixed;
+    background-size:cover;
+}
+
+#contenedor-formulario{
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    /* filter:blur(10px); */
+    backdrop-filter:blur(1px);
+}
+
+#tel, #msj, #email, #nombre {
+    background: rgba(249, 249, 250, 0.1)
+}
+
+::placeholder {
+    color: rgb(245, 245, 245) !important;
+}
