@@ -4,6 +4,21 @@ class State(rx.State):
     question: str = ""
     chat_history: list[tuple[str, str]] = []
 
+    def set_question(self, value: str):
+        """Divide el texto en líneas de 30 caracteres y lo asigna a la variable question."""
+        max_length = 120
+        line_length = 30
+
+        # Limita la longitud total de los caracteres a max_length
+        value = value[:max_length]
+
+        # Divide el texto en líneas de 30 caracteres
+        formatted_text = ""
+        for i in range(0, len(value), line_length):
+            formatted_text += value[i:i+line_length] + "\n"  # Agregar salto de línea
+
+        self.question = formatted_text
+
     def submit_message(self):
         """Procesa el mensaje al enviarlo."""
         if self.question.strip():
@@ -24,6 +39,7 @@ class State(rx.State):
 
 shadow = "rgba(0, 0, 0, 0.15) 0px 2px 8px"
 chat_margin = "5%"
+
 message_style = dict(
     padding="0.8em",
     border_radius="5px",
@@ -64,6 +80,9 @@ def chat() -> rx.Component:
         bg=rx.color("gray", 1),
         margin_bottom="0.5em",
         width="100%",
+        display="flex",
+        flex_direction="column",  # Mantener el orden correcto de los mensajes
+        justify_content="flex-end",  # Aseguramos que los nuevos mensajes se ubiquen al final
     )
 
 def action_bar() -> rx.Component:
@@ -73,11 +92,16 @@ def action_bar() -> rx.Component:
             placeholder="Ingrese su consulta...",
             on_change=State.set_question,
             on_key_down=State.handle_key_down,
-            border_radius="40px",
+            border_radius="12px",
             width="100%",
             margin_right="2%",
             margin_top="48px",
             max_length=120,  # Límite absoluto de caracteres
+            style={
+                "word-wrap": "break-word",  # Forzar salto de línea en palabras largas
+                "overflow-wrap": "break-word",  # Compatibilidad para otros navegadores
+                "white-space": "pre-wrap",  # Mantiene los saltos de línea
+            },
         ),
         rx.icon(
             tag="send-horizontal",
@@ -90,6 +114,7 @@ def action_bar() -> rx.Component:
         width="100%",
         on_click=State.answer,
     )
+
 
 def stackbot() -> rx.Component:
     return rx.stack(
