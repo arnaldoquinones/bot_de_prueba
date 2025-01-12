@@ -3,19 +3,19 @@ import reflex as rx
 class State(rx.State):
     question: str = ""
     chat_history: list[tuple[str, str]] = []
-    
+
     def submit_message(self):
-        """Método auxiliar para procesar el mensaje."""
+        """Procesa el mensaje al enviarlo."""
         if self.question.strip():
             answer = f"Respuesta a: {self.question}"
             self.chat_history.append((self.question, answer))
-            self.question = ""
-    
+            self.question = ""  # Limpia la entrada después de enviar
+
     @rx.event
     async def answer(self):
         self.submit_message()
         yield
-    
+
     @rx.event
     async def handle_key_down(self, key: str):
         if key == "Enter":
@@ -77,6 +77,7 @@ def action_bar() -> rx.Component:
             width="100%",
             margin_right="2%",
             margin_top="48px",
+            max_length=120,  # Límite absoluto de caracteres
         ),
         rx.icon(
             tag="send-horizontal",
