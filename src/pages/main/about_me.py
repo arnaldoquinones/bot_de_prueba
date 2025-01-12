@@ -30,7 +30,6 @@ def about() -> rx.Component:
                 padding="1em",
                 flex="1",
             ),
-            stackbot2(),
             sidebar_bottom_profile(),
         ),
         min_height="100vh",
@@ -43,46 +42,4 @@ def about() -> rx.Component:
         # background="linear-gradient(to bottom, #002266, #001122)",
         # overflow_y="auto",
     )
-
-
-def stackbot2() -> rx.Component:
-    """Crea un componente personalizado con un contenedor dentro de un stack."""
-    return rx.stack(
-           rx.flex(
-            rx.input(
-                placeholder="Ingrese consulta",
-                margin_right="-590px",
-                border_radius="40px",
-                width="290px",
-            ),
-        rx.icon(
-                tag="send-horizontal",
-                margin_right="-40px",
-                align_self="center",
-                size=19  # Use integers for size instead of font_size
-        ),
-            direction="row",
-            spacing="4",  # Valor permitido para spacing
-            align="center",
-            style={"maxWidth": "320px"},  # Ajuste para contener ambos elementos
-            position="relative",  # Asegura que los elementos se posicionen correctamente
-            top="10px",  # Ajuste para separarlo del borde superior
-        ),
-        rx.container(
-            width="300px",
-            height="70vh",
-            center_content=True,
-            background="rgba(255, 255, 255, 0.3)",  # Fondo translúcido con menos opacidad
-            backdrop_filter="blur(4px)",  # Difuminado reducido
-            border_radius="15px",
-            box_shadow="10px 10px 15px rgba(0, 0, 0, 0.3)",  # Sombra ligera
-            padding="20px",  # Espaciado interno para mejor visualización
-        ),
-        position="absolute",  # Posicionamiento absoluto
-        bottom="2%",  # Alineado al borde inferior
-        right="10%",  # Alineado al borde derecho
-    )
-
-
-
 
