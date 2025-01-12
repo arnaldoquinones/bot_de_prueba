@@ -60,25 +60,25 @@ def chat() -> rx.Component:
 
 # Barra de acciones para ingresar consultas
 def action_bar() -> rx.Component:
-    return rx.hstack(
+    return rx.vstack(
         rx.input(
             value=State.question,
             placeholder="Ingrese su consulta...",
             on_change=State.set_question,
             border_radius="40px",
-            width="70%",
+            width="170%",
         ),
-        rx.button(
-            "Enviar",
+        rx.icon(
+                tag="send-horizontal",
+                margin_right="-375px",
+                margin_top="-35px",
+                align_self="center",
+                size=19  # Use integers for size instead of font_size
+        ),
             on_click=State.answer,
-            margin_left="1em",
-            border_radius="20px",
+          
         ),
-        width="100%",
-        spacing="4",  # Espaciado válido en Reflex
-        align="center",
-        padding="1em",
-    )
+        
 
 # Componente principal que contiene la UI del chatbot
 def stackbot() -> rx.Component:
@@ -89,14 +89,16 @@ def stackbot() -> rx.Component:
                 action_bar(),
                 spacing="4",  # Espaciado válido entre chat y barra de acciones
             ),
-            width="270px",
+            width="320px",
             height="70vh",
             padding="1em",
-            bg="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/fondo_chatbot.jpg?raw=true') center/cover",
+            background_color="rgba(0,0,0,0.4)",  # Fondo transparente con un toque de color
+             backdrop_filter="blur(0px)",  # Difuminado en el fondo
             border_radius="15px",
             box_shadow="10px 10px 15px rgba(0, 0, 0, 0.3), 0px 0px 5px transparent",
         ),
         position="absolute",
         bottom="2%",
-        right="10%",
+        right="40%",
     )
+
