@@ -51,14 +51,16 @@ def stackbot2() -> rx.Component:
         rx.flex(
     rx.input(
         placeholder="Ingrese consulta",
+        margin_right="-30px",
         border_radius="40px",
-        width="245px",
+        width="290px",
     ),
-    rx.icon(
+rx.icon(
         tag="send-horizontal",
-        margin_left="-40px", # Push icon to overlap with input
-        align_self="center", # Center vertically
-    ),
+        margin_right="-40px",
+        align_self="center",
+        size=19  # Use integers for size instead of font_size
+),
     direction="row",
     spacing="0", # Remove spacing between input and icon
     align="center", # Center items vertically
@@ -68,7 +70,7 @@ def stackbot2() -> rx.Component:
     left="255px",
 ),
         rx.container(
-    width="270px",
+    width="300px",
     height="70vh",
     center_content=True,
     background="url('https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/fondo_chatbot.jpg?raw=true') center/cover",  # Corregido el uso de la URL y la propiedad
