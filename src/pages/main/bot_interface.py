@@ -88,11 +88,12 @@ def chat() -> rx.Component:
         padding="0.8em",
         height="55vh",
         border_radius="12px",
-        bg=rx.color("gray", 1),
+        bg="rgba(0,0,0,0.4)",  # Fondo translúcido similar al de stackbot
         margin_bottom="0.5em",
         margin_top="20px",  # Aquí estamos moviendo solo la ventana de mensajes hacia abajo
         width="100%",
     )
+
 
 
 
@@ -105,7 +106,7 @@ def action_bar() -> rx.Component:
             on_key_down=State.handle_key_down,
             border_radius="40px",
             width="100%",
-            margin_top="px",  # Espacio entre la barra de acción y el chat
+            margin_top="-5px",  # Espacio entre la barra de acción y el chat
         ),
         rx.icon(
             tag="send-horizontal",
