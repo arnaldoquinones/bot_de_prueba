@@ -3,34 +3,19 @@ import reflex as rx
 class State(rx.State):
     question: str = ""
     chat_history: list[tuple[str, str]] = []
-
-    def set_question(self, value: str):
-        """Divide el texto en líneas de 30 caracteres y lo asigna a la variable question."""
-        max_length = 120
-        line_length = 30
-
-        # Limita la longitud total de los caracteres a max_length
-        value = value[:max_length]
-
-        # Divide el texto en líneas de 30 caracteres
-        formatted_text = ""
-        for i in range(0, len(value), line_length):
-            formatted_text += value[i:i+line_length] + "\n"  # Agregar salto de línea
-
-        self.question = formatted_text
-
+    
     def submit_message(self):
-        """Procesa el mensaje al enviarlo."""
+        """Método auxiliar para procesar el mensaje."""
         if self.question.strip():
             answer = f"Respuesta a: {self.question}"
             self.chat_history.append((self.question, answer))
-            self.question = ""  # Limpia la entrada después de enviar
-
+            self.question = ""
+    
     @rx.event
     async def answer(self):
         self.submit_message()
         yield
-
+    
     @rx.event
     async def handle_key_down(self, key: str):
         if key == "Enter":
@@ -39,6 +24,27 @@ class State(rx.State):
 
 shadow = "rgba(0, 0, 0, 0.15) 0px 2px 8px"
 chat_margin = "5%"
+
+# Estilo minimalista para la barra de desplazamiento
+scrollbar_style = {
+    "&::-webkit-scrollbar": {
+        "width": "6px",  # Ancho más delgado
+    },
+    "&::-webkit-scrollbar-thumb": {
+        "background-color": "rgba(255, 255, 255, 0.1)",  # Color más sutil
+        "border-radius": "3px",
+    },
+    "&::-webkit-scrollbar-track": {
+        "background": "transparent",  # Track invisible
+    },
+    "scrollbar-width": "thin",
+    "scrollbar-color": "rgba(255, 255, 255, 0.1) transparent",
+    "&:hover": {
+        "&::-webkit-scrollbar-thumb": {
+            "background-color": "rgba(255, 255, 255, 0.2)",  # Un poco más visible al hover
+        }
+    }
+}
 
 message_style = dict(
     padding="0.8em",
@@ -69,21 +75,26 @@ def qa(question: str, answer: str) -> rx.Component:
 
 def chat() -> rx.Component:
     return rx.box(
-        rx.foreach(
-            State.chat_history,
-            lambda messages: qa(messages[0], messages[1]),
+        rx.box(
+            rx.foreach(
+                State.chat_history,
+                lambda messages: qa(messages[0], messages[1]),
+            ),
+            width="100%",
+            height="100%",
+            overflow_y="auto",
+            style=scrollbar_style,
         ),
         padding="0.8em",
-        height="50vh",
-        overflow_y="scroll",
+        height="55vh",
         border_radius="12px",
         bg=rx.color("gray", 1),
         margin_bottom="0.5em",
+        margin_top="20px",  # Aquí estamos moviendo solo la ventana de mensajes hacia abajo
         width="100%",
-        display="flex",
-        flex_direction="column",  # Mantener el orden correcto de los mensajes
-        justify_content="flex-end",  # Aseguramos que los nuevos mensajes se ubiquen al final
     )
+
+
 
 def action_bar() -> rx.Component:
     return rx.vstack(
@@ -92,48 +103,40 @@ def action_bar() -> rx.Component:
             placeholder="Ingrese su consulta...",
             on_change=State.set_question,
             on_key_down=State.handle_key_down,
-            border_radius="12px",
+            border_radius="40px",
             width="100%",
-            margin_right="2%",
-            margin_top="48px",
-            max_length=120,  # Límite absoluto de caracteres
-            style={
-                "word-wrap": "break-word",  # Forzar salto de línea en palabras largas
-                "overflow-wrap": "break-word",  # Compatibilidad para otros navegadores
-                "white-space": "pre-wrap",  # Mantiene los saltos de línea
-            },
+            margin_top="-10px",  # Espacio entre la barra de acción y el chat
         ),
         rx.icon(
             tag="send-horizontal",
-            margin_right="2%",
-            margin_top="-38px",
+            margin_right="3%",
+            margin_top="-38px",  # Posiciona el ícono sobre la caja de entrada
             align_self="flex-end",
             size=19,
             cursor="pointer",
         ),
         width="100%",
-        on_click=State.answer,
+        on_click=State.answer,  # Acción al hacer clic en el ícono
     )
-
 
 def stackbot() -> rx.Component:
     return rx.stack(
         rx.container(
             rx.vstack(
-                chat(),
+                chat(),  # Mantén el chat independiente de otros elementos
                 action_bar(),
                 spacing="3",
                 width="100%",
             ),
-            width="300px",
-            height="70vh",
+            width="300px",  # Tamaño fijo para la ventana
+            height="70vh",  # Altura fija
             padding="0.8em",
-            background_color="rgba(0,0,0,0.4)",
-            backdrop_filter="blur(0px)",
+            background_color="rgba(0,0,0,0.4)",  # Fondo translúcido
+            backdrop_filter="blur(0px)",  # Efecto de desenfoque en el fondo
             border_radius="15px",
             box_shadow="10px 10px 15px rgba(0, 0, 0, 0.3), 0px 0px 5px transparent",
         ),
-        position="absolute",
-        bottom="2%",
-        right="40%",
+        position="absolute",  # Posiciona el contenedor de forma absoluta
+        bottom="2%",  # Distancia desde el borde inferior
+        right="40%",  # Distancia desde el borde derecho
     )
