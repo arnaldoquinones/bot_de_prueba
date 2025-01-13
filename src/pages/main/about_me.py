@@ -2,6 +2,7 @@ import reflex as rx
 from rxconfig import config
 from .modulos import header, sidebar_bottom_profile, pop_up_message
 import asyncio
+from .bot_interface import stackbot
 
 
 def about() -> rx.Component:
@@ -30,6 +31,7 @@ def about() -> rx.Component:
                 padding="1em",
                 flex="1",
             ),
+            stackbot(),
             sidebar_bottom_profile(),
         ),
         min_height="100vh",
