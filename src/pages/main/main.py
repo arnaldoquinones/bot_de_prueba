@@ -5,11 +5,13 @@ from .modulos import header, sidebar_bottom_profile, pop_up_message, MessageForm
 from .about_me import about
 from .skills import skills
 from .proyects import proyects
-from .bot_interface import stackbot
 
 
 # class State(rx.State):
 #     pass
+
+
+
 
 class TypewriterState(rx.State):
     text: str = ""
@@ -144,7 +146,6 @@ def index() -> rx.Component:
                 flex="1",
            
             ),
-            stackbot(),
              sidebar_bottom_profile(),
              pop_up_message(),
         ),
