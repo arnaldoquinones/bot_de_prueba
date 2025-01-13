@@ -105,7 +105,7 @@ def action_bar() -> rx.Component:
             on_key_down=State.handle_key_down,
             border_radius="40px",
             width="100%",
-            margin_top="-10px",  # Espacio entre la barra de acción y el chat
+            margin_top="px",  # Espacio entre la barra de acción y el chat
         ),
         rx.icon(
             tag="send-horizontal",

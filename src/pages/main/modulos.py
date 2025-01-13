@@ -20,11 +20,13 @@ class SidebarState(rx.State):
     is_open: bool = False
     last_activity: float = time.time()  # Tiempo de la última actividad
 
+    # Estado para controlar si la ventana del chatbot está abierta o cerrada
+    chatbot_window_open: bool = False  # Aquí controlamos si la ventana está abierta o cerrada
+
     def on_mount(self):
-        """Inicializar el sidebar como cerrado cuando el componente se monta"""
+        """Inicializa el estado cuando el componente se monta"""
         self.is_open = False
         self.last_activity = time.time()  # Establecer la última actividad al momento de montar
-
 
     @rx.event
     def toggle_sidebar(self):
@@ -32,6 +34,10 @@ class SidebarState(rx.State):
         self.is_open = not self.is_open
         self.last_activity = time.time()  # Resetea el temporizador al interactuar
 
+    @rx.event
+    def open_chat_window(self):
+        """Acción para abrir la ventana del chatbot"""
+        self.chatbot_window_open = True  # Establecer el estado como abierto
 
     @rx.event
     def reset_last_activity(self):
@@ -85,7 +91,7 @@ def sidebar_item() -> rx.Component:
         create_sidebar_item("About me", "user", href="./about"),
         create_sidebar_item("Projects", "square-library", href="./proyects"),
         create_sidebar_item("Skills", "bar-chart-4", href="./skills"),
-        create_sidebar_item("Chatbot", "bot-message-square"),
+        create_sidebar_item("Chatbot", "bot-message-square", on_click=SidebarState.open_chat_window),  # Acción para abrir el chat
         create_sidebar_item("Messages", "mail", on_click=MessageFormStateV2.toggle_popover),  # Asegúrate de definir la función de click si la necesitas
         spacing="2",
         width="12em",
