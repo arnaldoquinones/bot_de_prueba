@@ -18,10 +18,8 @@ import locale
 
 class SidebarState(rx.State):
     is_open: bool = False
-    last_activity: float = time.time()  # Tiempo de la última actividad
-
-    # Estado para controlar si la ventana del chatbot está abierta o cerrada
-    chatbot_window_open: bool = False  # Aquí controlamos si la ventana está abierta o cerrada
+    last_activity: float = time.time()
+    chatbot_window_open: bool = False 
 
     def on_mount(self):
         """Inicializa el estado cuando el componente se monta"""
@@ -91,7 +89,7 @@ def sidebar_item() -> rx.Component:
         create_sidebar_item("About me", "user", href="./about"),
         create_sidebar_item("Projects", "square-library", href="./proyects"),
         create_sidebar_item("Skills", "bar-chart-4", href="./skills"),
-        create_sidebar_item("Chatbot", "bot-message-square", on_click=SidebarState.open_chat_window),  # Acción para abrir el chat
+        create_sidebar_item("Chatbot", "bot-message-square", on_click=SidebarState.open_chat_window),  # Aquí se abre el chatbot
         create_sidebar_item("Messages", "mail", on_click=MessageFormStateV2.toggle_popover),  # Asegúrate de definir la función de click si la necesitas
         spacing="2",
         width="12em",
