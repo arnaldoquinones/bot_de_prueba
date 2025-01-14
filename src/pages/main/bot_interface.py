@@ -46,7 +46,7 @@ class State(rx.State):
         # Insert line break every 30 characters
         chunks = [value[i:i+25] for i in range(0, len(value), 25)]
         self.question = '\n'.join(chunks)
-
+    
 # Estilo minimalista para la barra de desplazamiento
 scrollbar_style = {
     "&::-webkit-scrollbar": {"width": "6px"},
