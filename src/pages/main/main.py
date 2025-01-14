@@ -7,6 +7,7 @@ from .skills import skills
 from .proyects import proyects
 
 
+
 # class State(rx.State):
 #     pass
 

@@ -12,6 +12,7 @@ import asyncio
 import datetime as dt
 import locale
 
+
 # -------------------------
 # -- BARRA SIDEBAR  MENU --
 # -------------------------
@@ -31,6 +32,12 @@ class SidebarState(rx.State):
         """Alterna entre abrir y cerrar el sidebar"""
         self.is_open = not self.is_open
         self.last_activity = time.time()  # Resetea el temporizador al interactuar
+
+    @rx.event
+    def toggle_window(self):
+        """Alterna la ventana del chatbot."""
+        self.chatbot_window_open = not self.chatbot_window_open  # Cambia el estado
+        print(f"Ventana del chatbot {'abierta' if self.chatbot_window_open else 'cerrada'}")
 
     @rx.event
     def open_chat_window(self):
@@ -89,7 +96,7 @@ def sidebar_item() -> rx.Component:
         create_sidebar_item("About me", "user", href="./about"),
         create_sidebar_item("Projects", "square-library", href="./proyects"),
         create_sidebar_item("Skills", "bar-chart-4", href="./skills"),
-        create_sidebar_item("Chatbot", "bot-message-square", on_click=SidebarState.open_chat_window),  # Aquí se abre el chatbot
+        create_sidebar_item("Chatbot", "bot-message-square", on_click=SidebarState.toggle_window),
         create_sidebar_item("Messages", "mail", on_click=MessageFormStateV2.toggle_popover),  # Asegúrate de definir la función de click si la necesitas
         spacing="2",
         width="12em",

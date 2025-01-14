@@ -12,6 +12,15 @@ class State(rx.State):
             answer = f"Respuesta a: {self.question}"
             self.chat_history.append((self.question, answer))
             self.question = ""
+            # Forzar scroll al fondo después de enviar mensaje
+            return rx.call_script("scrollToBottom()")
+
+    def submit_message(self):
+        """Procesar el mensaje del usuario."""
+        if self.question.strip():
+            answer = f"Respuesta a: {self.question}"
+            self.chat_history.append((self.question, answer))
+            self.question = ""
 
     @rx.event
     async def answer(self):
@@ -90,6 +99,22 @@ def chat() -> rx.Component:
             height="100%",
             overflow_y="auto",
             style=scrollbar_style,
+            id="chat-container",
+            on_mount=rx.call_script("""
+                function scrollToBottom() {
+                    const container = document.getElementById('chat-container');
+                    if (container) {
+                        container.scrollTop = container.scrollHeight;
+                    }
+                }
+                scrollToBottom();
+                // Llamar a scrollToBottom cada vez que se modifique el contenido
+                const observer = new MutationObserver(scrollToBottom);
+                observer.observe(document.getElementById('chat-container'), { 
+                    childList: true, 
+                    subtree: true 
+                });
+            """),
         ),
         padding="0.8em",
         height="55vh",
@@ -99,17 +124,6 @@ def chat() -> rx.Component:
         margin_top="20px",
         width="100%",
     )
-
-def render_chat_window() -> rx.Component:
-    """Renderiza la ventana del chatbot."""
-    if SidebarState.chatbot_window_open:
-        return rx.box(
-            rx.text("Este es el chatbot"),
-            bg="gray.100",
-            padding="1em",
-            border_radius="lg",
-        )
-    return rx.box()  # Si el chatbot no está abierto, no muestra nada
 
 def action_bar() -> rx.Component:
     """Barra de acción del chat."""
@@ -175,22 +189,27 @@ def stackbot() -> rx.Component:
         right="40%",
     )
 
+# Sidebar con el botón para abrir el chatbot, ahora posicionado abajo
 def sidebar() -> rx.Component:
-    """Sidebar con el botón para abrir el chatbot."""
     return rx.box(
         rx.button(
             "Abrir Chatbot",
             on_click=State.toggle_window,
+            bg="blue.500",  # Color de fondo del botón
+            color="white",  # Color del texto
+            padding="10px 20px",  # Padding del botón
+            border_radius="20px",  # Bordes redondeados
+            _hover={"bg": "blue.600"},  # Color al pasar el mouse
         ),
         position="fixed",
-        left="0",
-        top="50%",
-        transform="translateY(-50%)",
+        left="20px",  # Margen desde la izquierda
+        bottom="20px",  # Posicionado desde abajo
+        z_index="1000",  # Asegura que esté por encima de otros elementos
     )
 
 def main_layout() -> rx.Component:
-    """Diseño principal de la aplicación."""
-    return rx.vstack(
+    """Diseño principal con sidebar y chatbot."""
+    return rx.box(
         sidebar(),
-        render_chat_window(),
+        stackbot(),
     )
