@@ -125,7 +125,7 @@ def chat() -> rx.Component:
         padding="0.8em",
         height="55vh",
         border_radius="12px",
-        bg=rx.color("gray", 1),
+        bg="rgba(0, 0, 0, 0.1)",  # Cambiado a fondo transparente
         margin_bottom="0.5em",
         margin_top="20px",
         width="100%",
