@@ -1,5 +1,5 @@
 import reflex as rx
-from .modulos import SidebarState  # Este módulo debe existir y contener el estado compartido
+
 
 class State(rx.State):
     question: str = ""
