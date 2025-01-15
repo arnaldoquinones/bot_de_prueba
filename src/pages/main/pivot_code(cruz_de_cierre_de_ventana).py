@@ -66,7 +66,7 @@ question_style = message_style | dict(
 
 answer_style = message_style | dict(
     margin_right="5%",
-    background_color=rx.color("accent", 8),
+    background_color="linear-gradient(to right, #8e44ad, #e91e63, #3498db)",,
 )
 
 def qa(question: str, answer: str) -> rx.Component:

@@ -72,12 +72,12 @@ message_style = dict(
 
 question_style = message_style | dict(
     margin_left="5%",
-    background_color=rx.color("gray", 4),
+    background="linear-gradient(to right, #0e8174, #08354b)",
 )
 
 answer_style = message_style | dict(
     margin_right="5%",
-    background_color=rx.color("accent", 8),
+    background_image="linear-gradient(to right, #8e44ad, #e91e63, #3498db)",
 )
 
 def qa(question: str, answer: str) -> rx.Component:
@@ -110,7 +110,6 @@ def chat() -> rx.Component:
                     }
                 }
                 scrollToBottom();
-                // Llamar a scrollToBottom cada vez que se modifique el contenido
                 const observer = new MutationObserver(scrollToBottom);
                 observer.observe(document.getElementById('chat-container'), { 
                     childList: true, 
@@ -121,11 +120,15 @@ def chat() -> rx.Component:
         padding="0.8em",
         height="55vh",
         border_radius="12px",
-        bg="rgba(0, 0, 0, 0.1)",  # Cambiado a fondo transparente
+        bg="rgba(200, 200, 200, 0.1)",  # Gris claro con 10% de opacidad
+        backdrop_filter="blur(6px)",  # Efecto de difuminado suave
         margin_bottom="0.5em",
         margin_top="20px",
         width="100%",
+        box_shadow="0px 4px 8px rgba(0, 0, 0, 0.1)",  # Sombra sutil para resaltar el contenedor
     )
+
+
 
 def action_bar() -> rx.Component:
     return rx.vstack(
@@ -171,7 +174,7 @@ def action_bar() -> rx.Component:
         rx.icon(
             tag="send-horizontal",
             margin_right="2%",
-            margin_top="-43px",  # Adjusted for new textarea position
+            margin_top="-40px",  # Adjusted for new textarea position
             align_self="flex-end",
             size=22,
             cursor="pointer",
@@ -193,8 +196,8 @@ def stackbot() -> rx.Component:
             width="300px",
             height="70vh",
             padding="0.8em",
-            background_color="rgba(0,0,0,0.4)",
-            backdrop_filter="blur(0px)",
+            background_color="rgba(0,0,0,0.6)",  # Más opaco
+            backdrop_filter="blur(8px)",  # Más desenfoque
             border_radius="15px",
             box_shadow="10px 10px 15px rgba(0, 0, 0, 0.3), 0px 0px 5px transparent",
             position="relative",
@@ -219,6 +222,7 @@ def stackbot() -> rx.Component:
         bottom="2%",
         right="40%",
     )
+
 
 # Sidebar con el botón para abrir el chatbot, ahora posicionado abajo
 def sidebar() -> rx.Component:
