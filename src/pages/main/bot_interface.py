@@ -15,13 +15,7 @@ class State(rx.State):
             # Forzar scroll al fondo después de enviar mensaje
             return rx.call_script("scrollToBottom()")
 
-    def submit_message(self):
-        """Procesar el mensaje del usuario."""
-        if self.question.strip():
-            answer = f"Respuesta a: {self.question}"
-            self.chat_history.append((self.question, answer))
-            self.question = ""
-
+   
     @rx.event
     async def answer(self):
         """Evento que procesa la pregunta y genera una respuesta."""
@@ -34,6 +28,8 @@ class State(rx.State):
         if key == "Enter":
             self.submit_message()
         yield
+    
+    
 
     @rx.event
     def toggle_window(self):
@@ -133,7 +129,7 @@ def chat() -> rx.Component:
 
 def action_bar() -> rx.Component:
     return rx.vstack(
-        rx.text_area(
+        rx.input(
             value=State.question,
             placeholder="Ingrese su consulta...",
             on_change=State.set_question,

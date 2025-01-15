@@ -20,7 +20,8 @@ import locale
 class SidebarState(rx.State):
     is_open: bool = False
     last_activity: float = time.time()
-    chatbot_window_open: bool = False 
+    chatbot_window_open: bool = False
+    auto_hide_time: float = 10  # Tiempo de espera para ocultar el sidebar, en segundos
 
     def on_mount(self):
         """Inicializa el estado cuando el componente se monta"""
@@ -32,6 +33,21 @@ class SidebarState(rx.State):
         """Alterna entre abrir y cerrar el sidebar"""
         self.is_open = not self.is_open
         self.last_activity = time.time()  # Resetea el temporizador al interactuar
+        
+        # Si el sidebar se abre, iniciamos el temporizador
+        if self.is_open:
+            self.start_auto_hide_timer()
+
+    @rx.event
+    async def start_auto_hide_timer(self):
+        """Inicia un temporizador que oculta el sidebar después de 10 segundos"""
+        # Espera 10 segundos
+        await asyncio.sleep(self.auto_hide_time)
+
+        # Solo oculta el sidebar si sigue abierto
+        if self.is_open:
+            self.is_open = False
+            print("Sidebar ocultado automáticamente después de 10 segundos")
 
     @rx.event
     def toggle_window(self):
@@ -49,6 +65,8 @@ class SidebarState(rx.State):
         """Actualizar el tiempo de la última actividad al interactuar"""
         self.last_activity = time.time()
         print("Actividad detectada. Última actividad actualizada.")  # Para fines de depuración
+
+
 
 
 def create_sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandler = None) -> rx.Component:
