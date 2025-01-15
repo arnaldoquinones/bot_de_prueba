@@ -1,6 +1,6 @@
 import reflex as rx
 from rxconfig import config
-import re  # Para usar expresiones regulares en la validación del email
+import re
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -13,67 +13,46 @@ import asyncio
 import datetime as dt
 import locale
 
-
-# -------------------------
-# -- BARRA SIDEBAR  MENU --
-# -------------------------
-
 class SidebarState(rx.State):
     is_open: bool = False
     last_activity: float = time.time()
     chatbot_window_open: bool = False
-    auto_hide_time: float = 10  # Tiempo de espera para ocultar el sidebar, en segundos
+    auto_hide_time: float = 10
 
     def on_mount(self):
-        """Inicializa el estado cuando el componente se monta"""
         self.is_open = False
-        self.last_activity = time.time()  # Establecer la última actividad al momento de montar
+        self.last_activity = time.time()
 
     @rx.event
     def toggle_sidebar(self):
-        """Alterna entre abrir y cerrar el sidebar"""
         self.is_open = not self.is_open
-        self.last_activity = time.time()  # Resetea el temporizador al interactuar
-        
-        # Si el sidebar se abre, iniciamos el temporizador
+        self.last_activity = time.time()
         if self.is_open:
             self.start_auto_hide_timer()
 
     @rx.event
     async def start_auto_hide_timer(self):
-        """Inicia un temporizador que oculta el sidebar después de 10 segundos"""
-        # Espera 10 segundos
         await asyncio.sleep(self.auto_hide_time)
-
-        # Solo oculta el sidebar si sigue abierto
         if self.is_open:
             self.is_open = False
             print("Sidebar ocultado automáticamente después de 10 segundos")
 
     @rx.event
     def toggle_window(self):
-        """Alterna la ventana del chatbot."""
-        self.chatbot_window_open = not self.chatbot_window_open  # Cambia el estado
+        self.chatbot_window_open = not self.chatbot_window_open
         print(f"Ventana del chatbot {'abierta' if self.chatbot_window_open else 'cerrada'}")
 
     @rx.event
     def open_chat_window(self):
-        """Acción para abrir la ventana del chatbot"""
-        self.chatbot_window_open = True  # Establecer el estado como abierto
+        self.chatbot_window_open = True
 
     @rx.event
     def reset_last_activity(self):
-        """Actualizar el tiempo de la última actividad al interactuar"""
         self.last_activity = time.time()
-        print("Actividad detectada. Última actividad actualizada.")  # Para fines de depuración
-
-
-
+        print("Actividad detectada. Última actividad actualizada.")
 
 def create_sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandler = None) -> rx.Component:
-    """Crea un único elemento del menú lateral."""
     link_props = {"href": href} if href else {"on_click": on_click}
-
     return rx.link(
         rx.hstack(
             rx.icon(icon),
@@ -97,15 +76,11 @@ def create_sidebar_item(text: str, icon: str, href: str = None, on_click: rx.Eve
         width="100%",
     )
 
-
 def sidebar_item() -> rx.Component:
-    """Crea la lista completa de elementos del menú lateral."""
     return rx.vstack(
         rx.flex(
             rx.input(
-                rx.input.slot(
-                    rx.icon(tag="search"),
-                ),
+                rx.input.slot(rx.icon(tag="search")),
                 placeholder="Ingrese consulta",
             ),
             direction="column",
@@ -116,14 +91,12 @@ def sidebar_item() -> rx.Component:
         create_sidebar_item("Projects", "square-library", href="./proyects"),
         create_sidebar_item("Skills", "bar-chart-4", href="./skills"),
         create_sidebar_item("Chatbot", "bot-message-square", on_click=State.toggle_window),
-        create_sidebar_item("Messages", "mail", on_click=MessageFormStateV2.toggle_popover),  # Asegúrate de definir la función de click si la necesitas
+        create_sidebar_item("Messages", "mail", on_click=MessageFormStateV2.toggle_popover),
         spacing="2",
         width="12em",
     )
 
-
 def sidebar_bottom_profile() -> rx.Component:
-    """Define el perfil inferior del sidebar con transición fluida."""
     return rx.box(
         rx.vstack(
             sidebar_item(),
@@ -157,7 +130,7 @@ def sidebar_bottom_profile() -> rx.Component:
             left="0",
             top="160px",
             transform=rx.cond(SidebarState.is_open, "translateX(0)", "translateX(-100%)"),
-            transition="transform 0.3s ease-in-out",  # Control de deslizamiento
+            transition="transform 0.3s ease-in-out",
         ),
         bg=rx.color("accent", 2),
         shadow="xl",
@@ -169,9 +142,7 @@ class SoundEffectState(rx.State):
         await asyncio.sleep(1)
         return rx.call_script("playFromStart(button_sfx)")
 
-
 def sound_effect_script():
-    """Script para inicializar el efecto de sonido."""
     return rx.script(
         """
         var button_sfx = new Audio("https://github.com/arnaldoquinones/bot_de_prueba/raw/refs/heads/master/src/pages/assets/mouse-click-sound-trimmed.mp3");
@@ -179,17 +150,16 @@ def sound_effect_script():
         """
     )
 
-
 def sidebar_with_toggle() -> rx.Component:
-    """Permite alternar la visibilidad del sidebar con efecto de sonido."""
     return rx.box(
-        sound_effect_script(),  # Agregar el script de sonido
+        sound_effect_script(),
+        rx.cond(
+            SidebarState.is_open,
             rx.icon(
-                "menu",
-                # Combinar el efecto de sonido y el cambio de estado
+                "arrow-left",
                 on_click=[
                     rx.call_script("playFromStart(button_sfx)"),
-                    SidebarState.toggle_sidebar,  # Acción de alternar el sidebar
+                    SidebarState.toggle_sidebar,
                 ],
                 position="absolute",
                 left="7%",
@@ -200,8 +170,25 @@ def sidebar_with_toggle() -> rx.Component:
                 size=48,
                 cursor="pointer",
             ),
+            rx.icon(
+                "menu",
+                on_click=[
+                    rx.call_script("playFromStart(button_sfx)"),
+                    SidebarState.toggle_sidebar,
+                ],
+                position="absolute",
+                left="7%",
+                top="13%",
+                transform="translate(-50%, -50%)",
+                color_scheme="teal",
+                background="transparent",
+                size=48,
+                cursor="pointer",
+            )
+        ),
         sidebar_bottom_profile(),
     )
+
 
 # ------ FIN DE LA BARRA SIDEBAR MENU ------
 
