@@ -17,7 +17,7 @@ class SidebarState(rx.State):
     is_open: bool = False
     last_activity: float = time.time()
     chatbot_window_open: bool = False
-    auto_hide_time: float = 8
+    auto_hide_time: float = 10
 
     def on_mount(self):
         self.is_open = False
@@ -474,6 +474,7 @@ def pop_up_message():
                             placeholder="First Name",
                             name="first_name",
                             required=True,
+                            max_length=50,
                             style={
                                 "text-align": "left",
                                 "min_width": "270px",
@@ -483,6 +484,7 @@ def pop_up_message():
                             placeholder="Last Name",
                             name="last_name",
                             required=True,
+                            max_length=50,
                             style={
                                 "text-align": "left",
                                 "min_width": "270px",
@@ -494,6 +496,7 @@ def pop_up_message():
                                 placeholder=MessageFormStateV2.email_error,
                                 name="email",
                                 required=True,
+                                max_length=60,
                                 style={
                                     "border": "1px solid red",
                                     "min_width": "270px",
@@ -503,6 +506,7 @@ def pop_up_message():
                                 placeholder="Email",
                                 name="email",
                                 required=True,
+                                max_length=60,
                                 style={
                                     "border": "1px solid gray",
                                     "min_width": "270px",
@@ -513,6 +517,7 @@ def pop_up_message():
                             placeholder="Write your message",
                             name="message",
                             required=True,
+                            max_length=500,
                             style={
                                 "text-align": "left",
                                 "resize": "vertical",
@@ -656,3 +661,6 @@ def index():
             #             bottom="2%",  # Alineado al borde inferior
             #             right="60%",  # Alineado al borde izquierdo
             #         ),
+
+
+
