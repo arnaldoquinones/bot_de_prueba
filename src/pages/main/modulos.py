@@ -628,17 +628,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
-import reflex as rx
-import requests
-
-
-
 # Configuración de la API
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+BASE_URL = os.getenv('BASE_URL')
 
 load_dotenv()
-API_KEY = "cc927a091110908fb4a1fe8ac93353b1"  
+API_KEY = os.getenv('api_wether_key') 
 CITY = "Buenos Aires" 
 
 # Función para convertir Kelvin a Celsius
