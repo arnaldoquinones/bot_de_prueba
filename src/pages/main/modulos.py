@@ -375,7 +375,7 @@ def send_email(form_data: dict):
     subject = "Nuevo mensaje de contacto desde tu sitio web"
     body = f"""
     Has recibido un nuevo mensaje de contacto:
-    
+
     Nombre: {form_data.get('first_name')} {form_data.get('last_name')}
     Email: {form_data.get('email')}
     Mensaje:
@@ -391,10 +391,10 @@ def send_email(form_data: dict):
 
     # Enviar el correo
     try:
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:  # Usando SMTP de Gmail
-            server.starttls()  # Inicia conexión segura
-            server.login(sender_email, sender_password)  # Inicia sesión
-            server.send_message(msg)  # Envía el correo
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.send_message(msg)
             print("Correo enviado exitosamente.")
             return True
     except Exception as e:
@@ -402,24 +402,17 @@ def send_email(form_data: dict):
         return False
 
 class MessageFormStateV2(rx.State):
-    is_popover_open: bool = False  # Controla la visibilidad del pop-up
-    form_data: dict = {}          # Almacena los datos enviados del formulario
-    name_error: str = ""         # Mensaje de error en el campo de name
-    email_error: str = ""         # Mensaje de error en el campo de email
-    submit_status: str = ""       # Para rastrear el estado del envío
-    is_submitting: bool = False   # Para controlar el estado durante el envío
+    is_popover_open: bool = False
+    form_data: dict = {}
+    email_error: str = ""
+    submit_status: str = ""
+    is_submitting: bool = False
 
     @rx.event
     def toggle_popover(self):
         """Alterna la visibilidad del pop-up."""
         self.is_popover_open = not self.is_popover_open
-        self.submit_status = ""  # Resetear el estado del envío al abrir/cerrar
-        self.email_error = ""    # Asegurar que el error del email esté vacío al abrir el pop-up
-
-    @rx.event
-    def validate_name(self, name: str) -> bool:
-        """Valida que el nombre no esté vacío y solo contenga caracteres válidos."""
-        return bool(name.strip())  # Retorna False si está vacío o solo tiene espacios
+        self.submit_status = ""
 
     @rx.event
     def validate_email(self, email: str) -> bool:
@@ -431,26 +424,24 @@ class MessageFormStateV2(rx.State):
     async def handle_submit(self, form_data: dict):
         """Maneja el envío del formulario."""
         print("Formulario recibido:", form_data)
-        first_name = form_data.get("first_name", "").strip()
         email = form_data.get("email", "").strip()
 
-    # Validar nombre
-        if not self.validate_name(first_name):
-            self.name_error = "Please enter your name."
-            return
-
-        # Validar email
         if not self.validate_email(email):
             self.email_error = "Please enter a valid email address."
             return
 
-        # Resetear errores
-        self.name_error = ""
         self.email_error = ""
         self.form_data = form_data
         self.is_submitting = True
 
-    # ... resto del código ...
+        if send_email(form_data):
+            self.submit_status = "success"
+            await asyncio.sleep(2)  # Pausa de 2 segundos antes de cerrar
+            self.is_popover_open = False
+        else:
+            self.submit_status = "error"
+
+        self.is_submitting = False
 
 def pop_up_message():
     return rx.dialog.root(
@@ -464,8 +455,8 @@ def pop_up_message():
                         on_click=MessageFormStateV2.toggle_popover,
                         style={
                             "position": "absolute",
-                            "top": "6px",
-                            "right": "6px",
+                            "top": "0",
+                            "right": "0",
                             "background": "transparent",
                             "border": "transparent",
                             "color": "white",
@@ -478,18 +469,6 @@ def pop_up_message():
             rx.dialog(
                 rx.form(
                     rx.vstack(
-                        rx.cond(
-                        MessageFormStateV2.name_error,
-                        rx.input(
-                            placeholder=MessageFormStateV2.name_error,
-                            name="first_name",
-                            required=True,
-                            max_length=50,
-                            style={
-                                "border": "1px solid red",
-                                "min_width": "270px",
-                            },
-                        ),
                         rx.input(
                             placeholder="First Name",
                             name="first_name",
@@ -500,7 +479,6 @@ def pop_up_message():
                                 "min_width": "270px",
                             },
                         ),
-                    ),
                         rx.input(
                             placeholder="Last Name",
                             name="last_name",
@@ -517,7 +495,7 @@ def pop_up_message():
                                 placeholder=MessageFormStateV2.email_error,
                                 name="email",
                                 required=True,
-                                max_length=60,
+                                max_length=500,
                                 style={
                                     "border": "1px solid red",
                                     "min_width": "270px",
@@ -527,7 +505,6 @@ def pop_up_message():
                                 placeholder="Email",
                                 name="email",
                                 required=True,
-                                max_length=60,
                                 style={
                                     "border": "1px solid gray",
                                     "min_width": "270px",
@@ -538,7 +515,6 @@ def pop_up_message():
                             placeholder="Write your message",
                             name="message",
                             required=True,
-                            max_length=500,
                             style={
                                 "text-align": "left",
                                 "resize": "vertical",
@@ -613,7 +589,7 @@ def pop_up_message():
         open=MessageFormStateV2.is_popover_open,
     )
 
-# ------ FIN DE POP UP WINDOW MAIL ------
+# ------ FIN DE POP UP WINDOW MAIL -----
 
 
 
