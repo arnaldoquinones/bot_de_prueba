@@ -404,6 +404,7 @@ def send_email(form_data: dict):
 class MessageFormStateV2(rx.State):
     is_popover_open: bool = False  # Controla la visibilidad del pop-up
     form_data: dict = {}          # Almacena los datos enviados del formulario
+    name_error: str = ""         # Mensaje de error en el campo de name
     email_error: str = ""         # Mensaje de error en el campo de email
     submit_status: str = ""       # Para rastrear el estado del envío
     is_submitting: bool = False   # Para controlar el estado durante el envío
@@ -416,6 +417,11 @@ class MessageFormStateV2(rx.State):
         self.email_error = ""    # Asegurar que el error del email esté vacío al abrir el pop-up
 
     @rx.event
+    def validate_name(self, name: str) -> bool:
+        """Valida que el nombre no esté vacío y solo contenga caracteres válidos."""
+        return bool(name.strip())  # Retorna False si está vacío o solo tiene espacios
+
+    @rx.event
     def validate_email(self, email: str) -> bool:
         """Valida el formato del email."""
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -425,25 +431,26 @@ class MessageFormStateV2(rx.State):
     async def handle_submit(self, form_data: dict):
         """Maneja el envío del formulario."""
         print("Formulario recibido:", form_data)
+        first_name = form_data.get("first_name", "").strip()
         email = form_data.get("email", "").strip()
 
+    # Validar nombre
+        if not self.validate_name(first_name):
+            self.name_error = "Please enter your name."
+            return
+
+        # Validar email
         if not self.validate_email(email):
             self.email_error = "Please enter a valid email address."
             return
 
+        # Resetear errores
+        self.name_error = ""
         self.email_error = ""
         self.form_data = form_data
         self.is_submitting = True
 
-        # Intentar enviar el email
-        if send_email(form_data):
-            self.submit_status = "success"
-            await rx.sleep(2)  # Esperar 2 segundos antes de cerrar
-            self.is_popover_open = False
-        else:
-            self.submit_status = "error"
-        
-        self.is_submitting = False
+    # ... resto del código ...
 
 def pop_up_message():
     return rx.dialog.root(
@@ -471,6 +478,18 @@ def pop_up_message():
             rx.dialog(
                 rx.form(
                     rx.vstack(
+                        rx.cond(
+                        MessageFormStateV2.name_error,
+                        rx.input(
+                            placeholder=MessageFormStateV2.name_error,
+                            name="first_name",
+                            required=True,
+                            max_length=50,
+                            style={
+                                "border": "1px solid red",
+                                "min_width": "270px",
+                            },
+                        ),
                         rx.input(
                             placeholder="First Name",
                             name="first_name",
@@ -481,10 +500,11 @@ def pop_up_message():
                                 "min_width": "270px",
                             },
                         ),
+                    ),
                         rx.input(
                             placeholder="Last Name",
                             name="last_name",
-                            required=True,
+                            required=False,
                             max_length=50,
                             style={
                                 "text-align": "left",
