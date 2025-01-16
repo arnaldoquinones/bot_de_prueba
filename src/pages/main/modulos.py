@@ -413,6 +413,7 @@ class MessageFormStateV2(rx.State):
         """Alterna la visibilidad del pop-up."""
         self.is_popover_open = not self.is_popover_open
         self.submit_status = ""  # Resetear el estado del envío al abrir/cerrar
+        self.email_error = ""    # Asegurar que el error del email esté vacío al abrir el pop-up
 
     @rx.event
     def validate_email(self, email: str) -> bool:
