@@ -367,9 +367,9 @@ def send_email(form_data: dict):
     """
     Envía un correo electrónico utilizando los datos del formulario.
     """
-    sender_email = "arnaldpqportfolio@gmail.com"  # Cambia esto a tu correo
-    receiver_email = "arnaldpqportfolio@gmail.com"  # Correo que recibirá los mensajes
-    sender_password = "xxx"  # Contraseña del remitente
+    sender_email = "arnaldopqportfolio@gmail.com"  # Cambia esto a tu correo
+    receiver_email = "arnaldopqportfolio@gmail.com"  # Correo que recibirá los mensajes
+    sender_password = os.getenv('email_pass')  # Contraseña del remitente
 
     # Crear el contenido del correo
     subject = "Nuevo mensaje de contacto desde tu sitio web"
