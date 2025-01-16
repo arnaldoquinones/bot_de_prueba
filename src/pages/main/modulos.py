@@ -17,25 +17,24 @@ class SidebarState(rx.State):
     is_open: bool = False
     last_activity: float = time.time()
     chatbot_window_open: bool = False
-    auto_hide_time: float = 10
+    auto_hide_time: float = 8
 
     def on_mount(self):
         self.is_open = False
-        self.last_activity = time.time()
+
 
     @rx.event
     def toggle_sidebar(self):
         self.is_open = not self.is_open
-        self.last_activity = time.time()
         if self.is_open:
-            self.start_auto_hide_timer()
+            return SidebarState.start_auto_hide_timer
 
-    @rx.event
+    @rx.event(background=True)
     async def start_auto_hide_timer(self):
         await asyncio.sleep(self.auto_hide_time)
-        if self.is_open:
+        async with self:
             self.is_open = False
-            print("Sidebar ocultado automáticamente después de 10 segundos")
+
 
     @rx.event
     def toggle_window(self):
