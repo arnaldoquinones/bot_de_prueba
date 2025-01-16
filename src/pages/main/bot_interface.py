@@ -4,7 +4,7 @@ import reflex as rx
 class State(rx.State):
     question: str = ""
     chat_history: list[tuple[str, str]] = []
-    window_open: bool = True  # Controla si la ventana está abierta
+    window_open: bool = False  # Controla si la ventana está abierta
 
     def submit_message(self):
         """Procesar el mensaje del usuario."""
@@ -249,5 +249,3 @@ def main_layout() -> rx.Component:
         stackbot(),
     )
 
-
-#    

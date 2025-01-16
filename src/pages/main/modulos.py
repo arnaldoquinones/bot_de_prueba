@@ -457,8 +457,8 @@ def pop_up_message():
                         on_click=MessageFormStateV2.toggle_popover,
                         style={
                             "position": "absolute",
-                            "top": "0",
-                            "right": "0",
+                            "top": "6px",
+                            "right": "6px",
                             "background": "transparent",
                             "border": "transparent",
                             "color": "white",
@@ -601,17 +601,20 @@ import reflex as rx  # Reflex es el framework
 import requests
 from dotenv import load_dotenv
 
-# load_dotenv()
+load_dotenv()
 
-# # Clave de la API
-# API_KEY = os.getenv("api_weather_key")
+
 import reflex as rx
 import requests
 
+
+
 # Configuración de la API
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
-API_KEY = "cc927a091110908fb4a1fe8ac93353b1"  # Coloca tu API Key aquí
-CITY = "Buenos Aires"  # No lo mostramos, pero lo usamos para la API
+
+load_dotenv()
+API_KEY = "cc927a091110908fb4a1fe8ac93353b1"  
+CITY = "Buenos Aires" 
 
 # Función para convertir Kelvin a Celsius
 def kelvin_to_celsius(kelvin):
