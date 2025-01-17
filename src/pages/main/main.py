@@ -3,6 +3,7 @@ from rxconfig import config
 import asyncio
 from .modulos import header, sidebar_bottom_profile, pop_up_message, MessageFormStateV2, sound_effect_script
 from .about_me import about
+from .resumen import resumen
 from .skills import skills
 from .proyects import proyects
 from .bot_interface import stackbot
@@ -167,6 +168,7 @@ def main_page() -> rx.Component:
         rx.link("About Me", href="./about_me"),
         rx.link("Skills", href="./skills"),
         rx.link("Projects", href="./proyects"),
+        rx.link("Projects", href="./resumen"),
         # rx.text("Welcome to my Portfolio", size="3", font_weight="bold"),
         # spacing="4",
         # align="center",
@@ -181,3 +183,4 @@ app.add_page(about)
 app.add_page(skills)
 app.add_page(proyects)
 app.add_page(index)  # Agregar la página principal.
+app.add_page(resumen)  # Agregar la página principal.
