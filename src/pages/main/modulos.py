@@ -446,10 +446,6 @@ class MessageFormStateV2(rx.State):
         self.is_submitting = False
         self.is_popover_open = False
 
-
-
-
-
 def pop_up_message():
     return rx.dialog.root(
         rx.dialog.content(
@@ -462,8 +458,8 @@ def pop_up_message():
                         on_click=MessageFormStateV2.toggle_popover,
                         style={
                             "position": "absolute",
-                            "top": "0",
-                            "right": "0",
+                            "top": "6px",
+                            "right": "6px",
                             "background": "transparent",
                             "border": "transparent",
                             "color": "white",
