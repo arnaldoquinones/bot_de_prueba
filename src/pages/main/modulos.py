@@ -361,15 +361,16 @@ class MessageFormState(rx.State):
         """Toggle the popover visibility."""
         self.is_popover_open = not self.is_popover_open
 
+
 load_dotenv()
 
 def send_email(form_data: dict):
     """
     Envía un correo electrónico utilizando los datos del formulario.
     """
-    sender_email = "arnaldopqportfolio@gmail.com"  # Cambia esto a tu correo
-    receiver_email = "arnaldopqportfolio@gmail.com"  # Correo que recibirá los mensajes
-    sender_password = os.getenv('email_pass')  # Contraseña del remitente
+    sender_email = "arnaldopqportfolio@gmail.com"
+    receiver_email = "arnaldopqportfolio@gmail.com"
+    sender_password = os.getenv('email_pass')
 
     # Crear el contenido del correo
     subject = "Nuevo mensaje de contacto desde tu sitio web"
@@ -420,28 +421,34 @@ class MessageFormStateV2(rx.State):
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         return re.match(pattern, email) is not None
 
-    @rx.event
+    @rx.event 
     async def handle_submit(self, form_data: dict):
-        """Maneja el envío del formulario."""
-        print("Formulario recibido:", form_data)
+        """Handle the form submit."""
+        print("Form received:", form_data)
         email = form_data.get("email", "").strip()
 
         if not self.validate_email(email):
             self.email_error = "Please enter a valid email address."
             return
-
+        
         self.email_error = ""
         self.form_data = form_data
         self.is_submitting = True
 
         if send_email(form_data):
             self.submit_status = "success"
-            await asyncio.sleep(2)  # Pausa de 2 segundos antes de cerrar
-            self.is_popover_open = False
+            yield rx.toast("Message sent successfully!", duration=2000)
+            await asyncio.sleep(2)  # Keep the success message visible for 2 seconds
         else:
             self.submit_status = "error"
+            yield rx.toast("Error sending message!", duration=2000)
 
         self.is_submitting = False
+        self.is_popover_open = False
+
+
+
+
 
 def pop_up_message():
     return rx.dialog.root(
