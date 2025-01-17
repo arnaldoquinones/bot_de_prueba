@@ -81,6 +81,7 @@ def sidebar_item() -> rx.Component:
             rx.input(
                 rx.input.slot(rx.icon(tag="search")),
                 placeholder="Ingrese consulta",
+                max_length=50,
             ),
             direction="column",
             spacing="3",
