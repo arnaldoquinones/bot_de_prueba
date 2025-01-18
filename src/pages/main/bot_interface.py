@@ -93,6 +93,8 @@ def chat() -> rx.Component:
     """Área de chat."""
     return rx.box(
         rx.box(
+             # Add spacer div at top
+            rx.box(height="40vh"),  # This pushes first message down
             rx.foreach(
                 State.chat_history,
                 lambda messages: qa(messages[0], messages[1]),
@@ -102,6 +104,8 @@ def chat() -> rx.Component:
             overflow_y="auto",
             style=scrollbar_style,
             id="chat-container",
+            display="flex",  # Add flex display
+            flex_direction="column",  # Reverse the direction
             on_mount=rx.call_script("""
                 function scrollToBottom() {
                     const container = document.getElementById('chat-container');
@@ -127,8 +131,6 @@ def chat() -> rx.Component:
         width="100%",
         box_shadow="0px 4px 8px rgba(0, 0, 0, 0.1)",  # Sombra sutil para resaltar el contenedor
     )
-
-
 
 def action_bar() -> rx.Component:
     return rx.vstack(
