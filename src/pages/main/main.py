@@ -63,6 +63,17 @@ def index() -> rx.Component:
                         alt="Foto de perfil",
                         margin_top="-68px",
                         margin_left="-12em",
+                        animation="neonGlow 2s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955)",
+                        style={
+                            "@keyframes neonGlow": {
+                                "0%": {
+                                    "filter": "drop-shadow(0 0 10px rgba(255,255,255,.3)) drop-shadow(0 0 20px rgba(255,255,255,.3)) drop-shadow(0 0 40px rgba(66,220,219,.3)) drop-shadow(0 0 60px rgba(66,220,219,.3))"
+                                },
+                                "100%": {
+                                    "filter": "drop-shadow(0 0 2px rgba(255,255,255,.2)) drop-shadow(0 0 8px rgba(255,255,255,.2)) drop-shadow(0 0 20px rgba(66,220,219,.2)) drop-shadow(0 0 30px rgba(66,220,219,.2))"
+                                }
+                            }
+                        }
                     ),
                     # rx.image(
                     #     src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/imagen_perfil_profesional.png?raw=true",  # Cambia esta URL por la de tu imagen

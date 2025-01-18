@@ -5,6 +5,13 @@ from .bot_interface import stackbot
 
 
 
+import reflex as rx
+from rxconfig import config
+from .modulos import header,sidebar_bottom_profile, pop_up_message
+from .bot_interface import stackbot
+
+
+
 def resumen() -> rx.Component:
     """Página Proyects."""
     return rx.box(

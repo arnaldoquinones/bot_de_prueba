@@ -438,11 +438,11 @@ class MessageFormStateV2(rx.State):
 
         if send_email(form_data):
             self.submit_status = "success"
-            yield rx.toast("Message sent successfully!", duration=2000)
+            yield rx.toast("Message sent successfully!", duration=3000)
             await asyncio.sleep(2)  # Keep the success message visible for 2 seconds
         else:
             self.submit_status = "error"
-            yield rx.toast("Error sending message!", duration=2000)
+            yield rx.toast("Error sending message!", duration=3000)
 
         self.is_submitting = False
         self.is_popover_open = False

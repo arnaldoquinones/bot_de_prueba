@@ -39,8 +39,19 @@ def skills() -> rx.Component:
                         height="auto",
                         border_radius="50%",
                         alt="Foto de perfil",
-                        margin_top="-58px",
+                        margin_top="-64px",
                         margin_left="-11.9em",
+                        animation="neonGlow 2s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955)",
+                        style={
+                            "@keyframes neonGlow": {
+                                "0%": {
+                                    "filter": "drop-shadow(0 0 10px rgba(255,255,255,.3)) drop-shadow(0 0 20px rgba(255,255,255,.3)) drop-shadow(0 0 40px rgba(66,220,219,.3)) drop-shadow(0 0 60px rgba(66,220,219,.3))"
+                                },
+                                "100%": {
+                                    "filter": "drop-shadow(0 0 2px rgba(255,255,255,.2)) drop-shadow(0 0 8px rgba(255,255,255,.2)) drop-shadow(0 0 20px rgba(66,220,219,.2)) drop-shadow(0 0 30px rgba(66,220,219,.2))"
+                                }
+                            }
+                        }
                     ),
                     # Aquí se aplica el efecto de la animación tipo escritura sin el cursor
                     # rx.box(
