@@ -79,10 +79,14 @@ def sidebar_item() -> rx.Component:
     return rx.vstack(
         rx.flex(
             rx.input(
-                rx.input.slot(rx.icon(tag="search")),
-                placeholder="Ingrese consulta",
-                max_length=50,
-            ),
+            rx.input.slot(rx.icon(tag="search", size=16), style={"order": 1}),
+            placeholder="Ingrese consulta",
+            max_length=50,
+            border_radius="90px",
+            style={
+                "text_align": "center" # alinea el texto y el placeholder a la izquierda
+            },
+        ),
             direction="column",
             spacing="3",
             style={"maxWidth": 500},

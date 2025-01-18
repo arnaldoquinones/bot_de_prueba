@@ -80,6 +80,8 @@ answer_style = message_style | dict(
     background_image="linear-gradient(to right, #8e44ad, #e91e63, #3498db)",
 )
 
+
+
 def qa(question: str, answer: str) -> rx.Component:
     """Renderiza un par de pregunta-respuesta."""
     return rx.box(
