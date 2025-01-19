@@ -13,6 +13,10 @@ import asyncio
 import datetime as dt
 import locale
 
+# --------------------
+# --- SIDEBAR MENU ---
+# --------------------
+
 class SidebarState(rx.State):
     is_open: bool = False
     last_activity: float = time.time()
@@ -125,7 +129,7 @@ def sidebar_bottom_profile() -> rx.Component:
             margin_top="auto",
             padding_x="1em",
             padding_y="0.5cm",
-            bg=rx.color("accent", 3),
+            bg=rx.color("accent", 3),  # Este podría estar sobrescribiendo el fondo transparente, revisa si lo necesitas.
             align="start",
             height="calc(100vh - 60px)",
             overflow="auto",
@@ -136,9 +140,13 @@ def sidebar_bottom_profile() -> rx.Component:
             transform=rx.cond(SidebarState.is_open, "translateX(0)", "translateX(-100%)"),
             transition="transform 0.3s ease-in-out",
         ),
-        bg=rx.color("accent", 2),
+        bg="transparent",  # Asegúrate de que este estilo esté aplicándose correctamente
         shadow="xl",
+        style={
+            "background": "transparent",  # Agregar directamente en el estilo como refuerzo
+        },
     )
+
 
 class SoundEffectState(rx.State):
     @rx.event(background=True)

@@ -1,0 +1,189 @@
+{
+    "personal_info": {
+      "name": "Quiñones Arnaldo Pedro",
+      "location": "Buenos Aires, Argentina",
+      "phone": "+54 11 61186817",
+      "email": "arnaldopedroquinones@gmail.com",
+      "linkedin": "https://linkedin.com/in/apquinones",
+      "github": "https://github.com/arnaldoquinones"
+    },
+    "profile_summary": {
+      "title": "Data Scientist | Lic. Adm de Empresas",
+      "description": "Analista de riesgo crediticio con más de 12 años de experiencia en monitoreo, carga y control de datos en el ámbito bancario. Experto en proyectos de bases de datos, BI, y reportes crediticios. Listo para asumir desafíos como especialista en datos, aportando valor a la competitividad del negocio."
+    },
+    "academic_history": [
+      {
+        "degree": "Data Science",
+        "institution": "Henry Bootcamp",
+        "description": "800 horas de cursado teórico-práctico en ciencia de datos.",
+        "year_graduated": 2024
+      },
+      {
+        "degree": "Licenciado en Administración de Empresas",
+        "institution": "Universidad de Buenos Aires",
+        "year_graduated": 2017
+      },
+      {
+        "degree": "Contador Público",
+        "institution": "Universidad de Buenos Aires",
+        "progress": "81%",
+        "expected_completion": 2024
+      },
+      {
+        "degree": "Licenciado en Sistemas de Información",
+        "institution": "Universidad de Buenos Aires",
+        "progress": "67%",
+        "expected_completion": 2024
+      },
+      {
+        "degree": "Ciencias de la Computación",
+        "institution": "Universidad de Buenos Aires",
+        "progress": "22%"
+      }
+    ],
+    "work_history": [
+      {
+        "position": "Data Scientist",
+        "company": "Outlier",
+        "start_date": "2024-10",
+        "end_date": "Actualidad",
+        "responsibilities": [
+          "Analizar y evaluar prompts con un enfoque crítico para maximizar el rendimiento de los modelos."
+        ]
+      },
+      {
+        "position": "Data Scientist Teaching Assistant",
+        "company": "Henry",
+        "start_date": "2024-05",
+        "end_date": "2024-07",
+        "responsibilities": [
+          "Coordinar a un grupo de estudiantes para lograr su integración en el equipo de estudio.",
+          "Asistir en la resolución de ejercicios y promover la colaboración grupal mediante Pair Programming.",
+          "Proponer ideas para la mejora de los procesos del Bootcamp."
+        ]
+      },
+      {
+        "position": "Docente de Sistemas Contables",
+        "company": "Universidad de Buenos Aires",
+        "start_date": "2023-06",
+        "end_date": "Actualidad",
+        "responsibilities": [
+          "Facilitar la transmisión efectiva de conceptos complejos a los estudiantes.",
+          "Fomentar un ambiente de aprendizaje abierto y colaborativo."
+        ]
+      },
+      {
+        "position": "Oficial de Cuentas / Asistente Comercial de Empresas Pymes / Analista de Administración de Créditos",
+        "company": "I.C.B.C.",
+        "start_date": "2004-02",
+        "end_date": "2023-05",
+        "responsibilities": [
+          "Recopilar, limpiar y analizar grandes volúmenes de datos financieros y crediticios.",
+          "Manejar bases de datos como SQL, Access y Excel, asegurando precisión y relevancia de la información.",
+          "Elaborar reportes detallados y visualizaciones utilizando herramientas de BI como MicroStrategy.",
+          "Gestionar la carga y actualización de datos sensibles en sistemas internos, garantizando su integridad y confidencialidad."
+        ]
+      },
+      {
+        "position": "Supervisor y Encargado del Sector Corporate Credit Files",
+        "company": "I.C.B.C.",
+        "start_date": "2000-03",
+        "end_date": "2004-02",
+        "responsibilities": [
+          "Liderar el proyecto de digitalización de archivos crediticios corporativos.",
+          "Supervisar y coordinar equipos, asegurando el cumplimiento de los objetivos y plazos."
+        ]
+      }
+    ],
+    "skills": {
+      "hard_skills": [
+        "Python",
+        "HTML",
+        "Docker",
+        "Git",
+        "Power BI",
+        "DAX",
+        "Tableau",
+        "Linux",
+        "Google Cloud",
+        "MySQL"
+      ],
+      "soft_skills": [
+        "Proactividad",
+        "Trabajo en equipo",
+        "Pensamiento crítico",
+        "Comunicación efectiva"
+      ]
+    },
+    "projects": [
+      {
+        "title": "Proyecto Machine Learning Operations",
+        "description": "Creación de un modelo de ML para implementar un sistema de recomendación de videojuegos para usuarios de la plataforma STEAM.",
+        "year": 2024,
+        "role": "Data Scientist",
+        "technologies": [
+          "Python",
+          "ETL",
+          "EDA",
+          "Machine Learning"
+        ],
+        "functionalities": [
+          "Desarrollo de ETL y EDA",
+          "Confección de API y su despliegue en la web",
+          "Entrenamiento de modelos de machine learning",
+          "Implementación de un sistema de recomendación"
+        ]
+      },
+      {
+        "title": "Proyecto Accidentes Viales Buenos Aires",
+        "description": "Elaboración de un sistema de análisis de datos para generar información que permita a las autoridades tomar medidas para disminuir las víctimas fatales de los siniestros viales.",
+        "year": 2024,
+        "role": "Data Analyst",
+        "technologies": [
+          "Power BI",
+          "ETL",
+          "EDA"
+        ],
+        "functionalities": [
+          "Desarrollo de ETL y EDA",
+          "Confección de dashboard interactivo con Power BI",
+          "Creación de KPIs específicos",
+          "Reporte de análisis"
+        ]
+      },
+      {
+        "title": "Proyecto Recomendación de Restaurantes USA",
+        "description": "Análisis del mercado estadounidense para un conglomerado de restaurantes, cruzando opiniones de Yelp y Google Maps mediante análisis de sentimientos.",
+        "year": 2024,
+        "role": "Data Engineer",
+        "technologies": [
+          "ETL",
+          "EDA",
+          "Machine Learning"
+        ],
+        "functionalities": [
+          "Desarrollo de ETL y EDA",
+          "Creación de un Data Warehouse",
+          "Entrenamiento de modelos de machine learning para predecir tendencias",
+          "Implementación de un sistema de recomendación de restaurantes"
+        ]
+      },
+      {
+        "title": "Proyecto de Entrenamiento de Chatbot para Websites",
+        "description": "Desarrollo de una website para entrenar un bot que responda preguntas sobre el historial laboral, comprendiendo en la práctica el proceso de entrenamiento de un modelo de ML.",
+        "year": 2024,
+        "role": "Data Scientist",
+        "technologies": [
+          "NLU",
+          "RASA",
+          "UI",
+          "REFLEX"
+        ],
+        "functionalities": [
+          "Desarrollo de una UI a través del framework REFLEX",
+          "Entrenamiento de un modelo de machine learning NLU usando el framework RASA"
+        ]
+      }
+    ]
+  }
+  
