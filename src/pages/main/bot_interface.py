@@ -60,6 +60,7 @@ scrollbar_style = {
     },
 }
 
+
 # Estilo de los mensajes
 message_style = dict(
     padding="0.8em",
@@ -73,14 +74,34 @@ message_style = dict(
 question_style = message_style | dict(
     margin_left="5%",
     background="linear-gradient(to right, #0e8174, #08354b)",
+    max_height="auto",
 )
 
 answer_style = message_style | dict(
     margin_right="5%",
     background_image="linear-gradient(to right, #8e44ad, #e91e63, #3498db)",
+    max_height="auto",
 )
 
+# answer_style = {
+#     "background": "linear-gradient(to right, #8e44ad, #e91e63, #3498db)",  # Gradiente de colores
+#     "border-radius": "20px",  # Bordes redondeados
+#     "padding": "5px 10px",  # Reducir el padding
+#     "line-height": "1.2",  # Ajustar el line-height
+#     "max-width": "80%",  # Tamaño máximo de la burbuja
+#     "box-shadow": "0 4px 6px rgba(0, 0, 0, 0.1)",  # Sombra
+#     "position": "relative",  # Para la punta de la burbuja
+# }
 
+# question_style = {
+#     "background": "linear-gradient(to right, #0e8174, #08354b)",  # Gradiente de colores
+#     "border-radius": "20px",  # Bordes redondeados
+#     "padding": "5px 10px",  # Reducir el padding
+#     "line-height": "1.2",  # Ajustar el line-height
+#     "max-width": "80%",  # Tamaño máximo de la burbuja
+#     "box-shadow": "0 4px 6px rgba(0, 0, 0, 0.1)",  # Sombra
+#     "position": "relative",  # Para la punta de la burbuja
+# }
 
 def qa(question: str, answer: str) -> rx.Component:
     """Renderiza un par de pregunta-respuesta."""
@@ -106,8 +127,8 @@ def chat() -> rx.Component:
             overflow_y="auto",
             style=scrollbar_style,
             id="chat-container",
-            display="flex",  # Add flex display
-            flex_direction="column",  # Reverse the direction
+            display="flex",  # Add flex display.
+            flex_direction="column",  # Reverse the direction.
             on_mount=rx.call_script("""
                 function scrollToBottom() {
                     const container = document.getElementById('chat-container');
