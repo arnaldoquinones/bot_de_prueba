@@ -112,6 +112,70 @@ def qa(question: str, answer: str) -> rx.Component:
         width="100%",
     )
 
+style = {
+    "animate": {
+        "@keyframes spin": {
+            "0%": {
+                "transform": "rotate(0deg)"
+            },
+            "100%": {
+                "transform": "rotate(-360deg)"  # Rotación en sentido inverso
+            }
+        },
+        "@keyframes bounce": {  # Uso de una animación común para los tres puntos
+            "0%, 80%, 100%": {
+                "transform": "translateY(0)"
+            },
+            "40%": {
+                "transform": "translateY(-20px)"
+            }
+        }
+    }
+}
+
+def modulo():
+    return rx.stack(
+        rx.box(
+            rx.box(
+                
+                width="calc(100% - 2px)",
+                height="calc(100% - 2px)",
+                border_radius="1rem",
+                background="linear-gradient(to bottom, rgb(30, 41, 59), rgb(15, 23, 42))",
+                position="absolute",
+                left="1px",
+                top="1px",
+                display="flex",
+                align_items="center",
+                justify_content="center",
+            ),
+            width="277px", 
+            height="55.5vh",
+            position="relative",
+            overflow="hidden",
+            border_radius="1rem",
+            background="linear-gradient(to bottom, rgb(51, 65, 85), rgb(30, 41, 59))",
+            _before={
+                "content": "''",
+                "position": "absolute",
+                "left": "-100%",
+                "top": "-100%",
+                "height": "300%",
+                "width": "300%",
+                "background": "conic-gradient(rgba(0, 182, 255, 0.6) 0deg, rgba(0, 132, 252, 0.6) 120deg, transparent 240deg)",
+                "animation": "spin 5s linear infinite",
+                "border-radius": "1rem",
+            },
+            style=style["animate"]
+        ),
+        position="absolute",
+        bottom="10%",
+        right="60%",
+    )
+
+# Initialize app with styles
+app = rx.App(style=style)
+
 def chat() -> rx.Component:
     """Área de chat."""
     return rx.box(
@@ -153,6 +217,7 @@ def chat() -> rx.Component:
         margin_top="20px",
         width="100%",
         box_shadow="0px 4px 8px rgba(0, 0, 0, 0.1)",  # Sombra sutil para resaltar el contenedor
+        
     )
 
 def action_bar() -> rx.Component:
@@ -213,8 +278,16 @@ def stackbot() -> rx.Component:
     return rx.stack(
         rx.container(
             rx.vstack(
+                rx.vstack(
+                modulo(),
+                position="relative",  # Permite moverlo sin afectar a los demás elementos
+                    top="363px",  # Desplaza hacia abajo
+                    left="275px",  # Desplaza hacia la derecha
+                ),
                 chat(),
                 action_bar(),
+                top="6px",
+                right="10px",
                 spacing="3",
                 width="100%",
             ),
@@ -270,7 +343,7 @@ def stackbot() -> rx.Component:
 def main_layout() -> rx.Component:
     """Diseño principal con sidebar y chatbot."""
     return rx.box(
-        sidebar(),
+        # sidebar(),
         stackbot(),
     )
 
