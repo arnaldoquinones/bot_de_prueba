@@ -65,10 +65,9 @@ def create_sidebar_item(text: str, icon: str, href: str = None, on_click: rx.Eve
             padding_y="0.75rem",
             align="center",
             style={
-                    "_hover": {
-                    "background": "rgba(255, 255, 255, 0.15)",
-                    "backdrop_filter": "blur(10px)",
-                    "border": "1px solid rgba(255, 255, 255, 0.2)",
+                "_hover": {
+                    "bg": rx.color("accent", 4),
+                    "color": rx.color("accent", 11),
                     "box-shadow": "0px 10px 20px rgba(0, 0, 0, 0.8)",
                 },
                 "border-radius": "0.5em",
@@ -121,7 +120,7 @@ def sidebar_bottom_profile() -> rx.Component:
                     is_external=True,
                 ),
                 padding_x="0.5rem",
-                align="center", 
+                align="center",
                 justify="start",
                 width="100%",
                 margin_top="-0.7cm",
@@ -130,15 +129,10 @@ def sidebar_bottom_profile() -> rx.Component:
             margin_top="auto",
             padding_x="1em",
             padding_y="0.5cm",
-            style={
-                "background": "rgba(255, 255, 255, 0.1)",
-                "backdrop_filter": "blur(10px)",
-                "border_radius": "6px",
-                "border": "1px solid rgba(255, 255, 255, 0.2)",
-            },
+            bg=rx.color("accent", 3),
             align="start",
             height="calc(100vh - 60px)",
-            overflow="auto", 
+            overflow="auto",
             width="14em",
             position="fixed",
             left="0",
@@ -146,7 +140,8 @@ def sidebar_bottom_profile() -> rx.Component:
             transform=rx.cond(SidebarState.is_open, "translateX(0)", "translateX(-100%)"),
             transition="transform 0.3s ease-in-out",
         ),
-        box_shadow="0 4px 30px rgba(0, 0, 0, 0.1)",
+        bg=rx.color("accent", 2),
+        shadow="xl",
     )
 
 
