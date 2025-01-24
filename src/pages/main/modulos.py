@@ -12,19 +12,61 @@ import time
 import asyncio
 import datetime as dt
 import locale
+from whoosh.fields import Schema, TEXT
+from whoosh.index import create_in
+from whoosh.qparser import QueryParser
 
 # --------------------
 # --- SIDEBAR MENU ---
 # --------------------
+
+# Crear esquema y índice
+def create_whoosh_index():
+    # Paso 1: Crear el esquema de Whoosh
+    schema = Schema(content=TEXT(stored=True))
+
+    # Paso 2: Crear índice en la carpeta 'index'
+    if not os.path.exists("index"):
+        os.mkdir("index")
+    index_dir = "index"
+    ix = create_in(index_dir, schema)
+
+    return ix
+
+ix = create_whoosh_index()
+
 
 class SidebarState(rx.State):
     is_open: bool = False
     last_activity: float = time.time()
     chatbot_window_open: bool = False
     auto_hide_time: float = 10
+    search_query: str = ""  # Puedes asignar un valor por defecto si lo deseas
+
+    @rx.event
+    def set_search_query(self, query: str):
+        """Establece la consulta de búsqueda."""
+        self.search_query = query  # Ahora esta variable está definida y puedes usarla
 
     def on_mount(self):
         self.is_open = False
+
+    @rx.event
+    def set_search_query(self, query: str):
+        """Establece el término de búsqueda y redirige a la página resumen."""
+        self.search_query = query
+        # Realiza la búsqueda en Whoosh
+        self.perform_search(query)
+        return rx.redirect("/resumen")  # Redirigir a la página de resultados
+
+    def perform_search(self, query: str):
+        """Realiza la búsqueda en el índice de Whoosh."""
+        with ix.searcher() as searcher:
+            query_parser = QueryParser("content", ix.schema)
+            query_obj = query_parser.parse(query)
+            results = searcher.search(query_obj)
+            for result in results:
+                print(f"Found: {result['content']}")  # Muestra los resultados encontrados
 
 
     @rx.event
@@ -83,14 +125,13 @@ def sidebar_item() -> rx.Component:
     return rx.vstack(
         rx.flex(
             rx.input(
-            rx.input.slot(rx.icon(tag="search", size=16), style={"order": 1}),
-            placeholder="Ingrese consulta",
-            max_length=50,
-            border_radius="90px",
-            style={
-                "text_align": "center" # alinea el texto y el placeholder a la izquierda
-            },
-        ),
+                rx.input.slot(rx.icon(tag="search", size=16), style={"order": 1}),
+                placeholder="Ingrese consulta",
+                max_length=50,
+                border_radius="90px",
+                style={"text_align": "center"},
+                on_change=SidebarState.set_search_query,  # Capturar la consulta
+            ),
             direction="column",
             spacing="3",
             style={"maxWidth": 500},
