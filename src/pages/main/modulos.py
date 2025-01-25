@@ -506,7 +506,15 @@ class MessageFormStateV2(rx.State):
         self.submit_status = ""
         self.is_popover_open = False
 
-
+# Animación de parpadeo
+blink_animation = {
+    "animation": "blink 1s infinite",
+    "@keyframes blink": {
+        "0%": {"opacity": 1},
+        "50%": {"opacity": 0},
+        "100%": {"opacity": 1},
+    },
+}
         
 
 def pop_up_message():
@@ -620,6 +628,7 @@ def pop_up_message():
                                ),
                                color="blue", 
                                font_size="sm",
+                               style=blink_animation,  # <-- Aplicar el estilo aquí
                            ),
                            rx.cond(
     MessageFormStateV2.submit_status == "success",
