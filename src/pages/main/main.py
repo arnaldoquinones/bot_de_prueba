@@ -50,7 +50,7 @@ def index() -> rx.Component:
                         top="10em",
                         justify="center",
                         align_items="center",
-                        height="420px",
+                        height="440px",
                         width="400px",
                         text_align="justify",
                         color="white"
@@ -75,14 +75,7 @@ def index() -> rx.Component:
                             }
                         }
                     ),
-                    # rx.image(
-                    #     src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/imagen_perfil_profesional.png?raw=true",  # Cambia esta URL por la de tu imagen
-                    #     alt="Descripción de la imagen",
-                    #     width="340px",
-                    #     height="360px",
-                    #     margin_top="-9em",
-                    #     margin_left="36em",
-                    # ),
+
                 ),
                 rx.hstack(
                     rx.link(
@@ -148,7 +141,7 @@ def index() -> rx.Component:
                     spacing="4",
                     align_items="center",
                     position="absolute",
-                    top="32em",
+                    top="34em",
                 ),
                 spacing="5",
                 justify_content="center",
