@@ -453,15 +453,28 @@ def send_email(form_data: dict):
         print(f"Error al enviar el correo: {e}")
         return False
 
+# class MessageFormStateV2(rx.State):
 class MessageFormStateV2(rx.State):
     is_popover_open: bool = False
     form_data: dict = {}
     email_error: str = ""
+    name_error: str = ""  # Variable para el error del nombre
     submit_status: str = ""
     is_submitting: bool = False
 
+    def set_form_data(self, field_name: str, value: str):
+        """Actualiza los datos del formulario."""
+        self.form_data[field_name] = value
+
+    def validate_name(self):
+        """Valida que el campo nombre no esté vacío y actualiza el estado."""
+        if not self.form_data.get("first_name", "").strip():
+            self.name_error = "This field is required."
+        else:
+            self.name_error = ""
+
     def validate_email(self, email: str) -> bool:
-        """Valida el formato del email (sin @rx.event)."""
+        """Valida el formato del email."""
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         return re.match(pattern, email) is not None
 
@@ -472,24 +485,28 @@ class MessageFormStateV2(rx.State):
 
     @rx.event 
     async def handle_submit(self, form_data: dict):
-        """Maneja el envío del formulario (versión corregida)."""
+        """Maneja el envío del formulario."""
+        # Validar nombre
+        self.validate_name()
+        if self.name_error:
+            return
+
+        # Validar email
         email = form_data.get("email", "").strip()
-        
-        # 1. Validar email primero
         if not self.validate_email(email):
             self.email_error = "Please enter a valid email address."
             return
         
-        # 2. Resetear errores y activar 'enviando'
+        # Resetear errores y activar 'enviando'
         self.email_error = ""
         self.is_submitting = True
         yield  # Fuerza la UI a mostrar "Sending..."
 
-        # 3. Simular/Enviar email (¡usa tu función real aquí!)
+        # Simular envío de email
         await asyncio.sleep(1)  # Simulación opcional
         success = send_email(form_data)  # <-- Reemplaza con tu lógica
         
-        # 4. Manejar resultado
+        # Manejar resultado
         if success:
             self.submit_status = "success"
             yield rx.toast("😎 Message sent!", duration=2000)
@@ -497,14 +514,15 @@ class MessageFormStateV2(rx.State):
             self.submit_status = "error"
             yield rx.toast("🤦 Error!", duration=2000)
 
-        # 5. Ocultar "Sending..." inmediatamente
+        # Ocultar "Sending..." inmediatamente
         self.is_submitting = False
         yield  # Actualización UI
 
-        # 6. Esperar 2s y cerrar pop-up
+        # Esperar 2s y cerrar pop-up
         await asyncio.sleep(2)
         self.submit_status = ""
         self.is_popover_open = False
+
 
 # Animación de parpadeo
 blink_animation = {
@@ -527,22 +545,22 @@ def pop_up_message():
                         width="30px",
                         height="auto",
                         style={
-            "position": "absolute",
-            "left": "15px",
-            "top": "6%",
-            "transform": "translateY(-50%)"
-        },
+                            "position": "absolute",
+                            "left": "15px",
+                            "top": "6%",
+                            "transform": "translateY(-50%)",
+                        },
                     ),
                     rx.heading(
                         "Contact me",
                         size="4",
                         color="white",
-                        align="center",  # Alinea el texto del heading
+                        align="center",
                     ),
                     spacing="3",
                     align_items="center",
-                    justify_content="center",  # Centra los elementos horizontalmente
-                    width="100%",  # Asegura que el hstack ocupe todo el ancho disponible
+                    justify_content="center",
+                    width="100%",
                 ),
             ),
             rx.dialog.close(
@@ -565,16 +583,34 @@ def pop_up_message():
             rx.dialog(
                 rx.form(
                     rx.vstack(
-                        rx.input(
-                            placeholder="First Name",
-                            name="first_name",
-                            required=True,
-                            max_length=50,
-                            style={
-                                "text-align": "left",
-                                "min_width": "270px",
-                            },
+                        # Input para First Name con validación
+                        rx.vstack(
+                            rx.input(
+                                placeholder="First Name",
+                                name="first_name",
+                                required=True,
+                                max_length=50,
+                                on_change=lambda value: MessageFormStateV2.set_form_data("first_name", value),
+                                on_blur=lambda _: MessageFormStateV2.validate_name(),
+                                style={
+                                    "border": rx.cond(
+                                        MessageFormStateV2.name_error != "",
+                                        "1px solid red",
+                                        "1px solid gray",
+                                    ),
+                                    "min-width": "270px",
+                                },
+                            ),
+                            rx.cond(
+                                MessageFormStateV2.name_error != "",
+                                rx.text(
+                                    MessageFormStateV2.name_error,
+                                    color="red",
+                                    font_size="sm",
+                                ),
+                            ),
                         ),
+                        # Input para Last Name (opcional, sin validación adicional)
                         rx.input(
                             placeholder="Last Name",
                             name="last_name",
@@ -582,31 +618,36 @@ def pop_up_message():
                             max_length=50,
                             style={
                                 "text-align": "left",
-                                "min_width": "270px",
+                                "min-width": "270px",
+                                "border": "1px solid gray",
                             },
                         ),
-                        rx.cond(
-                            MessageFormStateV2.email_error,
-                            rx.input(
-                                placeholder=MessageFormStateV2.email_error,
-                                name="email",
-                                required=True,
-                                max_length=500,
-                                style={
-                                    "border": "1px solid red",
-                                    "min_width": "270px",
-                                },
-                            ),
+                        # Input para Email con validación
+                        rx.vstack(
                             rx.input(
                                 placeholder="Email",
                                 name="email",
                                 required=True,
+                                max_length=500,
                                 style={
-                                    "border": "1px solid gray",
-                                    "min_width": "270px",
+                                    "border": rx.cond(
+                                        MessageFormStateV2.email_error != "",
+                                        "1px solid red",
+                                        "1px solid gray",
+                                    ),
+                                    "min-width": "270px",
                                 },
                             ),
+                            rx.cond(
+                                MessageFormStateV2.email_error != "",
+                                rx.text(
+                                    MessageFormStateV2.email_error,
+                                    color="red",
+                                    font_size="sm",
+                                ),
+                            ),
                         ),
+                        # Text Area para el mensaje
                         rx.text_area(
                             placeholder="Write your message",
                             name="message",
@@ -615,15 +656,15 @@ def pop_up_message():
                                 "text-align": "left",
                                 "resize": "vertical",
                                 "overflow": "auto",
-                                "min_height": "130px",
-                                "max_height": "270px",
-                                "min_width": "270px",
+                                "min-height": "130px",
+                                "max-height": "270px",
+                                "min-width": "270px",
                                 "white-space": "pre-wrap",
                                 "word-wrap": "break-word",
                             },
                         ),
+                        # Botón Submit y mensajes de estado
                         rx.hstack(
-                            sound_effect_script(),
                             rx.button(
                                 "Submit",
                                 type="submit",
@@ -638,19 +679,15 @@ def pop_up_message():
                                     "transform": "scale(0.95) translateY(4px)",
                                     "box_shadow": "0 0 15px #0E1CFF, 0 0 10px #0E1CFF inset, 0 4px 0 #1565c0",
                                 },
-                                on_click=[
-                                    rx.call_script("playFromStart(button_sfx)"),
-                                ],
                             ),
-                            rx.text(
-                                rx.cond(
-                                    MessageFormStateV2.is_submitting,
+                            rx.cond(
+                                MessageFormStateV2.is_submitting,
+                                rx.text(
                                     "📤 Sending...",
-                                    "",
+                                    color="blue",
+                                    font_size="sm",
+                                    style=blink_animation,
                                 ),
-                                color="blue",
-                                font_size="sm",
-                                style=blink_animation,
                             ),
                             rx.cond(
                                 MessageFormStateV2.submit_status == "success",
@@ -692,7 +729,12 @@ def pop_up_message():
 
 
 
-# ------ FIN DE POP UP WINDOW MAIL -----
+
+
+
+
+
+
 
 
 
