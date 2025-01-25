@@ -81,6 +81,8 @@ answer_style = message_style | dict(
     margin_right="5%",
     background_image="linear-gradient(to right, #8e44ad, #e91e63, #3498db)",
     max_height="auto",
+    position="relative", 
+    z_index="2"  # Higher z-index to overlap dots
 )
 
 # answer_style = {
@@ -163,7 +165,9 @@ def dots_component():
             spacing="2",
             align="center",
             justify="center",
-        )
+            ),
+            position="absolute",
+            z_index="1", # Lower z-index
     )
 
 def modulo():
