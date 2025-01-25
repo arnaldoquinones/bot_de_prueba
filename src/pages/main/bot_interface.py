@@ -363,23 +363,6 @@ def stackbot() -> rx.Component:
     )
 
 
-# Sidebar con el botón para abrir el chatbot, ahora posicionado abajo
-# def sidebar() -> rx.Component:
-#     return rx.box(
-#         rx.button(
-#             "Abrir Chatbot",
-#             on_click=State.toggle_window,
-#             bg="blue.500",  # Color de fondo del botón
-#             color="white",  # Color del texto
-#             padding="10px 20px",  # Padding del botón
-#             border_radius="20px",  # Bordes redondeados
-#             _hover={"bg": "blue.600"},  # Color al pasar el mouse
-#         ),
-#         position="fixed",
-#         left="20px",  # Margen desde la izquierda
-#         bottom="20px",  # Posicionado desde abajo
-#         z_index="1000",  # Asegura que esté por encima de otros elementos
-#     )
 
 def main_layout() -> rx.Component:
     """Diseño principal con sidebar y chatbot."""
