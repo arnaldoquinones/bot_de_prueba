@@ -1,10 +1,12 @@
 import reflex as rx
 
 
+# class State
 class State(rx.State):
     question: str = ""
     chat_history: list[tuple[str, str]] = []
     window_open: bool = False  # Controla si la ventana está abierta
+    show_loading_dots: bool = False  # Controla si los puntos de carga son visibles
 
     def submit_message(self):
         """Procesar el mensaje del usuario."""
@@ -15,10 +17,13 @@ class State(rx.State):
             # Forzar scroll al fondo después de enviar mensaje
             return rx.call_script("scrollToBottom()")
 
-   
     @rx.event
     async def answer(self):
         """Evento que procesa la pregunta y genera una respuesta."""
+        # Activar los puntos de carga en la primera consulta
+        if not self.show_loading_dots:
+            self.show_loading_dots = True
+
         self.submit_message()
         yield
 
@@ -28,8 +33,6 @@ class State(rx.State):
         if key == "Enter":
             self.submit_message()
         yield
-    
-    
 
     @rx.event
     def toggle_window(self):
@@ -39,10 +42,11 @@ class State(rx.State):
     @rx.event
     def set_question(self, value: str):
         """Handle text input with auto line breaks."""
-        # Insert line break every 30 characters
+        # Insert line break every 25 characters
         chunks = [value[i:i+25] for i in range(0, len(value), 25)]
         self.question = '\n'.join(chunks)
-    
+
+
 # Estilo minimalista para la barra de desplazamiento
 scrollbar_style = {
     "&::-webkit-scrollbar": {"width": "6px"},
@@ -85,25 +89,6 @@ answer_style = message_style | dict(
     z_index="2"  # Higher z-index to overlap dots
 )
 
-# answer_style = {
-#     "background": "linear-gradient(to right, #8e44ad, #e91e63, #3498db)",  # Gradiente de colores
-#     "border-radius": "20px",  # Bordes redondeados
-#     "padding": "5px 10px",  # Reducir el padding
-#     "line-height": "1.2",  # Ajustar el line-height
-#     "max-width": "80%",  # Tamaño máximo de la burbuja
-#     "box-shadow": "0 4px 6px rgba(0, 0, 0, 0.1)",  # Sombra
-#     "position": "relative",  # Para la punta de la burbuja
-# }
-
-# question_style = {
-#     "background": "linear-gradient(to right, #0e8174, #08354b)",  # Gradiente de colores
-#     "border-radius": "20px",  # Bordes redondeados
-#     "padding": "5px 10px",  # Reducir el padding
-#     "line-height": "1.2",  # Ajustar el line-height
-#     "max-width": "80%",  # Tamaño máximo de la burbuja
-#     "box-shadow": "0 4px 6px rgba(0, 0, 0, 0.1)",  # Sombra
-#     "position": "relative",  # Para la punta de la burbuja
-# }
 
 def qa(question: str, answer: str) -> rx.Component:
     """Renderiza un par de pregunta-respuesta."""
@@ -113,6 +98,7 @@ def qa(question: str, answer: str) -> rx.Component:
         margin_y="0.8em",
         width="100%",
     )
+
 
 style = {
     "animate": {
@@ -135,8 +121,11 @@ style = {
     }
 }
 
+
 def dots_component():
-    return rx.box(
+    """Component for the loading dots."""
+    return rx.cond(
+        State.show_loading_dots,  # Mostrar puntos solo si show_loading_dots es True
         rx.hstack(
             rx.box(
                 width="7px",
@@ -165,10 +154,9 @@ def dots_component():
             spacing="2",
             align="center",
             justify="center",
-            ),
-            position="absolute",
-            z_index="1", # Lower z-index
+        ),
     )
+
 
 def modulo():
     return rx.stack(
@@ -210,19 +198,23 @@ def modulo():
         right="60%",
     )
 
+
 # Initialize app with styles
 app = rx.App(style=style)
+
 
 def chat() -> rx.Component:
     """Área de chat."""
     return rx.box(
-        rx.box(dots_component(),
-        position="absolute",  # Utilizamos "absolute" para moverlo
-        top="82%",  # 10% desde la parte superior de la pantalla
-        left="20%"),  # 10% desde la parte izquierda de la pantalla
         rx.box(
-             # Add spacer div at top
-            rx.box(height="40vh"),  # This pushes first message down
+            dots_component(),
+            position="absolute",  # Utilizamos "absolute" para moverlo
+            top="82%",  # 82% desde la parte superior
+            left="20%",  # 20% desde la parte izquierda
+        ),
+        rx.box(
+            # Add spacer div at top
+            rx.box(height="40vh"),  # Esto empuja el primer mensaje hacia abajo
             rx.foreach(
                 State.chat_history,
                 lambda messages: qa(messages[0], messages[1]),
@@ -232,8 +224,8 @@ def chat() -> rx.Component:
             overflow_y="auto",
             style=scrollbar_style,
             id="chat-container",
-            display="flex",  # Add flex display.
-            flex_direction="column",  # Reverse the direction.
+            display="flex",
+            flex_direction="column",
             on_mount=rx.call_script("""
                 function scrollToBottom() {
                     const container = document.getElementById('chat-container');
@@ -258,8 +250,8 @@ def chat() -> rx.Component:
         margin_top="20px",
         width="100%",
         box_shadow="0px 4px 8px rgba(0, 0, 0, 0.1)",  # Sombra sutil para resaltar el contenedor
-        
     )
+
 
 def action_bar() -> rx.Component:
     return rx.vstack(
