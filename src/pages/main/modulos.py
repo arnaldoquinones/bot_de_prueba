@@ -460,48 +460,55 @@ class MessageFormStateV2(rx.State):
     submit_status: str = ""
     is_submitting: bool = False
 
+    def validate_email(self, email: str) -> bool:
+        """Valida el formato del email (sin @rx.event)."""
+        pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        return re.match(pattern, email) is not None
+
     @rx.event
     def toggle_popover(self):
         """Alterna la visibilidad del pop-up."""
         self.is_popover_open = not self.is_popover_open
-        self.submit_status = ""
-
-    @rx.event
-    def validate_email(self, email: str) -> bool:
-        """Valida el formato del email."""
-        pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        return re.match(pattern, email) is not None
 
     @rx.event 
     async def handle_submit(self, form_data: dict):
-        """Handle the form submit."""
-        print("Form received:", form_data)
+        """Maneja el envío del formulario (versión corregida)."""
         email = form_data.get("email", "").strip()
-
+        
+        # 1. Validar email primero
         if not self.validate_email(email):
             self.email_error = "Please enter a valid email address."
             return
         
+        # 2. Resetear errores y activar 'enviando'
         self.email_error = ""
-        self.form_data = form_data
-        
-        # Forzamos un cambio de estado
         self.is_submitting = True
-        yield  # Importante: esto fuerza una re-renderización
+        yield  # Fuerza la UI a mostrar "Sending..."
 
-        if send_email(form_data):
+        # 3. Simular/Enviar email (¡usa tu función real aquí!)
+        await asyncio.sleep(1)  # Simulación opcional
+        success = send_email(form_data)  # <-- Reemplaza con tu lógica
+        
+        # 4. Manejar resultado
+        if success:
             self.submit_status = "success"
-            yield rx.toast("Message sent successfully!", duration=3000)
+            yield rx.toast("😎 Message sent!", duration=2000)
         else:
             self.submit_status = "error"
-            yield rx.toast("Error sending message!", duration=3000)
+            yield rx.toast("🤦 Error!", duration=2000)
 
+        # 5. Ocultar "Sending..." inmediatamente
         self.is_submitting = False
+        yield  # Actualización UI
+
+        # 6. Esperar 2s y cerrar pop-up
+        await asyncio.sleep(2)
+        self.submit_status = ""
         self.is_popover_open = False
 
 
         
-        
+
 def pop_up_message():
    return rx.dialog.root(
        rx.dialog.content(
@@ -615,21 +622,21 @@ def pop_up_message():
                                font_size="sm",
                            ),
                            rx.cond(
-                               MessageFormStateV2.submit_status == "success",
-                               rx.text(
-                                   "😎 Message sent successfully!",
-                                   color="green",
-                                   font_size="sm",
-                               ),
-                           ),
-                           rx.cond(
-                               MessageFormStateV2.submit_status == "error",
-                               rx.text(
-                                   "🤦 Something went wrong! Try again later.",
-                                   color="red",
-                                   font_size="13px",
-                               ),
-                           ),
+    MessageFormStateV2.submit_status == "success",
+                            rx.text(
+                                "😎 Message sent successfully!",
+                                color="green",
+                                font_size="sm",
+                            ),
+                        ),
+                        rx.cond(
+                            MessageFormStateV2.submit_status == "error",
+                            rx.text(
+                                "🤦 Something went wrong! Try again later.",
+                                color="red",
+                                font_size="13px",
+                            ),
+                        ),
                            align_items="center",
                            spacing="3",
                        ),
@@ -648,7 +655,8 @@ def pop_up_message():
            },
        ),
        open=MessageFormStateV2.is_popover_open,
-   )
+       
+          )
 
 # ------ FIN DE POP UP WINDOW MAIL -----
 
