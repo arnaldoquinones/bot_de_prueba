@@ -484,12 +484,14 @@ class MessageFormStateV2(rx.State):
         
         self.email_error = ""
         self.form_data = form_data
+        
+        # Forzamos un cambio de estado
         self.is_submitting = True
+        yield  # Importante: esto fuerza una re-renderización
 
         if send_email(form_data):
             self.submit_status = "success"
             yield rx.toast("Message sent successfully!", duration=3000)
-            await asyncio.sleep(2)  # Keep the success message visible for 2 seconds
         else:
             self.submit_status = "error"
             yield rx.toast("Error sending message!", duration=3000)
@@ -497,160 +499,156 @@ class MessageFormStateV2(rx.State):
         self.is_submitting = False
         self.is_popover_open = False
 
+
+        
+        
 def pop_up_message():
-    return rx.dialog.root(
-        rx.dialog.content(
-            rx.dialog.title(
-                rx.heading("Contact me", size="4", color="white"),
-                rx.dialog.close(
-                    rx.button(
-                        rx.icon("x"),
-                        size="1",
-                        on_click=MessageFormStateV2.toggle_popover,
-                        style={
-                            "position": "absolute",
-                            "top": "6px",
-                            "right": "6px",
-                            "background": "transparent",
-                            "border": "transparent",
-                            "color": "white",
-                            "padding": "0",
-                            "font-size": "1px",
-                        },
-                    )
-                ),
-            ),
-            rx.dialog(
-                rx.form(
-                    rx.vstack(
-                        rx.input(
-                            placeholder="First Name",
-                            name="first_name",
-                            required=True,
-                            max_length=50,
-                            style={
-                                "text-align": "left",
-                                "min_width": "270px",
-                            },
-                        ),
-                        rx.input(
-                            placeholder="Last Name",
-                            name="last_name",
-                            required=False,
-                            max_length=50,
-                            style={
-                                "text-align": "left",
-                                "min_width": "270px",
-                            },
-                        ),
-                        rx.cond(
-                            MessageFormStateV2.email_error,
-                            rx.input(
-                                placeholder=MessageFormStateV2.email_error,
-                                name="email",
-                                required=True,
-                                max_length=500,
-                                style={
-                                    "border": "1px solid red",
-                                    "min_width": "270px",
-                                },
-                            ),
-                            rx.input(
-                                placeholder="Email",
-                                name="email",
-                                required=True,
-                                style={
-                                    "border": "1px solid gray",
-                                    "min_width": "270px",
-                                },
-                            ),
-                        ),
-                        rx.text_area(
-                            placeholder="Write your message",
-                            name="message",
-                            required=True,
-                            style={
-                                "text-align": "left",
-                                "resize": "vertical",
-                                "overflow": "auto",
-                                "min_height": "130px",
-                                "max_height": "270px",
-                                "min_width": "270px",
-                                "white-space": "pre-wrap",
-                                "word-wrap": "break-word",
-                            },
-                        ),
-                        rx.hstack(sound_effect_script(),
-                            rx.button(
-                                "Submit",
-                                type="submit",
-                                is_loading=MessageFormStateV2.is_submitting,
-                                loading_text="Sending...",  # Texto que aparece mientras carga
-                                border="none",
-                                border_radius="10px",
-                                color="white",
-                                # box_shadow="0 0 25px #1e88e5, 0 0 15px #1e88e5 inset, 0 8px 0 #1565c0",
-                                transform="perspective(1px) translateZ(0)",
-                                transition="all .3s ease",
-                                # Text shadow for extra depth
-                                # text_shadow="2px 2px 4px rgba(0,0,0,0.3)",
-                                # Hover state
-                                # _hover={
-                                #     "transform": "scale(1.05) translateY(-2px)",
-                                #     "box_shadow": "0 0 35px #1e88e5, 0 0 20px #1e88e5 inset, 0 10px 0 #1565c0",
-                                # },
-                                # Active/Click state
-                                _active={
-                                    "transform": "scale(0.95) translateY(4px)",
-                                    "box_shadow": "0 0 15px #0E1CFF, 0 0 10px #0E1CFF inset, 0 4px 0 #1565c0",
-                                },
-                                on_click=[
-                                rx.call_script("playFromStart(button_sfx)"),  # Agrega el efecto de sonido
-                            ]
-                            ),
-                            rx.cond(
-                                MessageFormStateV2.is_submitting,
-                                rx.text(
-                                    "📤 Sending...",
-                                    color="blue",
-                                    font_size="sm",
-                                ),
-                            ),
-                            rx.cond(
-                                MessageFormStateV2.submit_status == "success",
-                                rx.text(
-                                    "😎 Message sent successfully!",
-                                    color="green",
-                                    font_size="sm",
-                                ),
-                            ),
-                            rx.cond(
-                                MessageFormStateV2.submit_status == "error",
-                                rx.text(
-                                    "🤦Something went wrong! Try again later.",
-                                    color="red",
-                                    font_size="13px",
-                                ),
-                            ),
-                            align_items="center",
-                            spacing="3",
-                        ),
-                    ),
-                    on_submit=MessageFormStateV2.handle_submit,
-                    reset_on_submit=True,
-                ),
-            ),
-            style={
-                "max-width": "300px",
-                "width": "auto",
-                "min-height": "250px",
-                "padding": "1rem",
-                "position": "relative",
-                "background": rx.color("accent", 3),
-            },
-        ),
-        open=MessageFormStateV2.is_popover_open,
-    )
+   return rx.dialog.root(
+       rx.dialog.content(
+           rx.dialog.title(
+               rx.heading("Contact me", size="4", color="white"),
+               rx.dialog.close(
+                   rx.button(
+                       rx.icon("x"),
+                       size="1",
+                       on_click=MessageFormStateV2.toggle_popover,
+                       style={
+                           "position": "absolute",
+                           "top": "6px",
+                           "right": "6px",
+                           "background": "transparent",
+                           "border": "transparent",
+                           "color": "white",
+                           "padding": "0",
+                           "font-size": "1px",
+                       },
+                   )
+               ),
+           ),
+           rx.dialog(
+               rx.form(
+                   rx.vstack(
+                       rx.input(
+                           placeholder="First Name",
+                           name="first_name",
+                           required=True,
+                           max_length=50,
+                           style={
+                               "text-align": "left",
+                               "min_width": "270px",
+                           },
+                       ),
+                       rx.input(
+                           placeholder="Last Name",
+                           name="last_name",
+                           required=False,
+                           max_length=50,
+                           style={
+                               "text-align": "left",
+                               "min_width": "270px",
+                           },
+                       ),
+                       rx.cond(
+                           MessageFormStateV2.email_error,
+                           rx.input(
+                               placeholder=MessageFormStateV2.email_error,
+                               name="email",
+                               required=True,
+                               max_length=500,
+                               style={
+                                   "border": "1px solid red",
+                                   "min_width": "270px",
+                               },
+                           ),
+                           rx.input(
+                               placeholder="Email",
+                               name="email",
+                               required=True,
+                               style={
+                                   "border": "1px solid gray",
+                                   "min_width": "270px",
+                               },
+                           ),
+                       ),
+                       rx.text_area(
+                           placeholder="Write your message",
+                           name="message",
+                           required=True,
+                           style={
+                               "text-align": "left",
+                               "resize": "vertical",
+                               "overflow": "auto",
+                               "min_height": "130px",
+                               "max_height": "270px",
+                               "min_width": "270px",
+                               "white-space": "pre-wrap",
+                               "word-wrap": "break-word",
+                           },
+                       ),
+                       rx.hstack(
+                           sound_effect_script(),
+                           rx.button(
+                               "Submit",
+                               type="submit",
+                               is_loading=MessageFormStateV2.is_submitting,
+                               loading_text="Sending...",
+                               border="none",
+                               border_radius="10px",
+                               color="white",
+                               transform="perspective(1px) translateZ(0)",
+                               transition="all .3s ease",
+                               _active={
+                                   "transform": "scale(0.95) translateY(4px)",
+                                   "box_shadow": "0 0 15px #0E1CFF, 0 0 10px #0E1CFF inset, 0 4px 0 #1565c0",
+                               },
+                               on_click=[
+                                   rx.call_script("playFromStart(button_sfx)"),
+                               ]
+                           ),
+                           rx.text(
+                               rx.cond(
+                                   MessageFormStateV2.is_submitting, 
+                                   "📤 Sending...", 
+                                   ""
+                               ),
+                               color="blue", 
+                               font_size="sm",
+                           ),
+                           rx.cond(
+                               MessageFormStateV2.submit_status == "success",
+                               rx.text(
+                                   "😎 Message sent successfully!",
+                                   color="green",
+                                   font_size="sm",
+                               ),
+                           ),
+                           rx.cond(
+                               MessageFormStateV2.submit_status == "error",
+                               rx.text(
+                                   "🤦 Something went wrong! Try again later.",
+                                   color="red",
+                                   font_size="13px",
+                               ),
+                           ),
+                           align_items="center",
+                           spacing="3",
+                       ),
+                   ),
+                   on_submit=MessageFormStateV2.handle_submit,
+                   reset_on_submit=True,
+               ),
+           ),
+           style={
+               "max-width": "300px",
+               "width": "auto",
+               "min-height": "250px",
+               "padding": "1rem",
+               "position": "relative",
+               "background": rx.color("accent", 3),
+           },
+       ),
+       open=MessageFormStateV2.is_popover_open,
+   )
 
 # ------ FIN DE POP UP WINDOW MAIL -----
 
