@@ -122,16 +122,49 @@ style = {
                 "transform": "rotate(-360deg)"  # Rotación en sentido inverso
             }
         },
-        "@keyframes bounce": {  # Uso de una animación común para los tres puntos
+        "@keyframes bounce": {  # Ajustar la altura del rebote
             "0%, 80%, 100%": {
                 "transform": "translateY(0)"
             },
             "40%": {
-                "transform": "translateY(-20px)"
+                "transform": "translateY(-10px)"  # Rebote más bajo
             }
         }
     }
 }
+
+def dots_component():
+    return rx.box(
+        rx.hstack(
+            rx.box(
+                width="7px",
+                height="7px",
+                border_radius="50%",
+                bg="white",
+                animation="bounce 1.5s infinite ease-in-out",
+                animation_delay="0s",  # Primer punto
+            ),
+            rx.box(
+                width="7px",
+                height="7px",
+                border_radius="50%",
+                bg="white",
+                animation="bounce 1.5s infinite ease-in-out",
+                animation_delay="0.3s",  # Segundo punto
+            ),
+            rx.box(
+                width="7px",
+                height="7px",
+                border_radius="50%",
+                bg="white",
+                animation="bounce 1.5s infinite ease-in-out",
+                animation_delay="0.6s",  # Tercer punto
+            ),
+            spacing="2",
+            align="center",
+            justify="center",
+        )
+    )
 
 def modulo():
     return rx.stack(
@@ -179,6 +212,10 @@ app = rx.App(style=style)
 def chat() -> rx.Component:
     """Área de chat."""
     return rx.box(
+        rx.box(dots_component(),
+        position="absolute",  # Utilizamos "absolute" para moverlo
+        top="82%",  # 10% desde la parte superior de la pantalla
+        left="20%"),  # 10% desde la parte izquierda de la pantalla
         rx.box(
              # Add spacer div at top
             rx.box(height="40vh"),  # This pushes first message down
@@ -346,4 +383,3 @@ def main_layout() -> rx.Component:
         # sidebar(),
         stackbot(),
     )
-
