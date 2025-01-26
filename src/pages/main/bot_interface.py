@@ -1,53 +1,62 @@
 import reflex as rx
+import asyncio
+from typing import List, Tuple
 
-
-# class State
 class State(rx.State):
     question: str = ""
-    chat_history: list[tuple[str, str]] = []
-    window_open: bool = False  # Controla si la ventana está abierta
-    show_loading_dots: bool = False  # Controla si los puntos de carga son visibles
-
-    def submit_message(self):
-        """Procesar el mensaje del usuario."""
-        if self.question.strip():
-            answer = f"Respuesta a: {self.question}"
-            self.chat_history.append((self.question, answer))
-            self.question = ""
-            # Forzar scroll al fondo después de enviar mensaje
-            return rx.call_script("scrollToBottom()")
+    chat_history: List[Tuple[str, str]] = []
+    window_open: bool = False
+    show_loading_dots: bool = False
+    is_processing: bool = False
 
     @rx.event
     async def answer(self):
-        """Evento que procesa la pregunta y genera una respuesta."""
-        # Activar los puntos de carga en la primera consulta
-        if not self.show_loading_dots:
+        """Maneja el retraso y añade la respuesta al chat."""
+        if self.question.strip() and not self.is_processing:
+            self.is_processing = True
+            
+            # 1. Añadir pregunta inmediatamente
+            user_question = self.question
+            self.chat_history.append((user_question, ""))  # Respuesta vacía temporal
             self.show_loading_dots = True
-
-        self.submit_message()
-        yield
+            self.question = ""
+            yield  # Actualizar UI
+            
+            # 2. Esperar 2 segundos
+            await asyncio.sleep(2)
+            
+            # 3. Reemplazar respuesta vacía con la real
+            answer = f"Respuesta a: {user_question}"
+            self.chat_history[-1] = (user_question, answer)
+            self.show_loading_dots = False
+            self.is_processing = False
+            yield
+            
+            # Scroll al fondo
+            yield rx.call_script(
+                "document.getElementById('chat-container').scrollTop = document.getElementById('chat-container').scrollHeight;"
+            )
 
     @rx.event
     async def handle_key_down(self, key: str):
-        """Detecta la tecla Enter para enviar un mensaje."""
-        if key == "Enter":
-            self.submit_message()
+        if key == "Enter" and not self.is_processing:
+            yield State.answer
         yield
 
     @rx.event
     def toggle_window(self):
-        """Alternar la visibilidad de la ventana del chatbot."""
+        """Alternar visibilidad de la ventana."""
         self.window_open = not self.window_open
 
     @rx.event
     def set_question(self, value: str):
-        """Handle text input with auto line breaks."""
-        # Insert line break every 25 characters
+        """Formatea el texto con saltos de línea."""
         chunks = [value[i:i+25] for i in range(0, len(value), 25)]
         self.question = '\n'.join(chunks)
 
-
-# Estilo minimalista para la barra de desplazamiento
+# =====================================
+# ESTILOS Y COMPONENTES (ORIGINALES)
+# =====================================
 scrollbar_style = {
     "&::-webkit-scrollbar": {"width": "6px"},
     "&::-webkit-scrollbar-thumb": {
@@ -59,13 +68,11 @@ scrollbar_style = {
     "scrollbar-color": f"{rx.color('gray', 4)} transparent",
     "&:hover": {
         "&::-webkit-scrollbar-thumb": {
-            "background-color": rx.color("gray", 5),  # Un poco más oscuro al hover
+            "background-color": rx.color("gray", 5),
         }
     },
 }
 
-
-# Estilo de los mensajes
 message_style = dict(
     padding="0.8em",
     border_radius="5px",
@@ -86,170 +93,108 @@ answer_style = message_style | dict(
     background_image="linear-gradient(to right, #8e44ad, #e91e63, #3498db)",
     max_height="auto",
     position="relative", 
-    z_index="2"  # Higher z-index to overlap dots
+    z_index="2"
 )
 
-
 def qa(question: str, answer: str) -> rx.Component:
-    """Renderiza un par de pregunta-respuesta."""
     return rx.box(
         rx.box(rx.text(question, style=question_style), text_align="right"),
-        rx.box(rx.text(answer, style=answer_style), text_align="left"),
+        rx.cond(
+            answer != "",
+            rx.box(rx.text(answer, style=answer_style), text_align="left"),
+            rx.box()  # Espacio vacío temporal
+        ),
         margin_y="0.8em",
         width="100%",
     )
 
-
 style = {
     "animate": {
         "@keyframes spin": {
-            "0%": {
-                "transform": "rotate(0deg)"
-            },
-            "100%": {
-                "transform": "rotate(-360deg)"  # Rotación en sentido inverso
-            }
+            "0%": {"transform": "rotate(0deg)"},
+            "100%": {"transform": "rotate(-360deg)"}
         },
-        "@keyframes bounce": {  # Ajustar la altura del rebote
-            "0%, 80%, 100%": {
-                "transform": "translateY(0)"
-            },
-            "40%": {
-                "transform": "translateY(-10px)"  # Rebote más bajo
-            }
+        "@keyframes bounce": {
+            "0%, 80%, 100%": {"transform": "translateY(0)"},
+            "40%": {"transform": "translateY(-10px)"}
         }
     }
 }
 
-
 def dots_component():
-    """Component for the loading dots."""
     return rx.cond(
-        State.show_loading_dots,  # Mostrar puntos solo si show_loading_dots es True
+        State.show_loading_dots,
         rx.hstack(
-            rx.box(
-                width="7px",
-                height="7px",
-                border_radius="50%",
-                bg="white",
-                animation="bounce 1.5s infinite ease-in-out",
-                animation_delay="0s",  # Primer punto
-            ),
-            rx.box(
-                width="7px",
-                height="7px",
-                border_radius="50%",
-                bg="white",
-                animation="bounce 1.5s infinite ease-in-out",
-                animation_delay="0.3s",  # Segundo punto
-            ),
-            rx.box(
-                width="7px",
-                height="7px",
-                border_radius="50%",
-                bg="white",
-                animation="bounce 1.5s infinite ease-in-out",
-                animation_delay="0.6s",  # Tercer punto
-            ),
-            spacing="2",
-            align="center",
-            justify="center",
+            rx.box(width="7px", height="7px", border_radius="50%", bg="white",
+                   animation="bounce 1.5s infinite ease-in-out", animation_delay="0s"),
+            rx.box(width="7px", height="7px", border_radius="50%", bg="white",
+                   animation="bounce 1.5s infinite ease-in-out", animation_delay="0.3s"),
+            rx.box(width="7px", height="7px", border_radius="50%", bg="white",
+                   animation="bounce 1.5s infinite ease-in-out", animation_delay="0.6s"),
+            spacing="2", align="center", justify="center",
         ),
     )
-
 
 def modulo():
     return rx.stack(
         rx.box(
             rx.box(
-                
-                width="calc(100% - 2px)",
-                height="calc(100% - 2px)",
+                width="calc(100% - 2px)", height="calc(100% - 2px)",
                 border_radius="1rem",
                 background="linear-gradient(to bottom, rgb(30, 41, 59), rgb(15, 23, 42))",
-                position="absolute",
-                left="1px",
-                top="1px",
-                display="flex",
-                align_items="center",
-                justify_content="center",
+                position="absolute", left="1px", top="1px",
+                display="flex", align_items="center", justify_content="center",
             ),
-            width="277px", 
-            height="55.5vh",
-            position="relative",
-            overflow="hidden",
-            border_radius="1rem",
+            width="277px", height="55.5vh",
+            position="relative", overflow="hidden", border_radius="1rem",
             background="linear-gradient(to bottom, rgb(51, 65, 85), rgb(30, 41, 59))",
             _before={
                 "content": "''",
                 "position": "absolute",
-                "left": "-100%",
-                "top": "-100%",
-                "height": "300%",
-                "width": "300%",
+                "left": "-100%", "top": "-100%",
+                "height": "300%", "width": "300%",
                 "background": "conic-gradient(rgba(0, 182, 255, 0.6) 0deg, rgba(0, 132, 252, 0.6) 120deg, transparent 240deg)",
                 "animation": "spin 5s linear infinite",
                 "border-radius": "1rem",
             },
             style=style["animate"]
         ),
-        position="absolute",
-        bottom="10%",
-        right="60%",
+        position="absolute", bottom="10%", right="60%",
     )
 
 
-# Initialize app with styles
 app = rx.App(style=style)
 
-
 def chat() -> rx.Component:
-    """Área de chat."""
     return rx.box(
         rx.box(
             dots_component(),
-            position="absolute",  # Utilizamos "absolute" para moverlo
-            top="82%",  # 82% desde la parte superior
-            left="20%",  # 20% desde la parte izquierda
+            position="absolute",
+            top="82%",
+            left="20%",
         ),
         rx.box(
-            # Add spacer div at top
-            rx.box(height="40vh"),  # Esto empuja el primer mensaje hacia abajo
-            rx.foreach(
-                State.chat_history,
-                lambda messages: qa(messages[0], messages[1]),
-            ),
-            width="100%",
-            height="100%",
-            overflow_y="auto",
-            style=scrollbar_style,
-            id="chat-container",
-            display="flex",
-            flex_direction="column",
+            rx.box(height="40vh"),
+            rx.foreach(State.chat_history, lambda messages: qa(messages[0], messages[1])),
+            width="100%", height="100%", overflow_y="auto",
+            style=scrollbar_style, id="chat-container",
+            display="flex", flex_direction="column",
             on_mount=rx.call_script("""
                 function scrollToBottom() {
                     const container = document.getElementById('chat-container');
-                    if (container) {
-                        container.scrollTop = container.scrollHeight;
-                    }
+                    if (container) container.scrollTop = container.scrollHeight;
                 }
                 scrollToBottom();
                 const observer = new MutationObserver(scrollToBottom);
                 observer.observe(document.getElementById('chat-container'), { 
-                    childList: true, 
-                    subtree: true 
+                    childList: true, subtree: true 
                 });
             """),
         ),
-        padding="0.8em",
-        height="55vh",
-        border_radius="12px",
-        bg="rgba(200, 200, 200, 0.1)",  # Gris claro con 10% de opacidad
-        backdrop_filter="blur(6px)",  # Efecto de difuminado suave
-        margin_bottom="0.5em",
-        margin_top="20px",
-        width="100%",
-        box_shadow="0px 4px 8px rgba(0, 0, 0, 0.1)",  # Sombra sutil para resaltar el contenedor
+        padding="0.8em", height="55vh", border_radius="12px",
+        bg="rgba(200, 200, 200, 0.1)", backdrop_filter="blur(6px)",
+        margin_bottom="0.5em", margin_top="20px", width="100%",
+        box_shadow="0px 4px 8px rgba(0, 0, 0, 0.1)",
     )
 
 
