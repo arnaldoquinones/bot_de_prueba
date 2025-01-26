@@ -388,10 +388,14 @@ def header():
         align_items="center",
         box_shadow="0px 10px 20px rgba(0, 0, 0, 0.7), 0px 0px 10px transparent",
     )
-
-
-
 # ------ FIN DE HEADER ------
+
+
+
+
+
+
+
 
 
 # -------------------------

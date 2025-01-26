@@ -98,10 +98,17 @@ answer_style = message_style | dict(
 
 def qa(question: str, answer: str) -> rx.Component:
     return rx.box(
-        rx.box(rx.text(question, style=question_style), text_align="right"),
+        rx.box(
+            rx.text(question, style=question_style), 
+            text_align="right",
+            margin_top="-1cm",  # <-- Ajuste aquí
+        ),
         rx.cond(
             answer != "",
-            rx.box(rx.text(answer, style=answer_style), text_align="left"),
+            rx.box(
+                rx.text(answer, style=answer_style), 
+                text_align="left",
+            ),
             rx.box()  # Espacio vacío temporal
         ),
         margin_y="0.8em",
@@ -176,9 +183,14 @@ def chat() -> rx.Component:
         rx.box(
             rx.box(height="40vh"),
             rx.foreach(State.chat_history, lambda messages: qa(messages[0], messages[1])),
-            width="100%", height="100%", overflow_y="auto",
-            style=scrollbar_style, id="chat-container",
-            display="flex", flex_direction="column",
+            width="100%", 
+            height="100%", 
+            overflow_y="auto",
+            style=scrollbar_style, 
+            id="chat-container",
+            display="flex", 
+            flex_direction="column",
+            padding_top="-1cm",  # <-- Ajuste aquí
             on_mount=rx.call_script("""
                 function scrollToBottom() {
                     const container = document.getElementById('chat-container');
@@ -191,34 +203,54 @@ def chat() -> rx.Component:
                 });
             """),
         ),
-        padding="0.8em", height="55vh", border_radius="12px",
-        bg="rgba(200, 200, 200, 0.1)", backdrop_filter="blur(6px)",
-        margin_bottom="0.5em", margin_top="20px", width="100%",
+        padding="0.8em", 
+        height="55vh", 
+        border_radius="12px",
+        bg="rgba(200, 200, 200, 0.1)", 
+        backdrop_filter="blur(6px)",
+        margin_bottom="0.5em", 
+        margin_top="20px", 
+        width="100%",
         box_shadow="0px 4px 8px rgba(0, 0, 0, 0.1)",
     )
 
 
 def action_bar() -> rx.Component:
     return rx.vstack(
+        rx.box(
+            rx.heading(
+                "Chatbot",
+                size="4",
+                color="white",
+                align="center",
+                margin_top="-2em",
+                position="relative",
+                top="-19.5em"
+            ),
+            width="100%"
+        ),
         rx.input(
             value=State.question,
             placeholder="Ingrese su consulta...",
             on_change=State.set_question,
             on_key_down=State.handle_key_down,
             border_radius="40px",
+            position="relative",
+            top="-1em",
+            left="-6%",  # Ajusta este valor según necesites
             width="88%",
-            margin_top="-15px",  # Increased negative margin to move up
+            margin_top="-12px",  # Increased negative margin to move up
             max_length=120,
             rows="1",
             resize="none",
             border="none !important",  # Force remove border
-            outline="none !important", # Force remove outline
+            outline="none !important",  # Force remove outline
             style={
                 "overflow-y": "auto",
                 "word-wrap": "break-word",
                 "padding": "6px 12px",
                 "line-height": "1.1",
-                "min-height": "28px",
+                "min-height": "25px",
                 "max-height": "50px",
                 "width": "90%",
                 "box-sizing": "border-box",
@@ -236,18 +268,21 @@ def action_bar() -> rx.Component:
                 "_hover": {
                     "border": "none !important",
                     "outline": "none !important",
-                }
+                },
             },
         ),
         rx.icon(
             tag="send-horizontal",
             margin_right="2%",
-            margin_top="-40px",  # Adjusted for new textarea position
+            margin_top="-52px",  # Adjusted for new textarea position
             align_self="flex-end",
             size=22,
             cursor="pointer",
             on_click=State.answer,
         ),
+        spacing="3",
+        align_items="center",
+        justify_content="center",
         width="100%",
     )
 
