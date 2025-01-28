@@ -82,16 +82,19 @@ message_style = dict(
 )
 
 question_style = message_style | dict(
-    margin_left="5%",
+    margin_top="-1.5em",  # Ajusta posición hacia arriba, simulando un salto de línea
+    margin_left="5%",     # Define la separación del borde izquierdo
     background="linear-gradient(to right, #0e8174, #08354b)",
-    border_radius="30px 30px 1px 30px", # Arriba-izquierda, arriba-derecha, abajo-derecha, abajo-izquierda
+    border_radius="30px 20px 1px 30px",  # Arriba-izquierda, arriba-derecha, abajo-derecha, abajo-izquierda
     max_height="auto",
+    position="relative",  # Permite ajustes relativos con respecto a su contenedor
+    z_index="1",          # Asegura el nivel correcto en el flujo
 )
 
 answer_style = message_style | dict(
     margin_right="5%",
     background_image="linear-gradient(to right, #8e44ad, #e91e63, #3498db)",
-    border_radius="1px 30px 30px 30px", # Arriba-izquierda, arriba-derecha, abajo-derecha, abajo-izquierda
+    border_radius="1px 30px 30px 20px", # Arriba-izquierda, arriba-derecha, abajo-derecha, abajo-izquierda
     max_height="auto",
     position="relative", 
     z_index="2"
@@ -100,21 +103,23 @@ answer_style = message_style | dict(
 def qa(question: str, answer: str) -> rx.Component:
     return rx.box(
         rx.box(
-            rx.text(question, style=question_style), 
+            rx.text(question, style=question_style),  # Aplica el estilo ajustado
             text_align="right",
-            margin_top="-1cm",  # <-- Ajuste aquí
+            margin_top="-1em",  # Empuja aún más hacia arriba para ajustar la posición
         ),
         rx.cond(
             answer != "",
             rx.box(
                 rx.text(answer, style=answer_style), 
                 text_align="left",
+                margin_top="1em",  # Separa claramente la respuesta de la pregunta
             ),
-            rx.box()  # Espacio vacío temporal
+            rx.box(height="0.8em")  # Espacio reservado si no hay respuesta
         ),
-        margin_y="0.8em",
+        margin_y="1.2em",  # Espaciado uniforme entre las burbujas
         width="100%",
     )
+
 
 style = {
     "animate": {
