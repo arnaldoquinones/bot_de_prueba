@@ -75,7 +75,6 @@ scrollbar_style = {
 
 message_style = dict(
     padding="0.8em",
-    border_radius="5px",
     margin_y="0.4em",
     box_shadow="rgba(0, 0, 0, 0.15) 0px 2px 8px",
     max_width="90%",
@@ -85,12 +84,14 @@ message_style = dict(
 question_style = message_style | dict(
     margin_left="5%",
     background="linear-gradient(to right, #0e8174, #08354b)",
+    border_radius="30px 30px 1px 30px", # Arriba-izquierda, arriba-derecha, abajo-derecha, abajo-izquierda
     max_height="auto",
 )
 
 answer_style = message_style | dict(
     margin_right="5%",
     background_image="linear-gradient(to right, #8e44ad, #e91e63, #3498db)",
+    border_radius="1px 30px 30px 30px", # Arriba-izquierda, arriba-derecha, abajo-derecha, abajo-izquierda
     max_height="auto",
     position="relative", 
     z_index="2"
