@@ -159,7 +159,13 @@ def index() -> rx.Component:
         background_size="cover",  # Ajusta el tamaño de la imagen para cubrir todo el fondo
         background_repeat="no-repeat",  # Evita que la imagen se repita
         background_position="center",  # Centra la imagen en el fondo
-        overflow_y="auto",
+        overflow="hidden",  # Cambiado de overflow_y="auto" a overflow="hidden"
+        position="relative",  # Añadido para mejor control del layout
+        style={
+            "max_width": "100%",
+            "margin": "0",
+            "padding": "0",
+        }
     )
 
 app = rx.App()
