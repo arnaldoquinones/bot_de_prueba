@@ -83,7 +83,7 @@ message_style = dict(
 
 question_style = message_style | dict(
     margin_left="5%",     
-    background="linear-gradient(to right, #0e8174, #08354b)",
+    background="linear-gradient(to left, #0e8174, #08354b)",
     border_radius="30px 20px 1px 30px",
     max_width="70%",  # Limita el ancho máximo
     overflow="hidden",  # Maneja el desbordamiento
