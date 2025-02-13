@@ -5,8 +5,9 @@ from .bot_interface import stackbot
 from whoosh.qparser import QueryParser
 from .modulos import ix  # Importa el índice desde modulos.py
 
-
-
+#---------------
+#--- SIDEBAR ---
+#---------------
 
 # Estado de la página resumen
 class ResumenState(rx.State):
