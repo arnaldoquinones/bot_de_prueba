@@ -15,7 +15,7 @@ from .bot_interface import stackbot
 class TypewriterState(rx.State):
     text: str = ""
     full_text: str = (
-        "Con más de 24 años de experiencia en el ámbito bancario y financiero, he desempeñado roles clave tanto en el área administrativa como en la comercial, destacándome como oficial de cuentas y negocios. Mi experiencia abarca la gestión de relaciones con clientes, análisis de riesgos crediticios y el desarrollo de soluciones personalizadas que impulsan el crecimiento y fortalecen la confianza de los clientes. Durante mi tiempo en el área administrativa, adquirí habilidades avanzadas en la preparación y presentación de informes mediante el uso de herramientas de bases de datos (BDD), además de integrar tecnologías como Power BI, Tableau y Python para optimizar el análisis de datos y la inteligencia de negocios. Estas capacidades me han permitido contribuir significativamente a la eficiencia operativa y a la toma de decisiones informadas en proyectos de alta complejidad.")
+        "Con más de 24 años de experiencia en el ámbito bancario y financiero, he desempeñado roles clave tanto en el área administrativa como en la comercial, destacándome como oficial de cuentas y negocios. Mi experiencia abarca la gestión de relaciones con clientes, análisis de riesgos crediticios y el desarrollo de soluciones personalizadas que impulsan el crecimiento y fortalecen la confianza de los clientes.Durante mi tiempo en el área administrativa, adquirí habilidades avanzadas en la preparación y presentación de informes mediante el uso de herramientas de bases de datos (BDD), además de integrar tecnologías como Power BI, Tableau y Python para optimizar el análisis de datos y la inteligencia de negocios. Estas capacidades me han permitido contribuir significativamente a la eficiencia operativa y a la toma de decisiones informadas en proyectos de alta complejidad.")
 
     async def type_text(self):
         for i in range(1, len(self.full_text) + 1):
@@ -23,10 +23,6 @@ class TypewriterState(rx.State):
             await asyncio.sleep(0.0155)  # Velocidad de la animación
             yield
 
-
-# intro_texto_castellano = """Con más de 24 años de experiencia en el ámbito bancario financiero, he desempeñado roles tanto en el área administrativa como en el comercial, específicamente como oficial de cuentas y negocios. Durante mi tiempo en el área administrativa adquirí habilidades significativas en la preparación de informes empleando herramientas de BDD, contribuyendo así a la eficiencia operativa y la toma de decisiones informadas."""
-
-# intro_texto_ingles = """With more than 24 years of experience in the financial banking sector, I have held roles in both the administrative and commercial areas, specifically as an account and business officer. During my time in the administrative area, I acquired significant skills in the preparation of reports using DDB tools, thus contributing to operational efficiency and informed decision-making."""
 
 @rx.page(on_load=TypewriterState.type_text)  # Aquí se ejecuta la animación cuando se carga la página
 def index() -> rx.Component:
@@ -47,10 +43,10 @@ def index() -> rx.Component:
                         rx.text(TypewriterState.text,
                                 font_size="0.8em",),
                         position="absolute",
-                        top="10em",
+                        top="11em",
                         justify="center",
                         align_items="center",
-                        height="440px",
+                        height="420px",
                         width="400px",
                         text_align="justify",
                         color="white"
@@ -75,7 +71,14 @@ def index() -> rx.Component:
                             }
                         }
                     ),
-
+                    # rx.image(
+                    #     src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/imagen_perfil_profesional.png?raw=true",  # Cambia esta URL por la de tu imagen
+                    #     alt="Descripción de la imagen",
+                    #     width="340px",
+                    #     height="360px",
+                    #     margin_top="-9em",
+                    #     margin_left="36em",
+                    # ),
                 ),
                 rx.hstack(
                     rx.link(
@@ -159,13 +162,7 @@ def index() -> rx.Component:
         background_size="cover",  # Ajusta el tamaño de la imagen para cubrir todo el fondo
         background_repeat="no-repeat",  # Evita que la imagen se repita
         background_position="center",  # Centra la imagen en el fondo
-        overflow="hidden",  # Cambiado de overflow_y="auto" a overflow="hidden"
-        position="relative",  # Añadido para mejor control del layout
-        style={
-            "max_width": "100%",
-            "margin": "0",
-            "padding": "0",
-        }
+        overflow_y="auto",
     )
 
 app = rx.App()

@@ -95,6 +95,7 @@ class SidebarState(rx.State):
     def reset_last_activity(self):
         self.last_activity = time.time()
         print("Actividad detectada. Última actividad actualizada.")
+   
 
 def create_sidebar_item(text: str, icon: str, href: str = None, on_click: rx.EventHandler = None) -> rx.Component:
     link_props = {"href": href} if href else {"on_click": on_click}
@@ -212,7 +213,7 @@ def sidebar_with_toggle() -> rx.Component:
                     SidebarState.toggle_sidebar,
                 ],
                 position="absolute",
-                left="7%",
+                left="5%",
                 top="13%",
                 transform="translate(-50%, -50%)",
                 color_scheme="teal",
@@ -227,7 +228,7 @@ def sidebar_with_toggle() -> rx.Component:
                     SidebarState.toggle_sidebar,
                 ],
                 position="absolute",
-                left="7%",
+                left="5%",
                 top="13%",
                 transform="translate(-50%, -50%)",
                 color_scheme="teal",
@@ -415,8 +416,7 @@ class MessageFormState(rx.State):
     def toggle_popover(self):
         """Toggle the popover visibility."""
         self.is_popover_open = not self.is_popover_open
-
-
+    
 load_dotenv()
 
 def send_email(form_data: dict):
@@ -457,7 +457,16 @@ def send_email(form_data: dict):
         print(f"Error al enviar el correo: {e}")
         return False
 
-# class MessageFormStateV2(rx.State):
+# Animación de parpadeo
+blink_animation = {
+    "animation": "blink 1s infinite",
+    "@keyframes blink": {
+        "0%": {"opacity": 1},
+        "50%": {"opacity": 0},
+        "100%": {"opacity": 1},
+    },
+}
+
 class MessageFormStateV2(rx.State):
     is_popover_open: bool = False
     form_data: dict = {}
@@ -486,6 +495,7 @@ class MessageFormStateV2(rx.State):
     def toggle_popover(self):
         """Alterna la visibilidad del pop-up."""
         self.is_popover_open = not self.is_popover_open
+        
 
     @rx.event 
     async def handle_submit(self, form_data: dict):
@@ -728,6 +738,8 @@ def pop_up_message():
         ),
         open=MessageFormStateV2.is_popover_open,
     )
+
+# -------FIN DE POP UP WINDOW EMAIL -------
 
 
 

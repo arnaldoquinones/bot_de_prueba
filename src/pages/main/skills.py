@@ -31,7 +31,8 @@ def skills() -> rx.Component:
                         rx.fragment(
                             rx.text("Skills"),
                         ),
-                        size="8"
+                        size="6",
+                        margin_top="-1rem",
                     ),
                     rx.image(
                         src="https://github.com/arnaldoquinones/bot_de_prueba/blob/master/src/pages/assets/logo_fondo_transparente.png?raw=true",
