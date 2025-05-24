@@ -40,7 +40,7 @@ def skills() -> rx.Component:
                         height="auto",
                         border_radius="50%",
                         alt="Foto de perfil",
-                        margin_top="-64px",
+                        margin_top="-35px",
                         margin_left="-11.9em",
                         animation="neonGlow 2s infinite alternate cubic-bezier(0.455, 0.030, 0.515, 0.955)",
                         style={
