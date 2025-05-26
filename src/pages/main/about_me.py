@@ -78,26 +78,33 @@ def about() -> rx.Component:
                 flex="1",
             ),
             rx.stack(
-                       rx.container(
-                           rx.heading(
-        "My timeline career",
-        size="4",  # Ajusta el tamaño de 1 a 9
-        color="white", # Puedes cambiar el color
-        margin_bottom="1em", # Espacio debajo del título
-        text_align="center", # Para centrar el texto dentro del heading
-        style=style["animate"]
+    rx.container(
+        rx.vstack(  # Agrupa el título y el timeline
+            rx.heading(
+                "My timeline career",
+                size="4",
+                color="white",
+                margin_bottom="1em",
+                text_align="center",
+                style=style["animate"]
+            ),
+            timeline_scrollable_page(),  # Timeline horizontal con scroll
+            spacing="1em"  # Espaciado entre título y timeline
+        ),
+        width="600px",
+        height="59vh",
+        center_content=True,
+        bg=rx.color("accent", 3),
+        border_radius="15px",
+        box_shadow="10px 10px 15px rgba(0, 0, 0, 0.3), 0px 0px 5px transparent",
+        padding="1em",  # Agrega espacio interno
+        overflow_x="auto"  # Por si el timeline necesita scroll horizontal
     ),
-                           width="600px",
-                           height="59vh",
-                            center_content=True,
-                            bg=rx.color("accent", 3),
-                            border_radius="15px",
-                           box_shadow="10px 10px 15px rgba(0, 0, 0, 0.3), 0px 0px 5px transparent",
-                          ),
-                         position="absolute",  # Posicionamiento absoluto
-                         bottom="6%",  # Alineado al borde inferior
-                         right="5%",  # Alineado al borde izquierdo
-                     ),
+    position="absolute",
+    bottom="6%",
+    right="5%",
+)
+,
             stackbot(),
             sidebar_bottom_profile(),
             style=style["animate"]
@@ -118,16 +125,33 @@ def about() -> rx.Component:
 # --- Componente de Scroll Horizontal ---   
 
 
-rx.scroll_area(
-    rx.hstack(
-        # Aquí tus elementos
-    ),
-    scrollbars="horizontal",
-    style={"width": 400, "height": 150},
-)
+#rx.scroll_area(
+#    rx.hstack(
+#        # Aquí tus elementos
+#    ),
+#    scrollbars="horizontal",
+#    style={"width": 400, "height": 150},
+#)
 
-rx.button("←", on_click=rx.call_script("document.getElementById('mi-scroll').scrollLeft -= 100"))
-rx.button("→", on_click=rx.call_script("document.getElementById('mi-scroll').scrollLeft += 100"))
+# rx.button("←", on_click=rx.call_script("document.getElementById('mi-scroll').scrollLeft -= 100"))
+# rx.button("→", on_click=rx.call_script("document.getElementById('mi-scroll').scrollLeft += 100"))
+
+
+# pages/timeline_scrollable.py
+
+def timeline_scrollable_page() -> rx.Component:
+    return rx.scroll_area(
+        rx.hstack(
+            timeline_page(),  # Usamos directamente la función que devuelve el componente
+        ),
+        scrollbars="horizontal",
+        style={
+            "width": "100vw",  # o por ejemplo: 1200 si querés fijo
+            "height": "100vh",
+            "white-space": "nowrap",  # Asegura que se pueda hacer scroll horizontal
+        },
+    )
+
 
 
 # --- Animación CSS para el efecto de brillo ---
